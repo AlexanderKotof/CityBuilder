@@ -1,0 +1,50 @@
+namespace InteractionStateMachine
+{
+    public class CellSelectedInteractionState : InteractionState
+    {
+        public CellSelectedInteractionState(Dependencies dependencies) : base(dependencies)
+        {
+        }
+
+        protected override void OnEnterState()
+        {
+            base.OnEnterState();
+            //ToDo: show selected cell info
+        }
+
+        protected override void OnExitState()
+        {
+            base.OnExitState();
+        }
+        
+        protected override void ProcessClick(CellModel cellModel)
+        {
+            TrySelectCell(cellModel);
+        }
+
+        protected override void OnCellSelected()
+        {
+            if (InteractionModel.SelectedCell == null)
+            {
+                ChangeState<EmptyInteractionState>();
+            }
+        }
+
+        protected override void ProcessDragStarted(CellModel cellModel)
+        {
+            base.ProcessDragStarted(cellModel);
+            StartDragCell(cellModel);
+        }
+
+        protected override void ProcessRightClick(CellModel cellModel)
+        {
+            base.ProcessRightClick(cellModel);
+            DeselectCell();
+        }
+
+        protected override void TryCancel()
+        {
+            DeselectCell();
+        }
+    }
+}
