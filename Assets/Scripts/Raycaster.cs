@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using BuildingSystem;
+using CityBuilder.BuildingSystem;
+using CityBuilder.Grid;
 using JetBrains.Annotations;
 using UnityEngine;
 

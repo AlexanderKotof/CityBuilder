@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using ViewSystem.Implementation;
 
-namespace BuildingSystem
+namespace CityBuilder.BuildingSystem
 {
     [CreateAssetMenu(fileName = "BuildingsConfig", menuName = "BuildingsConfig")]
     public class BuildingsConfig : ScriptableObject

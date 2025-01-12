@@ -1,8 +1,11 @@
+using CityBuilder.Dependencies;
+using CityBuilder.Grid;
+
 namespace InteractionStateMachine
 {
     public class CellSelectedInteractionState : InteractionState
     {
-        public CellSelectedInteractionState(Dependencies dependencies) : base(dependencies)
+        public CellSelectedInteractionState(DependencyContainer dependencyContainer) : base(dependencyContainer)
         {
         }
 

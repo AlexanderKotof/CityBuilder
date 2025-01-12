@@ -1,4 +1,6 @@
-using BuildingSystem;
+using CityBuilder.BuildingSystem;
+using CityBuilder.Dependencies;
+using CityBuilder.Grid;
 using UnityEngine;
 
 namespace InteractionStateMachine
@@ -7,9 +9,9 @@ namespace InteractionStateMachine
     {
         private readonly BuildingManager _buildingManager;
 
-        public EmptyInteractionState(Dependencies dependencies) : base(dependencies)
+        public EmptyInteractionState(DependencyContainer dependencyContainer) : base(dependencyContainer)
         {
-            _buildingManager = dependencies.Resolve<BuildingManager>();
+            _buildingManager = dependencyContainer.Resolve<BuildingManager>();
         }
 
         protected override void OnEnterState()

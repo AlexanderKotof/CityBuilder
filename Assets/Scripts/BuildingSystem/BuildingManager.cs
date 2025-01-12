@@ -1,72 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using CityBuilder.Dependencies;
+using CityBuilder.Grid;
+using UnityEditor;
 using UnityEngine;
 using ViewSystem;
+using ViewSystem.Implementation;
 
-namespace BuildingSystem
+namespace CityBuilder.BuildingSystem
 {
-    public class BuildingsModel
-    {
-        public Dictionary<CellModel, Building> BuildingsMap = new Dictionary<CellModel, Building>();
-
-        public void AddBuilding(Building building, CellModel location)
-        {
-            foreach (var cell in GetBuildingCellsSet(building, location))
-            {
-                if (!BuildingsMap.TryAdd(location, building))
-                {
-                    Debug.LogError($"Building at position {location.ToString()} already exists!");
-                }
-                
-                cell.SetContent(building);
-            }
-        }
-    
-        public bool TryGetBuilding(CellModel location, out Building building) =>
-            BuildingsMap.TryGetValue(location, out building);
-        
-        public void RemoveBuilding(CellModel location)
-        {
-            var building = BuildingsMap[location];
-            foreach (var cell in GetBuildingCellsSet(building, location))
-            {
-                if (!BuildingsMap.Remove(cell))
-                {
-                    Debug.LogError($"No Building found at position {cell.ToString()}!");
-                }
-                
-                cell.SetContent(null);
-            }
-        }
-        
-        private IReadOnlyCollection<CellModel> GetBuildingCellsSet(Building building, CellModel startCell)
-        {
-            var list = new List<CellModel>();
-            var position = startCell.Position;
-            var config = building.Config;
-            
-            for (int i = position.X; i < position.X + config.Size.x; i++)
-            {
-                for (int j = position.Y; j < position.Y + config.Size.y; j++)
-                {
-                    list.Add(startCell.GridModel.GetCell(i, j));
-                }
-            }
-
-            return list;
-        }
-    }
-
     public class BuildingManager
     {
         public BuildingFactory BuildingFactory { get; }
         public BuildingsConfig Config { get; }
         public BuildingsModel Model { get; } = new();
+
+        private readonly BuildingViewCollection _buildingViewsController;
         
         private readonly GridManager _gridManager;
         private readonly ViewsProvider _viewsProvider;
-
-        private readonly Transform _buildingsRoot;
-
+        
         public BuildingManager(BuildingsConfig config, GridManager gridManager, ViewsProvider viewsProvider)
         {
             Config = config;
@@ -74,8 +25,14 @@ namespace BuildingSystem
             _viewsProvider = viewsProvider;
 
             BuildingFactory = new(viewsProvider);
-            
-            _buildingsRoot = new GameObject("---Buildings Root---").transform;
+
+            _buildingViewsController = new (Model, viewsProvider);
+            _buildingViewsController.Initialize();
+        }
+
+        public void Deinit()
+        {
+            _buildingViewsController.Deinit();
         }
 
         public void TryPlaceDefaultBuilding(CellModel cellModel)
@@ -146,22 +103,7 @@ namespace BuildingSystem
 
         private void SetBuilding(CellModel cellModel, Building building)
         {
-            Debug.Log("Placing building: " + building.Config.Name + " at: " + cellModel);
-            
             Model.AddBuilding(building, cellModel);
-            cellModel.SetContent(building);
-
-            CreateBuildingView(building, cellModel);
-        }
-
-        private void CreateBuildingView(Building building, CellModel cell)
-        {
-            var worldPosition = cell.WorldPosition;
-      
-            var gameObject = _viewsProvider.ProvideView(building.Config.Prefab, _buildingsRoot);
-            gameObject.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
-            
-            building.SetView(gameObject);
         }
         
         private void RemoveBuilding(CellModel cell)
@@ -169,11 +111,6 @@ namespace BuildingSystem
             if (Model.TryGetBuilding(cell, out var building))
             {
                 Model.RemoveBuilding(cell);
-                
-                _viewsProvider.ReturnView(building.View);
-                building.SetView(null);
-                
-                Debug.Log($"Building {building} removed from {cell}");
             }
         }
 
@@ -185,14 +122,13 @@ namespace BuildingSystem
 
         private bool CanBeUpgraded(Building first, Building second)
         {
-            return first.Config == second.Config && first.Level == second.Level;
+            return string.Equals(first.Config.Name, second.Config.Name) &&
+                   first.Level.Value == second.Level.Value;
         }
         
         public bool CanMoveBuilding(CellModel location)
         {
             return Model.BuildingsMap.TryGetValue(location, out var building) && building.CanBeMoved;
         }
-        
-        
     }
 }

@@ -1,4 +1,6 @@
-using BuildingSystem;
+using CityBuilder.BuildingSystem;
+using CityBuilder.Dependencies;
+using CityBuilder.Grid;
 using UnityEngine;
 
 namespace InteractionStateMachine
@@ -9,16 +11,25 @@ namespace InteractionStateMachine
         private readonly BuildingManager _buildingManager;
         private readonly GridManager _gridManager;
 
-        public DraggingInteractionState(Dependencies dependencies) : base(dependencies)
+        public DraggingInteractionState(DependencyContainer dependencyContainer) : base(dependencyContainer)
         {
-            _draggingContentController = dependencies.Resolve<DraggingContentController>();
-            _buildingManager = dependencies.Resolve<BuildingManager>();
+            _draggingContentController = dependencyContainer.Resolve<DraggingContentController>();
+            _buildingManager = dependencyContainer.Resolve<BuildingManager>();
         }
 
         protected override void OnEnterState()
         {
             base.OnEnterState();
-            _draggingContentController.StartDraggingContent(InteractionModel.DraggedCell);
+            
+            //ToDo content manager
+            if (_buildingManager.TryGetBuilding(InteractionModel.DraggedCell, out var building))
+            {
+                _draggingContentController.StartDraggingContent(building);
+            }
+            else
+            {
+                ChangeState<EmptyInteractionState>();
+            }
         }
 
         protected override void OnExitState()
@@ -47,7 +58,7 @@ namespace InteractionStateMachine
             }
             else
             {
-                _draggingContentController.CancelDragging();
+                _draggingContentController.CancelDrag();
                 ChangeState<EmptyInteractionState>();
             }
         }

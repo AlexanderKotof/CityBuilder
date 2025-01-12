@@ -1,5 +1,9 @@
-using BuildingSystem;
+using System.Linq;
+using CityBuilder.BuildingSystem;
+using CityBuilder.Dependencies;
+using CityBuilder.Reactive;
 using TMPro;
+using UnityEngine;
 
 namespace ViewSystem.Implementation
 {
@@ -13,7 +17,13 @@ namespace ViewSystem.Implementation
         {
             base.Initialize(model);
             
-            model.Level.AddListener((value) => LevelIndicator.SetText(value.ToString()));
+            Subscribe(model.Level, (value) => LevelIndicator.SetText($"Lvl {value}"));
+            Subscribe(model.WorldPosition, SetWorldPosition);
+        }
+
+        private void SetWorldPosition(Vector3 position)
+        {
+            transform.position = position;
         }
     }
 }

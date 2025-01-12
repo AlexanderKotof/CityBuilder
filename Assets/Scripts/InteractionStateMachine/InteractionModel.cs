@@ -1,3 +1,5 @@
+using CityBuilder.Grid;
+
 namespace InteractionStateMachine
 {
     public class InteractionModel

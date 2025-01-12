@@ -1,27 +1,32 @@
 ﻿using System;
-using SityBuilder.Reactive;
+using System.Collections.Generic;
+using CityBuilder.Content;
+using CityBuilder.Grid;
+using InteractionStateMachine;
+using CityBuilder.Reactive;
+using Unity.VisualScripting;
 using UnityEngine;
 using ViewSystem;
 
-namespace BuildingSystem
+namespace CityBuilder.BuildingSystem
 {
-    public class EmptyContent : ICellContent
+    public interface ICellOccupier
     {
-        private static ICellContent Empty { get; } = new EmptyContent();
-        public GameObject View => default;
-        public bool CanBeMoved => false;
-        public bool IsEmpty => true;
+        IReadOnlyCollection<CellModel> OccupiedCells { get; }
     }
     
-    public class Building : ICellContent, IViewModel
+    public class Building : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel
     {
         public ReactiveProperty<int> Level { get; } = new();
         public ReactiveProperty<int> Rotation { get; } = new();
+        public ReactiveProperty<Vector3> WorldPosition { get; } = new();
         
         public BuildingConfig Config { get; }
         public GameObject View { get; private set; }
         // 0-4 
         public readonly Guid Id = Guid.NewGuid();
+        
+        public IReadOnlyCollection<CellModel> OccupiedCells { get; private set; }
         
         public bool CanBeMoved => true;
         public bool IsEmpty => false;
@@ -32,14 +37,14 @@ namespace BuildingSystem
             Config = config;
         }
 
+        public void SetOccupiedCells(IReadOnlyCollection<CellModel> occupiedCells)
+        {
+            OccupiedCells = occupiedCells;
+        }
+
         public void IncreaseLevel()
         {
             Level.Set(Level.Value + 1);
-        }
-
-        public void SetView(GameObject view)
-        {
-            View = view;
         }
     }
 }

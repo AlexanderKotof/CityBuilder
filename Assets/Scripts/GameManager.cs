@@ -1,43 +1,20 @@
 ﻿using System;
-using BuildingSystem;
+using CityBuilder.BuildingSystem;
+using CityBuilder.Content;
+using CityBuilder.Dependencies;
+using CityBuilder.Grid;
 using InteractionStateMachine;
 using PlayerInput;
-using SityBuilder.Reactive;
+using CityBuilder.Reactive;
 using UnityEngine;
 using ViewSystem;
 
 
-public class PlayerModel
+public class GameManager : MonoBehaviour, IUnityUpdate
 {
-    public readonly ReactiveProperty<InteractionMode> InteractionMode = new();
-
-    public readonly ReactiveProperty<ICellContent> DraggingContent = new();
-
-    public Action<GridPosition> SelectCell;
-}
-
-public enum InteractionMode
-{
-    Selection,
-    Dragging
-}
-
-
-public interface IUnityUpdate
-{
-    void SubscribeOnUpdate(Action action);
-
-    void UnsubscribeOnUpdate(Action action);
-}
-
-public class PlayerManager : MonoBehaviour, IUnityUpdate
-{
-    public PlayerModel PlayerModel { get; private set; } = new();
-
     public Camera RaycasterCamera;
     public LayerMask LayerMask;
     public Transform Cursor;
-    public Transform DraggingRoot;
 
     public BuildingsConfig BuildingsConfig;
 
@@ -63,7 +40,7 @@ public class PlayerManager : MonoBehaviour, IUnityUpdate
         Raycaster = new Raycaster(RaycasterCamera, LayerMask, _gridManager);
         CursorController = new CursorController(Cursor);
         BuildingManager = new(BuildingsConfig, _gridManager, _viewsProvider);
-        DraggingContentController = new DraggingContentController(DraggingRoot, _viewsProvider);
+        DraggingContentController = new DraggingContentController();
 
         InitializePlayerInteractionStateMachine();
     }
@@ -79,11 +56,10 @@ public class PlayerManager : MonoBehaviour, IUnityUpdate
 
     private void InitializePlayerInteractionStateMachine()
     {
-        var dependencies = new Dependencies();
+        var dependencies = new DependencyContainer();
         dependencies.Register(_playerInputManager);
         dependencies.Register(BuildingManager);
         dependencies.Register(Raycaster);
-        dependencies.Register(PlayerModel);
         dependencies.Register<IUnityUpdate>(this);
         dependencies.Register(new InteractionModel());
         dependencies.Register(CursorController);

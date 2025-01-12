@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BuildingSystem;
+using CityBuilder.BuildingSystem;
 using UnityEngine;
 
 namespace ViewSystem
@@ -74,6 +74,19 @@ namespace ViewSystem
         {
             var viewGo = ProvideView(prefab, parent);
             var view = viewGo.GetComponent<ViewWithModel<TViewModel>>();
+
+            view.Initialize(viewModel);
+
+            return view;
+        }
+        
+        public TView ProvideViewWithModel<TViewModel, TView>(GameObject prefab, TViewModel viewModel,
+            Transform parent = null)
+            where TViewModel : IViewModel
+            where TView : ViewWithModel<TViewModel>
+        {
+            var viewGo = ProvideView(prefab, parent);
+            var view = viewGo.GetComponent<TView>();
 
             view.Initialize(viewModel);
 

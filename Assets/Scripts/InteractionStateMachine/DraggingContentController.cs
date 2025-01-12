@@ -1,51 +1,47 @@
+using CityBuilder.BuildingSystem;
+using CityBuilder.Reactive;
 using UnityEngine;
 using ViewSystem;
 
 namespace InteractionStateMachine
 {
+    public interface IDraggableViewModel : IViewModel
+    {
+        ReactiveProperty<Vector3> WorldPosition { get; }
+    }
+    
     public class DraggingContentController
     {
-        private readonly Transform _rootTransform;
-        private readonly ViewsProvider _viewsProvider;
+        private readonly Vector3 _draggingOffset = new Vector3(0, 1.2f, 0);
+        
+        private IDraggableViewModel _draggable;
+        
+        private Vector3 _startDragPosition;
 
-        private readonly Vector3 _draggingOffset = new Vector3(0, 3, 0);
-
-        private GameObject _spawnedView;
-        private Transform _draggingTransform;
-        private GameObject _hidenView;
-
-        public DraggingContentController(Transform rootTransform, ViewsProvider viewsProvider)
+        public void StartDraggingContent(IDraggableViewModel draggableViewModel)
         {
-            _rootTransform = rootTransform;
-            _viewsProvider = viewsProvider;
-        }
-
-        public void StartDraggingContent(CellModel cell)
-        {
-            _spawnedView = _viewsProvider.ProvideView(cell.Content.Value.View, _rootTransform);
-            _spawnedView.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-
-            _hidenView = cell.Content.Value.View;
-            _hidenView.SetActive(false);
+            _draggable = draggableViewModel;
+            _startDragPosition = draggableViewModel.WorldPosition;
         }
 
         public void EndDragging()
         {
-            if (_spawnedView == null)
-            {
-                return;
-            }
-            _viewsProvider.ReturnView(_spawnedView);
-        }
-
-        public void CancelDragging()
-        {
-            _hidenView.SetActive(true);
+            _draggable = null;
         }
 
         public void UpdatePosition(Vector3 gridPosition)
         {
-            _rootTransform.position = gridPosition + _draggingOffset;
+            _draggable.WorldPosition.Set(gridPosition + _draggingOffset);
+        }
+
+        public void CancelDrag()
+        {
+            if (_draggable == null)
+            {
+                return;
+            }
+            _draggable.WorldPosition.Set(_startDragPosition);
+            _draggable = null;
         }
     }
 }

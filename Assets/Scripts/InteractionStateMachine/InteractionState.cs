@@ -1,3 +1,5 @@
+using CityBuilder.Dependencies;
+using CityBuilder.Grid;
 using PlayerInput;
 using StateMachine;
 using UnityEngine;
@@ -13,13 +15,13 @@ namespace InteractionStateMachine
         protected InteractionModel InteractionModel { get; }
         protected Raycaster Raycaster => _raycastController;
 
-        protected InteractionState(Dependencies dependencies)
+        protected InteractionState(DependencyContainer dependencyContainer)
         {
-            _playerInput = dependencies.Resolve<PlayerInputManager>();
-            _cursorController = dependencies.Resolve<CursorController>();
-            _raycastController = dependencies.Resolve<Raycaster>();
+            _playerInput = dependencyContainer.Resolve<PlayerInputManager>();
+            _cursorController = dependencyContainer.Resolve<CursorController>();
+            _raycastController = dependencyContainer.Resolve<Raycaster>();
 
-            InteractionModel = dependencies.Resolve<InteractionModel>();
+            InteractionModel = dependencyContainer.Resolve<InteractionModel>();
         }
 
         public void Update()

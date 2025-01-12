@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using CityBuilder.Grid;
 using UnityEngine;
 using ViewSystem;
 
-namespace BuildingSystem
+namespace CityBuilder.BuildingSystem
 {
     public class BuildingFactory
     {
