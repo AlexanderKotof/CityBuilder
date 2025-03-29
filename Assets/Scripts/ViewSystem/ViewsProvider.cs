@@ -4,23 +4,12 @@ using UnityEngine;
 
 namespace ViewSystem
 {
-    public interface IView
-    {
-        string AssetId { get; }
-    }
-
-    public abstract class ViewBase : MonoBehaviour, IView
-    {
-        public abstract string AssetId { get; }
-    }
-
-
     public class ViewsProvider
     {
         private readonly Dictionary<string, ViewPool> _objectPools = new();
 
         private readonly Dictionary<string, GameObjectPool> _gameObjectPools = new();
-
+        
         public GameObject ProvideView(GameObject prefab, Transform parent = null)
         {
             string assetKey = GetAssetKey(prefab);
@@ -47,7 +36,7 @@ namespace ViewSystem
         {
             return gameObject.name;
         }
-
+/*
         public T ProvideView<T>(T prefab, Transform parent = null) where T : ViewBase
         {
             if (_objectPools.TryGetValue(prefab.AssetId, out var pool))
@@ -68,7 +57,7 @@ namespace ViewSystem
                 pool.Return(gameObject);
             }
         }
-
+*/
         public ViewWithModel<TViewModel> ProvideViewWithModel<TViewModel>(GameObject prefab, TViewModel viewModel,
             Transform parent = null) where TViewModel : IViewModel
         {
@@ -97,6 +86,27 @@ namespace ViewSystem
         {
             view.Deinit();
             ReturnView(view.gameObject);
+        }
+    }
+
+    public class WindowsProvider
+    {
+        private readonly ViewsProvider _viewsProvider;
+        private readonly WindowsViewsRegistrator _windowsViewsRegistrator;
+
+        public WindowsProvider(List<GameObject> windowsPrefabs, ViewsProvider viewsProvider)
+        {
+            _viewsProvider = viewsProvider;
+            _windowsViewsRegistrator = new WindowsViewsRegistrator(windowsPrefabs);
+        }
+
+        public WindowBase<TViewModel> ProvideWindowView<TViewModel>(TViewModel viewModel) where TViewModel : IViewModel
+        {
+            var prefab = _windowsViewsRegistrator.GetWindow<TViewModel>();
+
+            var view = _viewsProvider.ProvideViewWithModel<TViewModel>(prefab.gameObject, viewModel);
+            
+            return view as WindowBase<TViewModel>;
         }
     }
 }

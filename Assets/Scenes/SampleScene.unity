@@ -236,6 +236,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 171487815}
+  - component: {fileID: 171487816}
   m_Layer: 0
   m_Name: Dragging
   m_TagString: Untagged
@@ -258,6 +259,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &171487816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171487814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e5db4456ec3d7f43bb6099704a99f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Component: {fileID: 171487816}
+  ComponentsCollection:
+    _components: []
+  color1: {r: 0, g: 0, b: 0, a: 0}
+  color2: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &321903628
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,8 +760,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32
   Cursor: {fileID: 1579253027}
-  DraggingRoot: {fileID: 171487815}
   BuildingsConfig: {fileID: 11400000, guid: 7acc723c0e54da34585af9a3c800f191, type: 2}
+  windowsPrefabs:
+  - {fileID: 3673759022689365386, guid: a20a5439394ee784a80969258d5144ad, type: 3}
 --- !u!1 &1090394298
 GameObject:
   m_ObjectHideFlags: 0

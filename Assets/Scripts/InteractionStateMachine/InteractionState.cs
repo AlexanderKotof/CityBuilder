@@ -39,7 +39,7 @@ namespace InteractionStateMachine
         {
             _playerInput.OnMouseClick += OnMouseClick;
             _playerInput.OnMouseDragStarted += OnMouseDragStarted;
-            _playerInput.OnMouseDraging += OnMouseDraging;
+            _playerInput.OnMouseDraging += OnMouseDragging;
             _playerInput.OnMouseDragEnded += OnMouseDragEnded;
             _playerInput.OnMouseRightClick += OnMouseRightClick;
         }
@@ -48,7 +48,7 @@ namespace InteractionStateMachine
         {
             _playerInput.OnMouseClick -= OnMouseClick;
             _playerInput.OnMouseDragStarted -= OnMouseDragStarted;
-            _playerInput.OnMouseDraging -= OnMouseDraging;
+            _playerInput.OnMouseDraging -= OnMouseDragging;
             _playerInput.OnMouseDragEnded -= OnMouseDragEnded;
             _playerInput.OnMouseRightClick -= OnMouseRightClick;
         }
@@ -97,7 +97,7 @@ namespace InteractionStateMachine
             ProcessDragEnded(cell);
         }
 
-        private void OnMouseDraging(Vector3 vector)
+        private void OnMouseDragging(Vector3 vector)
         {
             ProcessDragging(vector);
         }

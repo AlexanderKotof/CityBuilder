@@ -1,3 +1,4 @@
+using System;
 using CityBuilder.Content;
 using JetBrains.Annotations;
 using CityBuilder.Reactive;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 namespace CityBuilder.Grid
 {
-    public class CellModel
+    public class CellModel : IEquatable<CellModel>
     {
         public ReactiveProperty<ICellContent> Content { get; } = new ReactiveProperty<ICellContent>();
         public GridPosition Position { get; }
@@ -17,6 +18,22 @@ namespace CityBuilder.Grid
         {
             Position = gridPosition;
             GridModel = gridModel;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is CellModel cellModel && Equals(cellModel);
+        }
+
+        public override int GetHashCode()
+        {
+            return Position.X * 112 + Position.Y * GridModel.GetHashCode();
+        }
+
+        public bool Equals(CellModel other)
+        {
+            return other != null && other.GridModel == GridModel &&
+                   other.Position.Equals(Position);
         }
 
         public override string ToString()

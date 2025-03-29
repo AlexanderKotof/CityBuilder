@@ -9,7 +9,7 @@ namespace ViewSystem.Implementation
 {
     public class BuildingView : ViewWithModel<Building>
     {
-        public override string AssetId { get; } = "BuildingView";
+        //public override string AssetId { get; } = "BuildingView";
 
         public TextMeshProUGUI LevelIndicator;
 

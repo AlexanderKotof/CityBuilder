@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CityBuilder.Grid
 {
-    public class GridModel
+    public class GridModel : IEquatable<GridModel>
     {
         private readonly Dictionary<GridPosition, CellModel> _grid = new();
         public Transform Transform { get; }
@@ -65,6 +65,11 @@ namespace CityBuilder.Grid
                 Mathf.FloorToInt(position.y));
 
             return Transform.TransformPoint(hitPosition2d);
+        }
+
+        public bool Equals(GridModel other)
+        {
+            return other != null && _id.Equals(other._id);
         }
     }
 }

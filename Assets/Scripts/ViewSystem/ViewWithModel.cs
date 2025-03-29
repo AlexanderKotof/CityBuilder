@@ -1,9 +1,33 @@
 using System;
 using System.Collections.Generic;
 using CityBuilder.Reactive;
+using UnityEditor.IMGUI.Controls;
+using UnityEngine;
+using ViewSystem.Implementation;
 
 namespace ViewSystem
 {
+    public interface IView
+    {
+
+    }
+
+    public abstract class ViewBase : MonoBehaviour, IView
+    {
+        
+    }
+    
+    public interface IWindow
+    {
+        string AssetId { get; }
+    }
+
+    public abstract class WindowBase<TViewModel> : ViewWithModel<TViewModel>, IWindow
+        where TViewModel : IViewModel
+    {
+        public string AssetId => typeof(TViewModel).Name;
+    }
+    
     public abstract class ViewWithModel<TModel> : ViewBase
         where TModel : IViewModel
     {

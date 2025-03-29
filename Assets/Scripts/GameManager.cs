@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Content;
 using CityBuilder.Dependencies;
@@ -17,6 +18,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     public Transform Cursor;
 
     public BuildingsConfig BuildingsConfig;
+    
+    public List<GameObject> windowsPrefabs;
 
     private PlayerInputManager _playerInputManager;
     private GridManager _gridManager;
@@ -43,6 +46,17 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         DraggingContentController = new DraggingContentController();
 
         InitializePlayerInteractionStateMachine();
+
+        Test();
+    }
+
+    private void Test()
+    {
+        var provider = new WindowsProvider(windowsPrefabs, _viewsProvider);
+
+        provider.ProvideWindowView(new Building(1, null));
+        
+        provider.ProvideWindowView(new Building(1, null));
     }
 
     private void RegisterGrids()
