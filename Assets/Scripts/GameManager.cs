@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
-using CityBuilder.Content;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using InteractionStateMachine;
 using PlayerInput;
-using CityBuilder.Reactive;
+using ResourcesSystem;
 using UnityEngine;
 using ViewSystem;
 
@@ -16,8 +15,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     public Camera RaycasterCamera;
     public LayerMask LayerMask;
     public Transform Cursor;
-
-    public BuildingsConfig BuildingsConfig;
+    
+    public GameConfigurationSo GameConfiguration;
     
     public List<GameObject> windowsPrefabs;
 
@@ -28,6 +27,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     public CursorController CursorController { get; private set; }
     public Raycaster Raycaster { get; private set; }
     public BuildingManager BuildingManager { get; private set; }
+    public ResourcesManager ResourcesManager { get; private set; }
     public DraggingContentController DraggingContentController { get; private set; }
     private PlayerInteractionStateMachine? PlayerInteractionStateMachine;
 
@@ -42,7 +42,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
 
         Raycaster = new Raycaster(RaycasterCamera, LayerMask, _gridManager);
         CursorController = new CursorController(Cursor);
-        BuildingManager = new(BuildingsConfig, _gridManager, _viewsProvider);
+        ResourcesManager = new ResourcesManager(GameConfiguration.ResourcesConfig);
+        BuildingManager = new(GameConfiguration.BuildingsConfig, _gridManager, _viewsProvider);
         DraggingContentController = new DraggingContentController();
 
         InitializePlayerInteractionStateMachine();
@@ -110,12 +111,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
             OnClickCell(cell);
         }
 
-        bool showCursor = Raycaster.TryGetCursorPositionFromScreenPoint(Input.mousePosition, out var cursorPosition);
-        CursorController.SetActive(showCursor);
-        if (showCursor)
-        {
-            CursorController.SetPosition(cursorPosition.Value);
-        }*/
+       */
     }
     
     private Action? UpdateHandler;
@@ -129,26 +125,5 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     public void UnsubscribeOnUpdate(Action action)
     {
         UpdateHandler -= action;
-    }
-}
-
-
-public class CursorController
-{
-    private readonly Transform cursor;
-
-    public CursorController(Transform cursor)
-    {
-        this.cursor = cursor;
-    }
-
-    public void SetPosition(Vector3 position)
-    {
-        cursor.position = position;
-    }
-
-    public void SetActive(bool active)
-    {
-        cursor.gameObject.SetActive(active);
     }
 }

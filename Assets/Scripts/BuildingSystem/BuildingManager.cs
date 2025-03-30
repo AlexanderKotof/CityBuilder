@@ -10,7 +10,7 @@ namespace CityBuilder.BuildingSystem
     public class BuildingManager
     {
         public BuildingFactory BuildingFactory { get; }
-        public BuildingsConfig Config { get; }
+        public BuildingsConfigSo Config { get; }
         public BuildingsModel Model { get; } = new();
 
         private readonly BuildingViewCollection _buildingViewsController;
@@ -18,7 +18,7 @@ namespace CityBuilder.BuildingSystem
         private readonly GridManager _gridManager;
         private readonly ViewsProvider _viewsProvider;
         
-        public BuildingManager(BuildingsConfig config, GridManager gridManager, ViewsProvider viewsProvider)
+        public BuildingManager(BuildingsConfigSo config, GridManager gridManager, ViewsProvider viewsProvider)
         {
             Config = config;
             _gridManager = gridManager;

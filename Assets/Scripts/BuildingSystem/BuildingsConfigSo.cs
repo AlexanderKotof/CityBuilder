@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+using ResourcesSystem;
 using UnityEngine;
-using ViewSystem.Implementation;
 
 namespace CityBuilder.BuildingSystem
 {
     [CreateAssetMenu(fileName = "BuildingsConfig", menuName = "BuildingsConfig")]
-    public class BuildingsConfig : ScriptableObject
+    public class BuildingsConfigSo : ScriptableObject
     {
         public BuildingConfig[] Configs;
 
@@ -23,6 +23,7 @@ namespace CityBuilder.BuildingSystem
         public GameObject Prefab;
         public Vector2Int Size = Vector2Int.one;
         
-        //ToDo building costs, etc.
+        public ResourceConfig[] RequiredResources;
+        
     }
 }

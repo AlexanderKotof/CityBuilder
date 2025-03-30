@@ -17,6 +17,7 @@ namespace CityBuilder.BuildingSystem
     
     public class Building : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel
     {
+        public string BuildingName => Config.Name;
         public ReactiveProperty<int> Level { get; } = new();
         public ReactiveProperty<int> Rotation { get; } = new();
         public ReactiveProperty<Vector3> WorldPosition { get; } = new();

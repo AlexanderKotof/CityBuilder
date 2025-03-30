@@ -32,7 +32,12 @@ namespace InteractionStateMachine
 
         protected virtual void OnUpdate()
         {
-            
+            bool showCursor = Raycaster.TryGetCursorPositionFromScreenPoint(Input.mousePosition, out var cursorPosition);
+            _cursorController.SetActive(showCursor);
+            if (showCursor)
+            {
+                _cursorController.SetPosition(cursorPosition.Value);
+            }
         }
 
         protected override void OnEnterState()

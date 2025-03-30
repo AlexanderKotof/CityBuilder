@@ -12,6 +12,7 @@ namespace ViewSystem.Implementation
         //public override string AssetId { get; } = "BuildingView";
 
         public TextMeshProUGUI LevelIndicator;
+        public TextMeshProUGUI NameText;
 
         public override void Initialize(Building model)
         {
@@ -19,6 +20,7 @@ namespace ViewSystem.Implementation
             
             Subscribe(model.Level, (value) => LevelIndicator.SetText($"Lvl {value}"));
             Subscribe(model.WorldPosition, SetWorldPosition);
+            NameText.SetText(model.BuildingName);
         }
 
         private void SetWorldPosition(Vector3 position)
