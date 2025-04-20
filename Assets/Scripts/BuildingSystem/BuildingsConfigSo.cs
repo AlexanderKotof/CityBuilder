@@ -15,6 +15,13 @@ namespace CityBuilder.BuildingSystem
             return Configs.First(config => config.Name == name);
         }
     }
+
+    public enum BuildingType
+    {
+        Storage,
+        Production,
+        Infantry,
+    }
     
     [Serializable]
     public class BuildingConfig
@@ -25,5 +32,6 @@ namespace CityBuilder.BuildingSystem
         
         public ResourceConfig[] RequiredResources;
         
+        public BuildingFunction[] BuildingFunctions;
     }
 }

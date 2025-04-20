@@ -8,6 +8,8 @@ namespace CityBuilder.Dependencies
         private readonly Dictionary<Type, object> _container = new Dictionary<Type, object>();
         
         public void Register<T>(T value) => _container.Add(typeof(T), value);
+        
+        public void Register(Type type, object value) => _container.Add(type, value);
 
         public T Resolve<T>()
         {

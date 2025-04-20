@@ -10,6 +10,11 @@ namespace ResourcesSystem
         public ResourceType Type { get; private set; }
         [field: SerializeField]
         public int Amount { get; private set; }
+
+        public override string ToString()
+        {
+            return $"{Type.ToString()}x{Amount.ToString()}";
+        }
     }
 
     public enum ResourceType

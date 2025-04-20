@@ -641,7 +641,6 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
-  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -725,26 +724,6 @@ Transform:
   - {fileID: 321903632}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 52.21, y: 51.7, z: 5.67}
---- !u!114 &963194229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 892093c0923ad2f43ad9af82a268fdfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RaycasterCamera: {fileID: 963194227}
-  LayerMask:
-    serializedVersion: 2
-    m_Bits: 32
-  Cursor: {fileID: 1579253027}
-  GameConfiguration: {fileID: 11400000, guid: ae60e8ef18512484c949f17215c29f35, type: 2}
-  windowsPrefabs:
-  - {fileID: 3673759022689365386, guid: a20a5439394ee784a80969258d5144ad, type: 3}
 --- !u!1 &1090394298
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,6 +885,58 @@ Transform:
   - {fileID: 398031671}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2084401945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2084401947}
+  - component: {fileID: 2084401946}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2084401946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084401945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892093c0923ad2f43ad9af82a268fdfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RaycasterCamera: {fileID: 963194227}
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 32
+  Cursor: {fileID: 1579253027}
+  GameConfiguration: {fileID: 11400000, guid: ae60e8ef18512484c949f17215c29f35, type: 2}
+  windowsPrefabs:
+  - {fileID: 3673759022689365386, guid: a20a5439394ee784a80969258d5144ad, type: 3}
+--- !u!4 &2084401947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084401945}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.34876, y: 0.8364892, z: 4.7384386}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -916,3 +947,4 @@ SceneRoots:
   - {fileID: 1818661161}
   - {fileID: 171487815}
   - {fileID: 437967507}
+  - {fileID: 2084401947}
