@@ -2,13 +2,13 @@ namespace ResourcesSystem
 {
     public class ResourcesManager
     {
-        public ResourcesModel ResourcesModel { get; } = new();
+        public PlayerResourcesModel PlayerResources { get; } = new();
 
         public ResourcesManager(ResourcesConfigurationSO resourcesConfiguration)
         {
             foreach (var resourceConfig in resourcesConfiguration.Resources)
             {
-                ResourcesModel.AddResource(new Resource(resourceConfig));
+                PlayerResources.AddResource(new ResourceModel(resourceConfig));
             }
         }
     }

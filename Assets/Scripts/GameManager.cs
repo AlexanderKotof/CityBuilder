@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     public DraggingContentController DraggingContentController { get; private set; }
     private PlayerInteractionStateMachine? PlayerInteractionStateMachine;
 
+    private InteractionModel _interactionModel = new InteractionModel();
+
     private void Awake()
     {
         _playerInputManager = new PlayerInputManager();
@@ -79,7 +81,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         dependencies.Register(BuildingManager);
         dependencies.Register(Raycaster);
         dependencies.Register<IUnityUpdate>(this);
-        dependencies.Register(new InteractionModel());
+        dependencies.Register(_interactionModel);
         dependencies.Register(CursorController);
         dependencies.Register(DraggingContentController);
 
@@ -97,11 +99,13 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         var dependencies = new DependencyContainer();
         dependencies.Register(_playerInputManager);
         dependencies.Register(BuildingManager);
+        dependencies.Register(BuildingManager.Model);
         dependencies.Register(Raycaster);
         dependencies.Register<IUnityUpdate>(this);
-        dependencies.Register(new InteractionModel());
+        dependencies.Register(_interactionModel);
         dependencies.Register(CursorController);
         dependencies.Register(DraggingContentController);
+        dependencies.Register(ResourcesManager.PlayerResources);
         
         _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
         _gameSystemsInitialization.Init();
@@ -148,6 +152,17 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     {
         UpdateHandler -= action;
     }
+
+    private void OnGUI()
+    {
+        int MaxIndex = 5;
+        for (int i = 0; i < MaxIndex; i++)
+        {
+            var resourceType = (ResourceType)i;
+            var amount = ResourcesManager.PlayerResources.GetResourceAmount(resourceType);
+            GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}: {amount}"));
+        }
+    }
 }
 
 public class GameSystemsInitialization : IGameSystem
@@ -160,7 +175,7 @@ public class GameSystemsInitialization : IGameSystem
     public HashSet<Type> GameSystemTypes = new()
     {
         typeof(GameTimeSystem.GameTimeSystem),
-        typeof(BuildingsProductionGameSystem),
+        typeof(ProducingFeature.ProducingFeature),
         
     };
 
@@ -252,42 +267,36 @@ public interface IGameSystem
     void Update();
 }
 
-public class BuildingsProductionGameSystem : IGameSystem
+public abstract class GameSystemBase : IGameSystem
 {
-    private readonly BuildingManager _buildingsManager;
-    private readonly GameTimeSystem.GameTimeSystem _gameTimeSystem;
+    protected IDependencyContainer Container { get; }
 
-    public BuildingsProductionGameSystem(IDependencyContainer dependencies)
+    protected GameSystemBase(IDependencyContainer container)
     {
-        _buildingsManager = dependencies.Resolve<BuildingManager>();
-        _gameTimeSystem = dependencies.Resolve<GameTimeSystem.GameTimeSystem>();
+        Container = container;
     }
     
-    public void Init()
-    {
-        _gameTimeSystem.NewDayStarted += OnNewDayStarted;
-    }
-    
-    public void Deinit()
-    {
-        _gameTimeSystem.NewDayStarted -= OnNewDayStarted;
-    }
-    
-    private void OnNewDayStarted(int day)
-    {
-        foreach (var building in _buildingsManager.Model.Buildings)
-        {
-            var produceFunctions =
-                building.Config.BuildingFunctions
-                    .Where(function => function is ResourceProductionBuildingFunction)
-                    .Cast<ResourceProductionBuildingFunction>();
+    public abstract void Init();
+    public abstract void Deinit();
+    public abstract void Update();
+}
 
-            foreach (var function in produceFunctions)
-            {
-                Debug.Log($"Building {building.BuildingName + building.Level} produces {function.ProduceResourcesByTick} at day {day}");
-            }
-        }
+public interface ICoreModelsProvider
+{
+    public T GetModel<T>() where T : class;
+    public T RegisterModel<T>(T instance) where T : class;
+}
+
+public class CoreModelsProvider : ICoreModelsProvider
+{
+    private readonly Dictionary<Type, object> _models = new();
+    public T GetModel<T>() where T : class
+    {
+        return (T)_models.GetValueOrDefault(typeof(T));
     }
-    
-    public void Update() { }
+
+    public T RegisterModel<T>(T instance) where T : class
+    {
+        return _models.TryAdd(instance.GetType(), instance) ? instance : GetModel<T>();
+    }
 }

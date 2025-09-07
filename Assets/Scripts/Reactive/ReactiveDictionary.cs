@@ -83,5 +83,10 @@ namespace CityBuilder.Reactive
         {
             return _innerDictionary.TryGetValue(key, out value);
         }
+
+        public void Clear()
+        {
+            _innerDictionary.Clear();
+        }
     }
 }

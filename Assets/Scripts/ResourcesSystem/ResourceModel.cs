@@ -3,14 +3,14 @@ using CityBuilder.Reactive;
 
 namespace ResourcesSystem
 {
-    public class Resource : IEquatable<Resource>
+    public class ResourceModel : IEquatable<ResourceModel>
     {
         private readonly ResourceConfig Config;
         public ReactiveProperty<int> Amount { get; } = new();
         
         public ResourceType Id => Config.Type;
 
-        public Resource(ResourceConfig config)
+        public ResourceModel(ResourceConfig config)
         {
             Config = config;
             Amount.Set(config.Amount);
@@ -37,7 +37,7 @@ namespace ResourcesSystem
             return Amount.Value >= amount;
         }
 
-        public bool Equals(Resource other)
+        public bool Equals(ResourceModel other)
         {
             return other is not null && Config.Type.Equals(other.Config.Type);
         }
