@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using ResourcesSystem;
@@ -36,23 +35,5 @@ namespace CityBuilder.BuildingSystem
         public ResourceConfig[] RequiredResources;
 
         public BuildingFunction[] BuildingFunctions;
-    }
-
-    public static class BuildingConfigExtensions
-    {
-        public static bool TryGetProducingResourcesFunction(this BuildingConfig bc, [NotNullWhen(true)] out ResourceProductionBuildingFunction production)
-        {
-            production = null;
-            foreach (var function in bc.BuildingFunctions)
-            {
-                if (function is ResourceProductionBuildingFunction buildingFunction)
-                {
-                    production = buildingFunction;
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 }

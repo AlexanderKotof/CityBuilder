@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
+using GameSystems;
 using InteractionStateMachine;
 using PlayerInput;
 using ResourcesSystem;
@@ -163,122 +163,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
             GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}: {amount}"));
         }
     }
-}
-
-public class GameSystemsInitialization : IGameSystem
-{
-    private readonly IDependencyContainer _container;
-    
-    private readonly Type[] _dependencyContainerType = new [] { typeof(IDependencyContainer) };
-    private readonly object[] _constructorParameters;
-
-    public HashSet<Type> GameSystemTypes = new()
-    {
-        typeof(GameTimeSystem.GameTimeSystem),
-        typeof(ProducingFeature.ResourcesProductionFeature),
-        
-    };
-
-    public readonly List<IGameSystem> _gameSystems = new();
-
-    public GameSystemsInitialization(IDependencyContainer container)
-    {
-        _container = container;
-        _constructorParameters  = new [] { _container };
-    }
-
-    public void Init()
-    {
-        CreateGameSystems();
-
-        InitializeGameSystems();
-    }
-
-    public void Deinit()
-    {
-        foreach (var gameSystem in _gameSystems)
-        {
-            gameSystem.Deinit();
-        }
-    }
-
-    public void Update()
-    {
-        foreach (var gameSystem in _gameSystems)
-        {
-            gameSystem.Update();
-        }
-    }
-
-    private void CreateGameSystems()
-    {
-        Debug.Log("Begin initializing Game Systems");
-
-        foreach (var systemType in GameSystemTypes)
-        {
-            object? system;
-            
-            ConstructorInfo constructorWithDependencies = systemType.GetConstructor(_dependencyContainerType);
-
-            if (constructorWithDependencies != null)
-            { 
-                system = constructorWithDependencies.Invoke(_constructorParameters);
-                Debug.Log($"System of type {systemType.Name} has constructor with dependencies");
-            }
-            else
-            {
-                ConstructorInfo defaultConstructor = systemType.GetConstructor(Type.EmptyTypes);
-                system = defaultConstructor?.Invoke(null);
-                Debug.Log($"System of type {systemType.Name} has constructor without dependencies");
-            }
-            
-            if (system == null)
-            {
-                Debug.LogError($"System of type {systemType.Name} does not have a default constructors.");
-                continue;
-            }
-            
-            if (system is not IGameSystem gameSystem)
-            {
-                Debug.LogError($"System of type {systemType.Name} does not implement IGameSystem.");
-                continue;
-            }
-            
-            Debug.Log($"Successfully created game system {systemType.Name}.");
-            _gameSystems.Add(gameSystem);
-            _container.Register(systemType, gameSystem);
-        }
-    }
-    
-    private void InitializeGameSystems()
-    {
-        foreach (var gameSystem in _gameSystems)
-        {
-            gameSystem.Init();
-        }
-    }
-
-}
-
-public interface IGameSystem
-{
-    void Init();
-    void Deinit();
-    void Update();
-}
-
-public abstract class GameSystemBase : IGameSystem
-{
-    protected IDependencyContainer Container { get; }
-
-    protected GameSystemBase(IDependencyContainer container)
-    {
-        Container = container;
-    }
-    
-    public abstract void Init();
-    public abstract void Deinit();
-    public abstract void Update();
 }
 
 public interface ICoreModelsProvider

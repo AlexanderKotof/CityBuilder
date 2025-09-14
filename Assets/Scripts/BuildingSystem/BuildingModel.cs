@@ -25,7 +25,7 @@ namespace CityBuilder.BuildingSystem
         public BuildingConfig Config { get; }
         public GameObject View { get; private set; }
         // 0-4 
-        public readonly Guid Id = Guid.NewGuid();
+        public readonly Guid RuntimeId = Guid.NewGuid();
         
         public IReadOnlyCollection<CellModel> OccupiedCells { get; private set; }
         

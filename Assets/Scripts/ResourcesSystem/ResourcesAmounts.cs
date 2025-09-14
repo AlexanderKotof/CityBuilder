@@ -14,12 +14,15 @@ namespace ResourcesSystem
     public class ResourcesStorageModel : ResourcesAmounts
     {
         public int Capacity { get; private set; } = 0;
-        
+
+        public int DefaultCapacity { get; }
+
         public int Fill { get; private set; } = 0;
 
         public ResourcesStorageModel(int capacity)
         {
             Capacity = capacity;
+            DefaultCapacity = capacity;
         }
 
         public override void AddResource(ResourceModel resource)
