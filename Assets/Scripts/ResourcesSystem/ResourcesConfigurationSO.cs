@@ -6,5 +6,7 @@ namespace ResourcesSystem
     public class ResourcesConfigurationSO : ScriptableObject
     {
         public ResourceConfig[] Resources;
+
+        public int DefaultCapacity = 1000;
     }
 }

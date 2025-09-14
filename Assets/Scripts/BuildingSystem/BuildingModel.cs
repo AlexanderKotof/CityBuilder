@@ -15,7 +15,7 @@ namespace CityBuilder.BuildingSystem
         IReadOnlyCollection<CellModel> OccupiedCells { get; }
     }
     
-    public class Building : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel
+    public class BuildingModel : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel
     {
         public string BuildingName => Config.Name;
         public ReactiveProperty<int> Level { get; } = new();
@@ -32,7 +32,7 @@ namespace CityBuilder.BuildingSystem
         public bool CanBeMoved => true;
         public bool IsEmpty => false;
         
-        public Building(int level, BuildingConfig config)
+        public BuildingModel(int level, BuildingConfig config)
         {
             Level.Set(level);
             Config = config;

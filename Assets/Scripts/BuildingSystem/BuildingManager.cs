@@ -74,7 +74,7 @@ namespace CityBuilder.BuildingSystem
             return false;
         }
         
-        public bool TryGetBuilding(CellModel location, out Building building)
+        public bool TryGetBuilding(CellModel location, out BuildingModel building)
         {
             return Model.BuildingsMap.TryGetValue(location, out building);
         }
@@ -101,7 +101,7 @@ namespace CityBuilder.BuildingSystem
             return true;
         }
 
-        private void SetBuilding(CellModel cellModel, Building building)
+        private void SetBuilding(CellModel cellModel, BuildingModel building)
         {
             Model.AddBuilding(building, cellModel);
         }
@@ -114,13 +114,13 @@ namespace CityBuilder.BuildingSystem
             }
         }
 
-        public bool CanPlaceBuilding(CellModel location, Building newBuilding)
+        public bool CanPlaceBuilding(CellModel location, BuildingModel newBuilding)
         {
             return !Model.BuildingsMap.TryGetValue(location, out var building) ||
                    CanBeUpgraded(building, newBuilding);
         }
 
-        private bool CanBeUpgraded(Building first, Building second)
+        private bool CanBeUpgraded(BuildingModel first, BuildingModel second)
         {
             return string.Equals(first.Config.Name, second.Config.Name) &&
                    first.Level.Value == second.Level.Value;

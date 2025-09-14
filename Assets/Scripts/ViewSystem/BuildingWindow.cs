@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace ViewSystem
 {
-    public class BuildingWindow : WindowBase<Building>
+    public class BuildingWindow : WindowBase<BuildingModel>
     {
-        public override void Initialize(Building model)
+        public override void Initialize(BuildingModel model)
         {
             base.Initialize(model);
             

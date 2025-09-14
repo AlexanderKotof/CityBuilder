@@ -7,14 +7,14 @@ using UnityEngine;
 
 namespace ViewSystem.Implementation
 {
-    public class BuildingView : ViewWithModel<Building>
+    public class BuildingView : ViewWithModel<BuildingModel>
     {
         //public override string AssetId { get; } = "BuildingView";
 
         public TextMeshProUGUI LevelIndicator;
         public TextMeshProUGUI NameText;
 
-        public override void Initialize(Building model)
+        public override void Initialize(BuildingModel model)
         {
             base.Initialize(model);
             

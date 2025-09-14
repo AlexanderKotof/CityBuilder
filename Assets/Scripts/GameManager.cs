@@ -60,9 +60,9 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     {
         var provider = new WindowsProvider(windowsPrefabs, _viewsProvider);
 
-        provider.ProvideWindowView(new Building(1, null));
+        provider.ProvideWindowView(new BuildingModel(1, null));
         
-        provider.ProvideWindowView(new Building(1, null));
+        provider.ProvideWindowView(new BuildingModel(1, null));
     }
 
     private void RegisterGrids()
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         dependencies.Register(_interactionModel);
         dependencies.Register(CursorController);
         dependencies.Register(DraggingContentController);
-        dependencies.Register(ResourcesManager.PlayerResources);
+        dependencies.Register(ResourcesManager.PlayerResourcesStorage);
         
         _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
         _gameSystemsInitialization.Init();
@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         for (int i = 0; i < MaxIndex; i++)
         {
             var resourceType = (ResourceType)i;
-            var amount = ResourcesManager.PlayerResources.GetResourceAmount(resourceType);
+            var amount = ResourcesManager.PlayerResourcesStorage.GetResourceAmount(resourceType);
             GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}: {amount}"));
         }
     }
@@ -175,7 +175,7 @@ public class GameSystemsInitialization : IGameSystem
     public HashSet<Type> GameSystemTypes = new()
     {
         typeof(GameTimeSystem.GameTimeSystem),
-        typeof(ProducingFeature.ProducingFeature),
+        typeof(ProducingFeature.ResourcesProductionFeature),
         
     };
 

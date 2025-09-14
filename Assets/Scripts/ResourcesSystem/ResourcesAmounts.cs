@@ -4,34 +4,76 @@ using CityBuilder.Reactive;
 
 namespace ResourcesSystem
 {
-    public class PlayerResourcesModel : ResourcesModel
+    public class PlayerResourcesModel : ResourcesStorageModel
     {
+        public PlayerResourcesModel(int capacity) : base(capacity)
+        {
+        }
+    }
+
+    public class ResourcesStorageModel : ResourcesAmounts
+    {
+        public int Capacity { get; private set; } = 0;
         
+        public int Fill { get; private set; } = 0;
+
+        public ResourcesStorageModel(int capacity)
+        {
+            Capacity = capacity;
+        }
+
+        public override void AddResource(ResourceModel resource)
+        {
+            base.AddResource(resource);
+            Fill += resource.Amount.Value;
+        }
+
+        public override void AddResource(ResourceConfig resource)
+        {
+            base.AddResource(resource);
+            Fill += resource.Amount;
+        }
+
+        public override void RemoveResource(ResourceModel resource)
+        {
+            base.RemoveResource(resource);
+            Fill -= resource.Amount.Value;
+        }
+
+        public override bool CanAddResource(ResourceModel resource)
+        {
+            return Capacity >= Fill + resource.Amount.Value;
+        }
+
+        public void UpdateCapacity(int newCapacity)
+        {
+            Capacity = newCapacity;
+        }
     }
     
-    public class ResourcesModel
+    public class ResourcesAmounts
     {
-        public ReactiveDictionary<ResourceType, ResourceModel> ResourcesMap { get; } = new();
+        private ReactiveDictionary<ResourceType, ResourceModel> ResourcesMap { get; } = new();
         
         public IEnumerable<ResourceModel> Resources => ResourcesMap.Values;
-
+        
         public event Action<ResourceModel, int>? AmountUpdated;
         
-        public void AddResource(ResourceModel resource)
+        public virtual void AddResource(ResourceModel resource)
         {
             if (ResourcesMap.TryGetValue(resource.Id, out var existingResource))
             {
-                existingResource.AddAmount(resource.Amount);
+                existingResource.AddAmount(resource.Amount.Value);
             }
             else
             {
                 ResourcesMap.Add(resource.Id, resource);
             }
             
-            AmountUpdated?.Invoke(resource, resource.Amount);
+            AmountUpdated?.Invoke(resource, resource.Amount.Value);
         }
         
-        public void AddResource(ResourceConfig resource)
+        public virtual void AddResource(ResourceConfig resource)
         {
             if (ResourcesMap.TryGetValue(resource.Type, out var existingResource))
             {
@@ -46,20 +88,7 @@ namespace ResourcesSystem
             }
         }
         
-        public int GetResourceAmount(ResourceType resourceType)
-        {
-            return ResourcesMap.TryGetValue(resourceType, out var existingResource) ? existingResource.Amount.Value : 0;
-        }
-        
-        public void AddResources(ResourcesModel resources)
-        {
-            foreach (var resource in resources.ResourcesMap.Values)
-            {
-                AddResource(resource);
-            }
-        }
-        
-        public void RemoveResource(ResourceModel resource)
+        public virtual void RemoveResource(ResourceModel resource)
         {
             if (ResourcesMap.TryGetValue(resource.Id, out var existingResource))
             {
@@ -67,8 +96,23 @@ namespace ResourcesSystem
                 AmountUpdated?.Invoke(resource, resource.Amount);
             }
         }
+
+        public virtual bool CanAddResource(ResourceModel resource) => true;
         
-        public void RemoveResources(ResourcesModel resources)
+        public int GetResourceAmount(ResourceType resourceType)
+        {
+            return ResourcesMap.TryGetValue(resourceType, out var existingResource) ? existingResource.Amount.Value : 0;
+        }
+        
+        public void AddResources(ResourcesAmounts resources)
+        {
+            foreach (var resource in resources.ResourcesMap.Values)
+            {
+                AddResource(resource);
+            }
+        }
+        
+        public void RemoveResources(ResourcesAmounts resources)
         {
             foreach (var resource in resources.ResourcesMap.Values)
             {
@@ -86,7 +130,7 @@ namespace ResourcesSystem
             return false;
         }
         
-        public bool HasResources(ResourcesModel resources)
+        public bool HasResources(ResourcesAmounts resources)
         {
             foreach (var resource in resources.ResourcesMap.Values)
             {

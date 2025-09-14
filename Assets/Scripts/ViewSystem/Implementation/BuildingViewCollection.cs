@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ViewSystem.Implementation
 {
-    public class BuildingViewCollection : ReactiveCollectionViewBase<Building, BuildingView>
+    public class BuildingViewCollection : ReactiveCollectionViewBase<BuildingModel, BuildingView>
     {
         private static Transform Root => new GameObject("---Buildings Root---").transform;
         public BuildingViewCollection(
@@ -12,7 +12,7 @@ namespace ViewSystem.Implementation
         {
         }
 
-        protected override GameObject ProvideAsset(Building viewModel)
+        protected override GameObject ProvideAsset(BuildingModel viewModel)
         {
             return viewModel.Config.Prefab;
         }

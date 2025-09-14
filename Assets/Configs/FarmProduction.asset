@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc33be38bf545b084067b941dd9c3a8, type: 3}
   m_Name: FarmProduction
   m_EditorClassIdentifier: 
-  RequireResourcesForProduction: []
+  RequireResourcesForProduction:
+  - <Type>k__BackingField: 4
+    <Amount>k__BackingField: 1
   ProduceResourcesByTick:
   - <Type>k__BackingField: 3
     <Amount>k__BackingField: 5

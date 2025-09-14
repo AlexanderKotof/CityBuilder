@@ -14,9 +14,9 @@ namespace CityBuilder.BuildingSystem
             _viewsProvider = viewsProvider;
         }
         
-        public Building Create(BuildingConfig config, CellModel cellModel)
+        public BuildingModel Create(BuildingConfig config, CellModel cellModel)
         {
-            var building = new Building(1, config);
+            var building = new BuildingModel(1, config);
             return building;
         }
     }

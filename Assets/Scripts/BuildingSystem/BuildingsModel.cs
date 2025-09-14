@@ -8,11 +8,11 @@ namespace CityBuilder.BuildingSystem
 {
     public class BuildingsModel
     {
-        public readonly Dictionary<CellModel, Building> BuildingsMap = new Dictionary<CellModel, Building>();
+        public readonly Dictionary<CellModel, BuildingModel> BuildingsMap = new Dictionary<CellModel, BuildingModel>();
         
-        public readonly ReactiveCollection<Building> Buildings = new ReactiveCollection<Building>();
+        public readonly ReactiveCollection<BuildingModel> Buildings = new ReactiveCollection<BuildingModel>();
 
-        public void AddBuilding(Building building, CellModel location)
+        public void AddBuilding(BuildingModel building, CellModel location)
         {
             var occupiedCells = GetBuildingCellsSet(building, location);
             foreach (var cell in occupiedCells)
@@ -33,7 +33,7 @@ namespace CityBuilder.BuildingSystem
             Debug.Log($"Building added, position {location.ToString()}");
         }
     
-        public bool TryGetBuilding(CellModel location, out Building building) =>
+        public bool TryGetBuilding(CellModel location, out BuildingModel building) =>
             BuildingsMap.TryGetValue(location, out building);
         
         public void RemoveBuilding(CellModel location)
@@ -55,7 +55,7 @@ namespace CityBuilder.BuildingSystem
             Debug.Log($"Building removed from position {location.ToString()}");
         }
         
-        private IReadOnlyCollection<CellModel> GetBuildingCellsSet(Building building, CellModel startCell)
+        private IReadOnlyCollection<CellModel> GetBuildingCellsSet(BuildingModel building, CellModel startCell)
         {
             var list = new List<CellModel>();
             var position = startCell.Position;
