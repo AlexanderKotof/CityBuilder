@@ -108,12 +108,13 @@ namespace GameTimeSystem
 
         public void Update()
         {
-            if (Time.timeSinceLevelLoad < CurrentDay * SecondsInDay)
+            if (Time.timeSinceLevelLoad < (CurrentDay + 1) * SecondsInDay)
             {
                 return;
             }
 
             Date.IncrementDay();
+            
             NewDayStarted?.Invoke(CurrentDay);
         }
     }
