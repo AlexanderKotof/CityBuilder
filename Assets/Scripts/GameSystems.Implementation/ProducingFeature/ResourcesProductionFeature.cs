@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace ProducingFeature
 {
+    //ToDo: convert to production feature (can produce not only resources)
+    // and add support of workers
     public class ResourcesProductionFeature : GameSystemBase
     {
         private readonly BuildingsModel _buildingsModel;
@@ -14,16 +16,16 @@ namespace ProducingFeature
         public ProductionModel ProductionModel { get; } 
         
         private readonly Dictionary<BuildingModel, IResourceProducer> _buildingProducersMap = new();
-        private readonly object _buildingsManager;
+        private readonly BuildingManager _buildingsManager;
         private readonly GameTimeSystem.GameTimeSystem _gameTimeSystem;
 
-        public ResourcesProductionFeature(IDependencyContainer conatiner) : base(conatiner)
+        public ResourcesProductionFeature(IDependencyContainer container) : base(container)
         {
-            _buildingsModel = conatiner.Resolve<BuildingsModel>();
-            _buildingsManager = conatiner.Resolve<BuildingManager>();
-            _gameTimeSystem = conatiner.Resolve<GameTimeSystem.GameTimeSystem>();
+            _buildingsModel = container.Resolve<BuildingsModel>();
+            _buildingsManager = container.Resolve<BuildingManager>();
+            _gameTimeSystem = container.Resolve<GameTimeSystem.GameTimeSystem>();
             
-            ProductionModel = new(conatiner.Resolve<PlayerResourcesModel>());
+            ProductionModel = new(container.Resolve<PlayerResourcesModel>());
         }
         public override void Init()
         {
@@ -53,6 +55,11 @@ namespace ProducingFeature
 
         private void OnBuildingAdded(BuildingModel building)
         {
+            if (_buildingProducersMap.ContainsKey(building))
+            {
+                return;
+            }
+            
             if (building.Config.TryGetProducingResourcesFunction(out var producingResourcesFunction) == false)
             {
                 return;
@@ -75,7 +82,6 @@ namespace ProducingFeature
 
         private void OnNewDayStarted(int _)
         {
-            Debug.Log("Tick");
             ProductionModel.Tick();
         }
     }

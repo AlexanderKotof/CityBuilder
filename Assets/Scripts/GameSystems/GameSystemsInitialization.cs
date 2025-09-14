@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using CityBuilder.Dependencies;
+using GameSystems.Implementation.CheatsFeature;
 using PeopleFeature;
 using ResourcesSystem;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace GameSystems
             typeof(ProducingFeature.ResourcesProductionFeature),
             typeof(PopulationFeature),
             typeof(ResourcesStorageFeature),
+            typeof(CheatsFeature),
         };
     }
     

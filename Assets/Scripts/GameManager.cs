@@ -8,6 +8,7 @@ using GameSystems;
 using GameTimeSystem;
 using InteractionStateMachine;
 using JetBrains.Annotations;
+using PeopleFeature;
 using PlayerInput;
 using ResourcesSystem;
 using UnityEngine;
@@ -139,7 +140,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     }
 
     [CanBeNull] private DateModel _dateModel;
-    
+    [CanBeNull] private PopulationModel _populationModel;
     private void OnGUI()
     {
         int MaxIndex = 5;
@@ -147,13 +148,20 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         {
             var resourceType = (ResourceType)i;
             var amount = ResourcesManager.PlayerResourcesStorage.GetResourceAmount(resourceType);
-            GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}:/n{amount}"));
+            GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}:\n{amount}"));
         }
 
         _dateModel ??= _innerDependencies.Resolve<DateModel>();
         if (_dateModel != null)
         {
             GUI.Label(new Rect(20, 70, 1000, 50), new GUIContent(_dateModel.ToString()));
+        }
+        
+        _populationModel ??= _innerDependencies.Resolve<PopulationModel>();
+        if (_populationModel != null)
+        {
+            GUI.Label(new Rect(20, 100, 100, 50),
+                new GUIContent($"Population: {_populationModel.CurrentPopulation.Value.ToString()} / {_populationModel.AvailableHouseholds.Value.ToString()} houses"));
         }
     }
 }

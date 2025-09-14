@@ -34,6 +34,22 @@ namespace CityBuilder.BuildingSystem
         {
             _buildingViewsController.Deinit();
         }
+        
+        public void TryPlaceBuilding(CellModel cellModel, int configIndex)
+        {
+            if (Config.Configs.Length <= configIndex || configIndex < 0)
+            {
+                return;
+            }
+            
+            var config = Config.Configs[configIndex];
+            var building = BuildingFactory.Create(config, cellModel);
+            
+            if (CanPlaceBuilding(config, cellModel))
+            {
+                SetBuilding(cellModel, building);
+            } 
+        }
 
         public void TryPlaceDefaultBuilding(CellModel cellModel)
         {

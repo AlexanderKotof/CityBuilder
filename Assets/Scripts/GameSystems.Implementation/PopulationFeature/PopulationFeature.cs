@@ -4,6 +4,8 @@ using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Reactive;
 using GameSystems;
+using GameTimeSystem;
+using UnityEngine;
 
 namespace PeopleFeature
 {
@@ -13,6 +15,18 @@ namespace PeopleFeature
         public ReactiveProperty<int> EmployedPopulation { get; } = new(0);
         public ReactiveProperty<int> AvailableHouseholds { get; } = new();
 
+        private readonly float _dayGrowthFactor = 0.1f;
+        private readonly float _dayGrowthProbability = 0.1f;
+        
+        private readonly float _dayDeathFactor = 0.1f;
+        private readonly float _dayDeathProbability = 0.1f;
+        
+        private readonly int _weekGrowthBase = 10;
+        
+        
+
+
+
         public PopulationModel(int startingPopulation, int startingHouseholds)
         {
             CurrentPopulation.Value = startingPopulation;
@@ -21,7 +35,29 @@ namespace PeopleFeature
 
         public void OnWeekChanged()
         {
+            CurrentPopulation.Value =  CurrentPopulation.Value + _weekGrowthBase;
+            Debug.Log($"New week starts! Current population: {CurrentPopulation.Value}");
+        }
+        
+        public void OnDayChanged()
+        {
+            int growth = Random.value <= _dayGrowthProbability
+                ? Mathf.FloorToInt(_dayGrowthFactor * CurrentPopulation.Value * Random.value)
+                : 0;
+            int died = Random.value <= _dayDeathProbability
+                ? Mathf.FloorToInt(_dayDeathFactor * CurrentPopulation.Value * Random.value)
+                : 0;
 
+            int change = growth - died;
+
+            if (change == 0)
+            {
+                return;
+            }
+            
+            CurrentPopulation.Value = CurrentPopulation.Value + change;
+            
+            Debug.Log($"Population changed today by {change}, current value: {CurrentPopulation.Value}");
         }
 
         public void UpdateAvailableHouseholds(int value) => AvailableHouseholds.Set(value);
@@ -32,18 +68,17 @@ namespace PeopleFeature
         private const int StartingPopulation = 100;
         private const int StartingHouseholds = 100;
         
-        
         private readonly BuildingsModel _buildingsModel;
         public PopulationModel PopulationModel { get; }
         
         private readonly Dictionary<BuildingModel, AvailableHouseholdIncreaseUnit> _increaseHousesUnits = new();
-        private readonly GameTimeSystem.GameTimeSystem _gameTimeSystem;
+        private readonly DateModel _dateModel;
 
         public PopulationFeature(IDependencyContainer container) : base(container)
         {
             PopulationModel = new PopulationModel(StartingPopulation, StartingHouseholds);
             _buildingsModel = container.Resolve<BuildingsModel>();
-            _gameTimeSystem = container.Resolve<GameTimeSystem.GameTimeSystem>();
+            _dateModel = container.Resolve<DateModel>();
         }
 
         public override void Init()
@@ -51,29 +86,41 @@ namespace PeopleFeature
             _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
 
-            _gameTimeSystem.NewDayStarted += OnNewDayStarted;
+            _dateModel.OnDayChanged += OnNewDayStarted;
+            _dateModel.OnWeekChanged += OnWeekChanged;
         }
-        
+
         public override void Deinit()
         {
-            _gameTimeSystem.NewDayStarted -= OnNewDayStarted;
+            _dateModel.OnDayChanged -= OnNewDayStarted;
+            _dateModel.OnWeekChanged -= OnWeekChanged;
             
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
         }
         
-        private void OnNewDayStarted(int day)
+        private void OnWeekChanged()
         {
-            
+            PopulationModel.OnWeekChanged();
+        }
+        
+        private void OnNewDayStarted()
+        {
+            PopulationModel.OnDayChanged();
         }
         
         private void OnBuildingAdded(BuildingModel building)
         {
+            if (_increaseHousesUnits.ContainsKey(building))
+            {
+                return;
+            }
+            
             if (building.Config.TryGetHouseholdsCapacityFunction(out HouseHoldsIncreaseBuildingFunction householdsIncrease) == false)
             {
                 return;
             }
-
+            
             var increaseUnit = new AvailableHouseholdIncreaseUnit(householdsIncrease, building);
             _increaseHousesUnits.Add(building, increaseUnit);
             
