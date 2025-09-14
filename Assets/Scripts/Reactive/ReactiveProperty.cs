@@ -2,7 +2,14 @@
 
 namespace CityBuilder.Reactive
 {
-    public class ReactiveProperty<T> : IDisposable
+    public interface IReadonlyReactiveProperty<T>
+    {
+        T Value { get; }
+        void AddListener(Action<T> listener);
+        void RemoveListener(Action<T> listener);
+    }
+    
+    public class ReactiveProperty<T> : IReadonlyReactiveProperty<T>, IDisposable
     {
         public T Value
         {

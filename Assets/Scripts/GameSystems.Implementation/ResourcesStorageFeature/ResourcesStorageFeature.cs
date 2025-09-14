@@ -29,8 +29,6 @@ namespace ResourcesSystem
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
         }
-
-        public override void Update() { }
         
         private void OnBuildingAdded(BuildingModel building)
         {

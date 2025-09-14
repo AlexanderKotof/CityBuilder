@@ -26,13 +26,13 @@ namespace GameSystems
         private readonly Type[] _dependencyContainerType = new [] { typeof(IDependencyContainer) };
         private readonly object[] _constructorParameters;
         
-        public readonly List<IGameSystem> _gameSystems = new();
-        public readonly List<IUpdateGamSystem> _updateGameSystems = new();
+        private readonly List<IGameSystem> _gameSystems = new();
+        private readonly List<IUpdateGamSystem> _updateGameSystems = new();
 
         public GameSystemsInitialization(IDependencyContainer container)
         {
             _container = container;
-            _constructorParameters  = new [] { _container };
+            _constructorParameters  = new object[] { _container };
         }
 
         public void Init()
@@ -58,6 +58,16 @@ namespace GameSystems
             }
         }
 
+            
+        private void InitializeGameSystems()
+        {
+            foreach (var gameSystem in _gameSystems)
+            {
+                Debug.Log($"Begin of initialization {gameSystem.GetType().Name}...");
+                gameSystem.Init();
+            }
+        }
+        
         private void CreateGameSystems()
         {
             Debug.Log("Begin initializing Game Systems");
@@ -100,28 +110,31 @@ namespace GameSystems
                     _updateGameSystems.Add(updateGamSystem);
                 }
                 
-                FieldInfo[] fields = systemType.GetFields(BindingFlags.Public | BindingFlags.Instance);
-                foreach (FieldInfo field in fields)
-                {
-                    var value = field.GetValue(system);
-                    if (value != null)
-                    {
-                        Debug.Log($"Registered dependency from {systemType.Name} - {field.FieldType.Name}.");
-                        _container.Register(field.FieldType, value);
-                    }
-                }
+                RegisterPublicProperties(systemType, system);
 
                 _container.Register(systemType, gameSystem);
             }
         }
-    
-        private void InitializeGameSystems()
+
+        private void RegisterPublicProperties(Type systemType, object system)
         {
-            foreach (var gameSystem in _gameSystems)
+            PropertyInfo[] properties = systemType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (PropertyInfo propertyInfo in properties)
             {
-                gameSystem.Init();
+                if (propertyInfo.PropertyType.IsValueType || propertyInfo.PropertyType == typeof(string))
+                {
+                    continue;
+                }
+                    
+                Debug.Log($"Try register dependency from {systemType.Name} - {propertyInfo.PropertyType.Name}.");
+                    
+                object? value = propertyInfo.GetValue(system);
+                if (value != null)
+                {
+                    Debug.Log($"Registered dependency from {systemType.Name} - {propertyInfo.PropertyType.Name}.");
+                    _container.Register(propertyInfo.PropertyType, value);
+                }
             }
         }
-
     }
 }

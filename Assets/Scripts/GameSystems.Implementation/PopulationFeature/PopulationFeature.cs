@@ -10,6 +10,7 @@ namespace PeopleFeature
     public class PopulationModel
     {
         public ReactiveProperty<int> CurrentPopulation { get; } = new();
+        public ReactiveProperty<int> EmployedPopulation { get; } = new(0);
         public ReactiveProperty<int> AvailableHouseholds { get; } = new();
 
         public PopulationModel(int startingPopulation, int startingHouseholds)
@@ -24,20 +25,8 @@ namespace PeopleFeature
         }
 
         public void UpdateAvailableHouseholds(int value) => AvailableHouseholds.Set(value);
-
-}
-
-    public record AvailableHouseholdIncreaseUnit(HouseHoldsIncreaseBuildingFunction Function,  BuildingModel Building)
-    {
-        public HouseHoldsIncreaseBuildingFunction Function { get; } = Function;
-        public BuildingModel Building { get; } = Building;
-        
-        public int GetHouseholdIncreaseValue()
-        {
-            return Function.AvailableHouseholdsIncrease; // + _buildingLevel * additional value
-        }
     }
-    
+
     public class PopulationFeature : GameSystemBase
     {
         private const int StartingPopulation = 100;
@@ -72,15 +61,10 @@ namespace PeopleFeature
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
         }
-
-        public override void Update()
-        {
-            throw new System.NotImplementedException();
-        }
         
         private void OnNewDayStarted(int day)
         {
-            throw new System.NotImplementedException();
+            
         }
         
         private void OnBuildingAdded(BuildingModel building)

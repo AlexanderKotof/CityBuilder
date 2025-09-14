@@ -51,12 +51,6 @@ namespace ProducingFeature
             _gameTimeSystem.NewDayStarted -= OnNewDayStarted;
         }
 
-
-        public override void Update()
-        {
-            
-        }
-
         private void OnBuildingAdded(BuildingModel building)
         {
             if (building.Config.TryGetProducingResourcesFunction(out var producingResourcesFunction) == false)

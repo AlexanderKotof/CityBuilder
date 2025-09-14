@@ -13,6 +13,5 @@ namespace GameSystems
     
         public abstract void Init();
         public abstract void Deinit();
-        public abstract void Update();
     }
 }

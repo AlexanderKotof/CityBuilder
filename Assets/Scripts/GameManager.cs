@@ -5,7 +5,9 @@ using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using GameSystems;
+using GameTimeSystem;
 using InteractionStateMachine;
+using JetBrains.Annotations;
 using PlayerInput;
 using ResourcesSystem;
 using UnityEngine;
@@ -34,6 +36,10 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     private PlayerInteractionStateMachine? PlayerInteractionStateMachine;
 
     private InteractionModel _interactionModel = new InteractionModel();
+    
+    private Action? UpdateHandler;
+    private GameSystemsInitialization _gameSystemsInitialization;
+    private DependencyContainer _innerDependencies;
 
     private void Awake()
     {
@@ -44,16 +50,27 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         
         RegisterGrids();
 
+        //ToDo: move to features/systems
         Raycaster = new Raycaster(RaycasterCamera, LayerMask, _gridManager);
         CursorController = new CursorController(Cursor);
         ResourcesManager = new ResourcesManager(GameConfiguration.ResourcesConfig);
         BuildingManager = new(GameConfiguration.BuildingsConfig, _gridManager, _viewsProvider);
         DraggingContentController = new DraggingContentController();
+
+        _innerDependencies = new DependencyContainer();
         
-        InitializePlayerInteractionStateMachine();
-        InitializeGameSystems();
+        _innerDependencies.Register(_playerInputManager);
+        _innerDependencies.Register(BuildingManager);
+        _innerDependencies.Register(Raycaster);
+        _innerDependencies.Register<IUnityUpdate>(this);
+        _innerDependencies.Register(_interactionModel);
+        _innerDependencies.Register(CursorController);
+        _innerDependencies.Register(DraggingContentController);
+        _innerDependencies.Register(BuildingManager.Model);
+        _innerDependencies.Register(ResourcesManager.PlayerResourcesStorage);
         
-        WindowTest();
+        InitializePlayerInteractionStateMachine(_innerDependencies);
+        InitializeGameSystems(_innerDependencies);
     }
 
     private void WindowTest()
@@ -74,17 +91,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         }
     }
 
-    private void InitializePlayerInteractionStateMachine()
+    private void InitializePlayerInteractionStateMachine(DependencyContainer dependencies)
     {
-        var dependencies = new DependencyContainer();
-        dependencies.Register(_playerInputManager);
-        dependencies.Register(BuildingManager);
-        dependencies.Register(Raycaster);
-        dependencies.Register<IUnityUpdate>(this);
-        dependencies.Register(_interactionModel);
-        dependencies.Register(CursorController);
-        dependencies.Register(DraggingContentController);
-
         PlayerInteractionStateMachine = new PlayerInteractionStateMachine(
             new EmptyInteractionState(dependencies),
             new CellSelectedInteractionState(dependencies),
@@ -94,19 +102,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         PlayerInteractionStateMachine.Start(typeof(EmptyInteractionState));
     }
 
-    private void InitializeGameSystems()
+    private void InitializeGameSystems(DependencyContainer dependencies)
     {
-        var dependencies = new DependencyContainer();
-        dependencies.Register(_playerInputManager);
-        dependencies.Register(BuildingManager);
-        dependencies.Register(BuildingManager.Model);
-        dependencies.Register(Raycaster);
-        dependencies.Register<IUnityUpdate>(this);
-        dependencies.Register(_interactionModel);
-        dependencies.Register(CursorController);
-        dependencies.Register(DraggingContentController);
-        dependencies.Register(ResourcesManager.PlayerResourcesStorage);
-        
         _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
         _gameSystemsInitialization.Init();
     }
@@ -129,20 +126,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         {
             PlayerInteractionStateMachine.Update();
         }
-
-        /*
-        if (Input.GetMouseButtonDown(0) && Raycaster.TryGetCellFromScreenPoint(Input.mousePosition, out var cell))
-        {
-            OnClickCell(cell);
-        }
-
-       */
     }
     
-    private Action? UpdateHandler;
-    private GameSystemsInitialization _gameSystemsInitialization;
-
-
     public void SubscribeOnUpdate(Action action)
     {
         UpdateHandler += action;
@@ -153,6 +138,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         UpdateHandler -= action;
     }
 
+    [CanBeNull] private DateModel _dateModel;
+    
     private void OnGUI()
     {
         int MaxIndex = 5;
@@ -160,27 +147,13 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         {
             var resourceType = (ResourceType)i;
             var amount = ResourcesManager.PlayerResourcesStorage.GetResourceAmount(resourceType);
-            GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}: {amount}"));
+            GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}:/n{amount}"));
         }
-    }
-}
 
-public interface ICoreModelsProvider
-{
-    public T GetModel<T>() where T : class;
-    public T RegisterModel<T>(T instance) where T : class;
-}
-
-public class CoreModelsProvider : ICoreModelsProvider
-{
-    private readonly Dictionary<Type, object> _models = new();
-    public T GetModel<T>() where T : class
-    {
-        return (T)_models.GetValueOrDefault(typeof(T));
-    }
-
-    public T RegisterModel<T>(T instance) where T : class
-    {
-        return _models.TryAdd(instance.GetType(), instance) ? instance : GetModel<T>();
+        _dateModel ??= _innerDependencies.Resolve<DateModel>();
+        if (_dateModel != null)
+        {
+            GUI.Label(new Rect(20, 70, 1000, 50), new GUIContent(_dateModel.ToString()));
+        }
     }
 }
