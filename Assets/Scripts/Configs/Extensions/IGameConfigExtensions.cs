@@ -1,6 +1,6 @@
 using System;
 
-namespace Configs.Schemes
+namespace Configs.Extensions
 {
     public static class IGameConfigExtensions
     {

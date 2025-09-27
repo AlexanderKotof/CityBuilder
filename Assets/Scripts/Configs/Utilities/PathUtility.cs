@@ -1,7 +1,6 @@
-using UnityEditor;
 using UnityEngine;
 
-namespace Configs
+namespace Configs.Utilities
 {
     public class PathUtility
     {

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Configs.Schemes;
 
-namespace Configs.Schemes
+namespace Configs
 {
     public class GameConfigProvider
     {

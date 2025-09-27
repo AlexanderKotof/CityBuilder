@@ -100,13 +100,13 @@ namespace ViewSystem
             _windowsViewsRegistrator = new WindowsViewsRegistrator(windowsPrefabs);
         }
 
-        public WindowBase<TViewModel> ProvideWindowView<TViewModel>(TViewModel viewModel) where TViewModel : IViewModel
+        public WindowViewBase<TViewModel> ProvideWindowView<TViewModel>(TViewModel viewModel) where TViewModel : IViewModel
         {
             var prefab = _windowsViewsRegistrator.GetWindow<TViewModel>();
 
             var view = _viewsProvider.ProvideViewWithModel<TViewModel>(prefab.gameObject, viewModel);
             
-            return view as WindowBase<TViewModel>;
+            return view as WindowViewBase<TViewModel>;
         }
     }
 }

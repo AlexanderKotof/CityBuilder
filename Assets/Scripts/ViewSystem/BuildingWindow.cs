@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace ViewSystem
 {
-    public class BuildingWindow : WindowBase<BuildingModel>
+    public class BuildingWindowView : WindowViewBase<BuildingModel>
     {
+        //public override string AssetId => "BuildingModel";
+        
         public override void Initialize(BuildingModel model)
         {
             base.Initialize(model);

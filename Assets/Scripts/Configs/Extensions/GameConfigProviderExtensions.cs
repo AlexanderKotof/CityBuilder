@@ -1,4 +1,6 @@
-namespace Configs.Schemes
+using Configs.Schemes;
+
+namespace Configs.Extensions
 {
     public static class GameConfigProviderExtensions
     {

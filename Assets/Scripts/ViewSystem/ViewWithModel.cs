@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CityBuilder.Reactive;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
-using ViewSystem.Implementation;
 
 namespace ViewSystem
 {
@@ -19,13 +17,15 @@ namespace ViewSystem
     
     public interface IWindow
     {
-        string AssetId { get; }
+        internal Type ViewModelType { get; }
     }
 
-    public abstract class WindowBase<TViewModel> : ViewWithModel<TViewModel>, IWindow
+    public abstract class WindowViewBase<TViewModel> : ViewWithModel<TViewModel>, IWindow
         where TViewModel : IViewModel
     {
-        public string AssetId => typeof(TViewModel).Name;
+        //public abstract string AssetId { get; }
+
+        Type IWindow.ViewModelType => typeof(TViewModel);
     }
     
     public abstract class ViewWithModel<TModel> : ViewBase

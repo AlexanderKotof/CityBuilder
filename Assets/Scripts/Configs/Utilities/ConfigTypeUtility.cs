@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Configs.Schemes;
 
-namespace Configs
+namespace Configs.Utilities
 {
-    public static class ConfigTypesUtility
+    public static class ConfigTypeUtility
     {
         public static IEnumerable<Type> GetAllConfigTypes()
         {

@@ -6,6 +6,7 @@ using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using Configs;
 using Configs.Schemes;
+using Configs.Utilities;
 using GameSystems;
 using GameSystems.Implementation.PopulationFeature;
 using GameTimeSystem;
@@ -76,7 +77,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         InitializeGameSystems(_innerDependencies);
         
         GameConfigsInitializationAsync();
-
+        WindowTest();
     }
 
     private async void GameConfigsInitializationAsync()
@@ -84,6 +85,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         string path = PathUtility.ConfigsPath;
         var initialaizer = new GameConfigInitializationSystem();
         await initialaizer.LoadConfigs(path);
+        
+        _innerDependencies.Register(initialaizer.GameConfigProvider);
 
         foreach (var keyValuePair in initialaizer.GameConfigProvider.Map)
         {

@@ -2,7 +2,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Configs.Extensions;
 using Configs.Schemes;
+using Configs.Utilities;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -19,7 +21,7 @@ namespace Configs.Editor
             Debug.Log($"Begin creating configs from {Path}!");
             
             var files = Directory.GetFiles(Path, "*.json");
-            var configTypes = ConfigTypesUtility.GetAllConfigTypes().ToArray();
+            var configTypes = ConfigTypeUtility.GetAllConfigTypes().ToArray();
             
             Debug.Log($"Found {configTypes.Length} config types and {files.Length} files.");
             foreach (var configType in configTypes)
