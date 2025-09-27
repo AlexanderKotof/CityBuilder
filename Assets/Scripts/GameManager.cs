@@ -4,6 +4,8 @@ using System.Linq;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
+using Configs;
+using Configs.Schemes;
 using GameSystems;
 using GameSystems.Implementation.PopulationFeature;
 using GameTimeSystem;
@@ -72,6 +74,21 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         
         InitializePlayerInteractionStateMachine(_innerDependencies);
         InitializeGameSystems(_innerDependencies);
+        
+        GameConfigsInitializationAsync();
+
+    }
+
+    private async void GameConfigsInitializationAsync()
+    {
+        string path = PathUtility.ConfigsPath;
+        var initialaizer = new GameConfigInitializationSystem();
+        await initialaizer.LoadConfigs(path);
+
+        foreach (var keyValuePair in initialaizer.GameConfigProvider.Map)
+        {
+            Debug.Log($"Founded config {keyValuePair.Key} - {keyValuePair.Value}");
+        }
     }
 
     private void WindowTest()
