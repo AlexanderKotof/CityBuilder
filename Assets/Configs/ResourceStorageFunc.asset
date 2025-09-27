@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17cde3f9e86e42c891bf52addf08871f, type: 3}
   m_Name: ResourceStorageFunc
   m_EditorClassIdentifier: 
-  StorageCapacityIncrease: 0
-  PerBuildingLevelGrow: 0
+  StorageCapacityIncrease: 100
+  PerBuildingLevelGrow: 100

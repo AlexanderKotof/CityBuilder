@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using CityBuilder.Dependencies;
 using GameSystems.Implementation.CheatsFeature;
-using PeopleFeature;
+using GameSystems.Implementation.PopulationFeature;
 using ResourcesSystem;
 using UnityEngine;
 

@@ -1,4 +1,4 @@
-using PeopleFeature;
+using GameSystems.Implementation.PopulationFeature;
 using ResourcesSystem;
 
 namespace CityBuilder.BuildingSystem

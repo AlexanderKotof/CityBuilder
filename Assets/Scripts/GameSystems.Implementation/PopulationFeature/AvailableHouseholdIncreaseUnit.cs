@@ -1,6 +1,6 @@
 using CityBuilder.BuildingSystem;
 
-namespace PeopleFeature
+namespace GameSystems.Implementation.PopulationFeature
 {
     public record AvailableHouseholdIncreaseUnit(HouseHoldsIncreaseBuildingFunction Function,  BuildingModel Building)
     {
