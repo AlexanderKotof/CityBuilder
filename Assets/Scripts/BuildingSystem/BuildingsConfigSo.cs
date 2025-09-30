@@ -30,6 +30,7 @@ namespace CityBuilder.BuildingSystem
     {
         public string Name;
         public GameObject Prefab;
+        public string AssetKey;
         public Vector2Int Size = Vector2Int.one;
 
         public ResourceConfig[] RequiredResources;

@@ -15,18 +15,21 @@ MonoBehaviour:
   Configs:
   - Name: farm
     Prefab: {fileID: 4666062724587789524, guid: febbcbd5bff1a884892231aba0c37c8f, type: 3}
+    AssetKey: Farm
     Size: {x: 1, y: 1}
     RequiredResources: []
     BuildingFunctions:
     - {fileID: 11400000, guid: fb85bcc98ed26b042b433948c417a225, type: 2}
   - Name: storage
     Prefab: {fileID: 4666062724587789524, guid: 0f842c75cbc39794690a4df4a6feec39, type: 3}
+    AssetKey: Storage
     Size: {x: 1, y: 1}
     RequiredResources: []
     BuildingFunctions:
     - {fileID: 11400000, guid: a06df292970e3b44eb2000f55a0b31ee, type: 2}
   - Name: house
     Prefab: {fileID: 4666062724587789524, guid: 0e7794356a96cbe49b618b69f63940f5, type: 3}
+    AssetKey: House
     Size: {x: 1, y: 1}
     RequiredResources: []
     BuildingFunctions:

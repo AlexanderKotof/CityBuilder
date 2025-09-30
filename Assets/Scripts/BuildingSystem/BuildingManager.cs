@@ -17,7 +17,8 @@ namespace CityBuilder.BuildingSystem
         
         private readonly GridManager _gridManager;
         private readonly ViewsProvider _viewsProvider;
-        
+        private readonly WindowViewsProvider _windowViewsProvider;
+
         public BuildingManager(BuildingsConfigSo config, GridManager gridManager, ViewsProvider viewsProvider)
         {
             Config = config;
@@ -25,8 +26,10 @@ namespace CityBuilder.BuildingSystem
             _viewsProvider = viewsProvider;
 
             BuildingFactory = new(viewsProvider);
+            
+            _windowViewsProvider = new WindowViewsProvider(viewsProvider);
 
-            _buildingViewsController = new (Model, viewsProvider);
+            _buildingViewsController = new (Model, _windowViewsProvider);
             _buildingViewsController.Initialize();
         }
 
