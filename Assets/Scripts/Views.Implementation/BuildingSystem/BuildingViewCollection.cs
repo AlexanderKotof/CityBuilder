@@ -7,7 +7,7 @@ namespace ViewSystem.Implementation
     {
         public BuildingViewCollection(
             BuildingsModel model,
-            WindowViewsProvider viewsProvider) : base(model.Buildings, viewsProvider, new GameObject("---Buildings Root---").transform)
+            IViewWithModelProvider viewsProvider) : base(model.Buildings, viewsProvider, new GameObject("---Buildings Root---").transform)
         {
         }
 

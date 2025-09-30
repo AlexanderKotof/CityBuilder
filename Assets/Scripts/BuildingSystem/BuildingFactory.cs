@@ -7,9 +7,9 @@ namespace CityBuilder.BuildingSystem
 {
     public class BuildingFactory
     {
-        private readonly ViewsProvider _viewsProvider;
+        private readonly IViewsProvider _viewsProvider;
 
-        public BuildingFactory(ViewsProvider viewsProvider)
+        public BuildingFactory(IViewsProvider viewsProvider)
         {
             _viewsProvider = viewsProvider;
         }

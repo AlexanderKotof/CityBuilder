@@ -80,7 +80,14 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         GameConfigsInitializationAsync();
         WindowTest();
     }
-
+    
+    private void OnDestroy()
+    {
+        _viewsProvider.Dispose();
+        PlayerInteractionStateMachine?.Stop();
+        _gameSystemsInitialization.Deinit();
+    }
+    
     private async void GameConfigsInitializationAsync()
     {
         string path = PathUtility.ConfigsPath;
@@ -97,7 +104,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
 
     private async void WindowTest()
     {
-        var provider = new WindowViewsProvider(_viewsProvider);
+        var provider = new WindowViewProvider(_viewsProvider, _innerDependencies);
 
         var viewModel1 = new BuildingModel(1, null);
         var viewModel2 = new BuildingModel(2, null);
@@ -117,6 +124,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         await Task.Delay(1000);
 
         await provider.ProvideViewWithModel(assetKey, viewModel1);
+        
+        provider.Deinit();
     }
 
     private void RegisterGrids()
@@ -144,13 +153,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
         _gameSystemsInitialization.Init();
     }
-
-    private void OnDestroy()
-    {
-        PlayerInteractionStateMachine?.Stop();
-        _gameSystemsInitialization.Deinit();
-    }
-
+    
     private void Update()
     {
         UpdateHandler?.Invoke();

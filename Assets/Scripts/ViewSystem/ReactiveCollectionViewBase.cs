@@ -12,14 +12,14 @@ namespace ViewSystem
         [CanBeNull] 
         private readonly Transform _parent;
 
-        private readonly WindowViewsProvider _viewsProvider;
+        private readonly IViewWithModelProvider _viewsProvider;
         public ReactiveCollection<TViewModel> Collection { get; }
         
         private readonly Dictionary<TViewModel, TView> _views = new Dictionary<TViewModel, TView>();
         
         public ReactiveCollectionViewBase(
             ReactiveCollection<TViewModel> collection,
-            WindowViewsProvider viewsProvider,
+            IViewWithModelProvider viewsProvider,
             Transform parent = null)
         {
             _parent = parent;

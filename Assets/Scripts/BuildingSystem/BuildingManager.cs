@@ -16,10 +16,10 @@ namespace CityBuilder.BuildingSystem
         private readonly BuildingViewCollection _buildingViewsController;
         
         private readonly GridManager _gridManager;
-        private readonly ViewsProvider _viewsProvider;
-        private readonly WindowViewsProvider _windowViewsProvider;
+        private readonly IViewsProvider _viewsProvider;
+        private readonly ViewWithModelProvider _viewWithModelProvider;
 
-        public BuildingManager(BuildingsConfigSo config, GridManager gridManager, ViewsProvider viewsProvider)
+        public BuildingManager(BuildingsConfigSo config, GridManager gridManager, IViewsProvider viewsProvider)
         {
             Config = config;
             _gridManager = gridManager;
@@ -27,15 +27,16 @@ namespace CityBuilder.BuildingSystem
 
             BuildingFactory = new(viewsProvider);
             
-            _windowViewsProvider = new WindowViewsProvider(viewsProvider);
+            _viewWithModelProvider = new ViewWithModelProvider(viewsProvider, new DependencyContainer());
 
-            _buildingViewsController = new (Model, _windowViewsProvider);
+            _buildingViewsController = new (Model, _viewWithModelProvider);
             _buildingViewsController.Initialize();
         }
 
         public void Deinit()
         {
             _buildingViewsController.Deinit();
+            _viewWithModelProvider.Deinit();
         }
         
         public void TryPlaceBuilding(CellModel cellModel, int configIndex)

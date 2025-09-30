@@ -14,9 +14,9 @@ namespace ViewSystem.Implementation
         public TextMeshProUGUI LevelIndicator;
         public TextMeshProUGUI NameText;
 
-        public override void Initialize(BuildingModel model)
+        public override void Initialize(BuildingModel model, IDependencyContainer container)
         {
-            base.Initialize(model);
+            base.Initialize(model, container);
             
             Subscribe(model.Level, (value) => LevelIndicator.SetText($"Lvl {value}"));
             Subscribe(model.WorldPosition, SetWorldPosition);

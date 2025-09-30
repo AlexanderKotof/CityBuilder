@@ -1,4 +1,5 @@
 using CityBuilder.BuildingSystem;
+using CityBuilder.Dependencies;
 using UnityEngine;
 
 namespace ViewSystem
@@ -7,9 +8,9 @@ namespace ViewSystem
     {
         //public override string AssetId => "BuildingModel";
         
-        public override void Initialize(BuildingModel model)
+        public override void Initialize(BuildingModel model, IDependencyContainer dependencies)
         {
-            base.Initialize(model);
+            base.Initialize(model, dependencies);
             
             Debug.Log("Initialized building window");
         }

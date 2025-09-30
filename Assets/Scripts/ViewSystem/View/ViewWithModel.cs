@@ -1,45 +1,24 @@
 using System;
 using System.Collections.Generic;
+using CityBuilder.Dependencies;
 using CityBuilder.Reactive;
-using UnityEngine;
 
 namespace ViewSystem
 {
-    public interface IView
-    {
-
-    }
-
-    public abstract class ViewBase : MonoBehaviour, IView
-    {
-        
-    }
-    
-    public interface IWindow
-    {
-        internal Type ViewModelType { get; }
-    }
-
-    public abstract class WindowViewBase<TViewModel> : ViewWithModel<TViewModel>, IWindow
-        where TViewModel : IViewModel
-    {
-        //public abstract string AssetId { get; }
-
-        Type IWindow.ViewModelType => typeof(TViewModel);
-    }
-    
     public abstract class ViewWithModel<TModel> : ViewBase
         where TModel : IViewModel
     {
         public TModel Model { get; private set; }
+        public IDependencyContainer Container { get; private set; }
         
-        private readonly List<Action> _deinitActions = new List<Action>(); 
+        private readonly List<Action> _deinitActions = new(); 
 
-        public virtual void Initialize(TModel model)
+        public virtual void Initialize(TModel model, IDependencyContainer dependencies)
         {
             Model = model;
+            Container = dependencies;
         }
-        
+
         public virtual void Deinit()
         {
             foreach (var action in _deinitActions)
