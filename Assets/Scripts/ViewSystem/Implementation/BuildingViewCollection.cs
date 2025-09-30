@@ -5,16 +5,15 @@ namespace ViewSystem.Implementation
 {
     public class BuildingViewCollection : ReactiveCollectionViewBase<BuildingModel, BuildingView>
     {
-        private static Transform Root => new GameObject("---Buildings Root---").transform;
         public BuildingViewCollection(
             BuildingsModel model,
-            ViewsProvider viewsProvider) : base(model.Buildings, viewsProvider, Root)
+            WindowViewsProvider viewsProvider) : base(model.Buildings, viewsProvider, new GameObject("---Buildings Root---").transform)
         {
         }
 
-        protected override GameObject ProvideAsset(BuildingModel viewModel)
+        protected override string ProvideAssetKey(BuildingModel viewModel)
         {
-            return viewModel.Config.Prefab;
+            return viewModel.Config.AssetKey;
         }
     }
 }

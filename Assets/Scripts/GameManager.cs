@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
@@ -94,13 +95,28 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         }
     }
 
-    private void WindowTest()
+    private async void WindowTest()
     {
-        var provider = new WindowsProvider(windowsPrefabs, _viewsProvider);
+        var provider = new WindowViewsProvider(_viewsProvider);
 
-        provider.ProvideWindowView(new BuildingModel(1, null));
+        var viewModel1 = new BuildingModel(1, null);
+        var viewModel2 = new BuildingModel(2, null);
+
+        string assetKey = "BuildingWindow";
+        await provider.ProvideViewWithModel(assetKey, viewModel1);
         
-        provider.ProvideWindowView(new BuildingModel(1, null));
+        await provider.ProvideViewWithModel(assetKey, viewModel2);
+
+        await Task.Delay(5000);
+        
+        provider.Recycle(viewModel1);
+        
+        await Task.Delay(1000);
+        provider.Recycle(viewModel2);
+        
+        await Task.Delay(1000);
+
+        await provider.ProvideViewWithModel(assetKey, viewModel1);
     }
 
     private void RegisterGrids()

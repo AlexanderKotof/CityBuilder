@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using CityBuilder.Dependencies;
 using JetBrains.Annotations;
 using CityBuilder.Reactive;
 using UnityEngine;
@@ -13,14 +12,14 @@ namespace ViewSystem
         [CanBeNull] 
         private readonly Transform _parent;
 
-        private readonly ViewsProvider _viewsProvider;
+        private readonly WindowViewsProvider _viewsProvider;
         public ReactiveCollection<TViewModel> Collection { get; }
         
         private readonly Dictionary<TViewModel, TView> _views = new Dictionary<TViewModel, TView>();
         
         public ReactiveCollectionViewBase(
             ReactiveCollection<TViewModel> collection,
-            ViewsProvider viewsProvider,
+            WindowViewsProvider viewsProvider,
             Transform parent = null)
         {
             _parent = parent;
@@ -46,10 +45,10 @@ namespace ViewSystem
             Collection.UnsubscribeRemove(OnViewModelRemoved);
         }
 
-        private void OnViewModelAdded(TViewModel viewModel)
+        private async void OnViewModelAdded(TViewModel viewModel)
         {
-            var view = _viewsProvider.ProvideViewWithModel<TViewModel, TView>(
-                ProvideAsset(viewModel),
+            var view = await _viewsProvider.ProvideViewWithModel<TViewModel, TView>(
+                ProvideAssetKey(viewModel),
                 viewModel,
                 _parent);
             
@@ -62,7 +61,7 @@ namespace ViewSystem
         {
             if (_views.Remove(viewModel, out var view))
             {
-                _viewsProvider.ReturnView<TViewModel>(view);
+                _viewsProvider.Recycle(viewModel);
                 OnViewRemoved(viewModel, view);
             }
         }
@@ -70,7 +69,7 @@ namespace ViewSystem
         protected virtual void OnViewAdded(TViewModel viewModel, TView view) { }
         protected virtual void OnViewRemoved(TViewModel viewModel, TView value) { }
 
-        protected abstract GameObject ProvideAsset(TViewModel viewModel);
+        protected abstract string ProvideAssetKey(TViewModel viewModel);
         
         public bool TryGetView(TViewModel viewModel, out TView view)
             => _views.TryGetValue(viewModel, out view);
