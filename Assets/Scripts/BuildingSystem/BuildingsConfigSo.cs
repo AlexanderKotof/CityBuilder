@@ -11,6 +11,8 @@ namespace CityBuilder.BuildingSystem
     public class BuildingsConfigSo : ScriptableObject
     {
         public BuildingConfig[] Configs;
+        
+        public BuildingConfig MainBuildingConfig;
 
         public BuildingConfig GetConfigByName(string name)
         {
@@ -18,20 +20,14 @@ namespace CityBuilder.BuildingSystem
         }
     }
 
-    public enum BuildingType
-    {
-        Storage,
-        Production,
-        Infantry,
-    }
-
     [Serializable]
     public class BuildingConfig
     {
         public string Name;
-        public GameObject Prefab;
         public string AssetKey;
         public Vector2Int Size = Vector2Int.one;
+
+        public bool IsMovable = true;
 
         public ResourceConfig[] RequiredResources;
 

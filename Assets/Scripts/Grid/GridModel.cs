@@ -9,6 +9,8 @@ namespace CityBuilder.Grid
     {
         private readonly Dictionary<GridPosition, CellModel> _grid = new();
         public Transform Transform { get; }
+        
+        public Vector2Int Size { get; private set; }
     
         private readonly Guid _id = Guid.NewGuid();
         private IGridComponent _view;
@@ -21,6 +23,7 @@ namespace CityBuilder.Grid
     
         private GridModel(int width, int length)
         {
+            Size = new Vector2Int(width, length);
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < length; y++)
@@ -67,7 +70,7 @@ namespace CityBuilder.Grid
             return Transform.TransformPoint(hitPosition2d);
         }
 
-        public bool Equals(GridModel other)
+        public bool Equals(GridModel? other)
         {
             return other != null && _id.Equals(other._id);
         }

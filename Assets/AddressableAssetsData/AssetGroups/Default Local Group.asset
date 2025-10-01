@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 77b39a12416b8c741a803de8c9f913d5
   m_SerializeEntries:
+  - m_GUID: 094c6a6ab82493f48b775cbf80584edf
+    m_Address: Cityhall
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0e7794356a96cbe49b618b69f63940f5
     m_Address: House
     m_ReadOnly: 0
@@ -25,8 +30,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 55052c17335292c48bf0349e49a00b15
+    m_Address: Assets/GameConfigs/CommonGameSettings.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a20a5439394ee784a80969258d5144ad
     m_Address: BuildingWindow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd190ae5d6eb9fd4297e9d96fcc52b8d
+    m_Address: Assets/GameConfigs/BuildingsSettings.json
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

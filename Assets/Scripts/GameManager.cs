@@ -59,12 +59,13 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         Raycaster = new Raycaster(RaycasterCamera, LayerMask, _gridManager);
         CursorController = new CursorController(Cursor);
         ResourcesManager = new ResourcesManager(GameConfiguration.ResourcesConfig);
-        BuildingManager = new(GameConfiguration.BuildingsConfig, _gridManager, _viewsProvider);
+        BuildingManager = new(GameConfiguration.BuildingsConfig, _gridManager);
         DraggingContentController = new DraggingContentController();
 
         _innerDependencies = new DependencyContainer();
         
         _innerDependencies.Register(_playerInputManager);
+        _innerDependencies.Register<IViewsProvider>(_viewsProvider);
         _innerDependencies.Register(BuildingManager);
         _innerDependencies.Register(Raycaster);
         _innerDependencies.Register<IUnityUpdate>(this);

@@ -2,25 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using CityBuilder.Dependencies;
-using GameSystems.Implementation.CheatsFeature;
-using GameSystems.Implementation.PopulationFeature;
-using ResourcesSystem;
 using UnityEngine;
 
 namespace GameSystems
 {
-    public static class GameSystemsSet
-    {
-        public static readonly HashSet<Type> GameSystemTypes = new()
-        {
-            typeof(GameTimeSystem.GameTimeSystem),
-            typeof(ProducingFeature.ResourcesProductionFeature),
-            typeof(PopulationFeature),
-            typeof(ResourcesStorageFeature),
-            typeof(CheatsFeature),
-        };
-    }
-    
     public class GameSystemsInitialization : IGameSystem
     {
         private readonly IDependencyContainer _container;

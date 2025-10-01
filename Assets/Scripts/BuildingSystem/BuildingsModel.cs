@@ -11,6 +11,8 @@ namespace CityBuilder.BuildingSystem
         public readonly Dictionary<CellModel, BuildingModel> BuildingsMap = new Dictionary<CellModel, BuildingModel>();
         
         public readonly ReactiveCollection<BuildingModel> Buildings = new ReactiveCollection<BuildingModel>();
+        
+        public BuildingModel MainBuilding { get; private set; }
 
         public void AddBuilding(BuildingModel building, CellModel location)
         {
@@ -53,6 +55,11 @@ namespace CityBuilder.BuildingSystem
             Buildings.Remove(building);
             
             Debug.Log($"Building removed from position {location.ToString()}");
+        }
+
+        public void SetMainBuilding(BuildingModel building)
+        {
+            MainBuilding = building;
         }
         
         private IReadOnlyCollection<CellModel> GetBuildingCellsSet(BuildingModel building, CellModel startCell)

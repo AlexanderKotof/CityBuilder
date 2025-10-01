@@ -48,7 +48,7 @@ namespace Configs.Editor
                 }
                 
                 var config = (IGameConfigScheme)Activator.CreateInstance(configType);
-                var json = JsonConvert.SerializeObject(config);
+                var json = JsonConvert.SerializeObject(config, Formatting.Indented);
                 
                 await File.WriteAllTextAsync(Path + fileName, json);
                 
@@ -65,7 +65,7 @@ namespace Configs.Editor
         {
             string fileContent = await File.ReadAllTextAsync(Path + fileName);
             var config = JsonConvert.DeserializeObject(fileContent, configType) as IGameConfigScheme;
-            var json = JsonConvert.SerializeObject(config);
+            var json = JsonConvert.SerializeObject(config, Formatting.Indented);
                 
             await File.WriteAllTextAsync(Path + fileName, json);
             

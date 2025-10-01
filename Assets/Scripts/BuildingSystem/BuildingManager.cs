@@ -1,4 +1,4 @@
-﻿using CityBuilder.Dependencies;
+﻿using System.Linq;
 using CityBuilder.Grid;
 using UnityEditor;
 using UnityEngine;
@@ -12,31 +12,38 @@ namespace CityBuilder.BuildingSystem
         public BuildingFactory BuildingFactory { get; }
         public BuildingsConfigSo Config { get; }
         public BuildingsModel Model { get; } = new();
-
-        private readonly BuildingViewCollection _buildingViewsController;
         
         private readonly GridManager _gridManager;
-        private readonly IViewsProvider _viewsProvider;
-        private readonly ViewWithModelProvider _viewWithModelProvider;
 
-        public BuildingManager(BuildingsConfigSo config, GridManager gridManager, IViewsProvider viewsProvider)
+        public BuildingManager(BuildingsConfigSo config, GridManager gridManager)
         {
             Config = config;
             _gridManager = gridManager;
-            _viewsProvider = viewsProvider;
 
-            BuildingFactory = new(viewsProvider);
+            BuildingFactory = new();
             
-            _viewWithModelProvider = new ViewWithModelProvider(viewsProvider, new DependencyContainer());
-
-            _buildingViewsController = new (Model, _viewWithModelProvider);
-            _buildingViewsController.Initialize();
+            CreateStartBuilding();
         }
 
-        public void Deinit()
+        private void CreateStartBuilding()
         {
-            _buildingViewsController.Deinit();
-            _viewWithModelProvider.Deinit();
+            var grid = _gridManager.GridModels.First();
+
+            var gridSize = grid.Size;
+
+            var mainBuildingPosition = gridSize / 2 - Vector2Int.one;
+
+            if (grid.TryGetCell(mainBuildingPosition, out var cellModel) == false)
+            {
+                Debug.LogError($"Can't find cell position for main building {mainBuildingPosition}!!!");
+                return;
+            }
+
+            var config = Config.MainBuildingConfig;
+            var building = BuildingFactory.Create(config, cellModel);
+            SetBuilding(cellModel, building);
+            
+            Model.SetMainBuilding(building);
         }
         
         public void TryPlaceBuilding(CellModel cellModel, int configIndex)
@@ -47,17 +54,6 @@ namespace CityBuilder.BuildingSystem
             }
             
             var config = Config.Configs[configIndex];
-            var building = BuildingFactory.Create(config, cellModel);
-            
-            if (CanPlaceBuilding(config, cellModel))
-            {
-                SetBuilding(cellModel, building);
-            } 
-        }
-
-        public void TryPlaceDefaultBuilding(CellModel cellModel)
-        {
-            var config = Config.Configs[0];
             var building = BuildingFactory.Create(config, cellModel);
             
             if (CanPlaceBuilding(config, cellModel))
@@ -142,8 +138,10 @@ namespace CityBuilder.BuildingSystem
 
         private bool CanBeUpgraded(BuildingModel first, BuildingModel second)
         {
-            return string.Equals(first.Config.Name, second.Config.Name) &&
-                   first.Level.Value == second.Level.Value;
+            return
+                Equals(first.Config, second.Config) &&
+                    first.Level.Value == second.Level.Value &&
+                        Model.MainBuilding.Level.Value > first.Level.Value;
         }
         
         public bool CanMoveBuilding(CellModel location)

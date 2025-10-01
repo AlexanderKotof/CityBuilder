@@ -9,7 +9,7 @@ namespace PlayerInput
 
         public event Action<Vector3> OnMouseDragStarted;
 
-        public event Action<Vector3> OnMouseDraging;
+        public event Action<Vector3> OnMouseDragging;
 
         public event Action<Vector3> OnMouseDragEnded;
         
@@ -47,7 +47,7 @@ namespace PlayerInput
             if (Input.GetMouseButton(0) && Time.realtimeSinceStartup - _pressTime > _dragThreashold)
             {
                 UpdateDragging(true);
-                OnMouseDraging?.Invoke(MousePosition);
+                OnMouseDragging?.Invoke(MousePosition);
             }
             else if (Input.GetMouseButtonUp(0))
             {

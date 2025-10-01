@@ -28,8 +28,8 @@ namespace CityBuilder.BuildingSystem
         public readonly Guid RuntimeId = Guid.NewGuid();
         
         public IReadOnlyCollection<CellModel> OccupiedCells { get; private set; }
-        
-        public bool CanBeMoved => true;
+
+        public bool CanBeMoved => Config.IsMovable;
         public bool IsEmpty => false;
         
         public BuildingModel(int level, BuildingConfig config)

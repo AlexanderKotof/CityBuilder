@@ -34,3 +34,11 @@ MonoBehaviour:
     RequiredResources: []
     BuildingFunctions:
     - {fileID: 11400000, guid: 7a616650a85eaf748b0d9d882c94b666, type: 2}
+  MainBuildingConfig:
+    Name: Cityhall
+    Prefab: {fileID: 4666062724587789524, guid: 094c6a6ab82493f48b775cbf80584edf, type: 3}
+    AssetKey: Cityhall
+    Size: {x: 2, y: 2}
+    RequiredResources: []
+    BuildingFunctions:
+    - {fileID: 11400000, guid: 80a319dbacf80754daa756bf34d7daf8, type: 2}

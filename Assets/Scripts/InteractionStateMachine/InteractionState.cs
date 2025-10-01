@@ -44,7 +44,7 @@ namespace InteractionStateMachine
         {
             _playerInput.OnMouseClick += OnMouseClick;
             _playerInput.OnMouseDragStarted += OnMouseDragStarted;
-            _playerInput.OnMouseDraging += OnMouseDragging;
+            _playerInput.OnMouseDragging += OnMouseDragging;
             _playerInput.OnMouseDragEnded += OnMouseDragEnded;
             _playerInput.OnMouseRightClick += OnMouseRightClick;
         }
@@ -53,7 +53,7 @@ namespace InteractionStateMachine
         {
             _playerInput.OnMouseClick -= OnMouseClick;
             _playerInput.OnMouseDragStarted -= OnMouseDragStarted;
-            _playerInput.OnMouseDraging -= OnMouseDragging;
+            _playerInput.OnMouseDragging -= OnMouseDragging;
             _playerInput.OnMouseDragEnded -= OnMouseDragEnded;
             _playerInput.OnMouseRightClick -= OnMouseRightClick;
         }
