@@ -15,7 +15,7 @@ namespace InteractionStateMachine
         protected InteractionModel InteractionModel { get; }
         protected Raycaster Raycaster => _raycastController;
 
-        protected InteractionState(DependencyContainer dependencyContainer)
+        protected InteractionState(IDependencyContainer dependencyContainer)
         {
             _playerInput = dependencyContainer.Resolve<PlayerInputManager>();
             _cursorController = dependencyContainer.Resolve<CursorController>();

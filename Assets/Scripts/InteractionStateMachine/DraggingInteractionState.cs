@@ -11,7 +11,7 @@ namespace InteractionStateMachine
         private readonly BuildingManager _buildingManager;
         private readonly GridManager _gridManager;
 
-        public DraggingInteractionState(DependencyContainer dependencyContainer) : base(dependencyContainer)
+        public DraggingInteractionState(IDependencyContainer dependencyContainer) : base(dependencyContainer)
         {
             _draggingContentController = dependencyContainer.Resolve<DraggingContentController>();
             _buildingManager = dependencyContainer.Resolve<BuildingManager>();

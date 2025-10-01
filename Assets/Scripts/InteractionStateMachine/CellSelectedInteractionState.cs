@@ -5,7 +5,7 @@ namespace InteractionStateMachine
 {
     public class CellSelectedInteractionState : InteractionState
     {
-        public CellSelectedInteractionState(DependencyContainer dependencyContainer) : base(dependencyContainer)
+        public CellSelectedInteractionState(IDependencyContainer dependencyContainer) : base(dependencyContainer)
         {
         }
 

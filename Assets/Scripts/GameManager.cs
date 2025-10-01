@@ -17,23 +17,11 @@ using ViewSystem;
 public class GameManager : MonoBehaviour, IUnityUpdate
 {
     public Camera RaycasterCamera;
-    public LayerMask LayerMask;
-    public Transform Cursor;
-    
     public GameConfigurationSo GameConfiguration;
 
     private PlayerInputManager _playerInputManager;
     private GridManager _gridManager;
     private ViewsProvider _viewsProvider;
-
-    public CursorController CursorController { get; private set; }
-    public Raycaster Raycaster { get; private set; }
-    public BuildingManager BuildingManager { get; private set; }
-    public ResourcesManager ResourcesManager { get; private set; }
-    public DraggingContentController DraggingContentController { get; private set; }
-    private PlayerInteractionStateMachine? PlayerInteractionStateMachine;
-
-    private InteractionModel _interactionModel = new InteractionModel();
     
     private Action? UpdateHandler;
     private GameSystemsInitialization _gameSystemsInitialization;
@@ -44,38 +32,22 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         _playerInputManager = new PlayerInputManager();
         _viewsProvider = new ViewsProvider();
 
-        _gridManager = new GridManager();
-        
-        RegisterGrids();
-
-        //ToDo: move to features/systems
-        Raycaster = new Raycaster(RaycasterCamera, LayerMask, _gridManager);
-        CursorController = new CursorController(Cursor);
-        ResourcesManager = new ResourcesManager(GameConfiguration.ResourcesConfig);
-        DraggingContentController = new DraggingContentController();
-
         _innerDependencies = new DependencyContainer();
+        _innerDependencies.Register(RaycasterCamera);
         
         _innerDependencies.Register(GameConfiguration);
         _innerDependencies.Register(_playerInputManager);
         _innerDependencies.Register<IViewsProvider>(_viewsProvider);
-        _innerDependencies.Register(Raycaster);
         _innerDependencies.Register<IUnityUpdate>(this);
-        _innerDependencies.Register(_interactionModel);
-        _innerDependencies.Register(CursorController);
-        _innerDependencies.Register(DraggingContentController);
-        _innerDependencies.Register(ResourcesManager.PlayerResourcesStorage);
         
         InitializeGameSystems(_innerDependencies);
-        InitializePlayerInteractionStateMachine(_innerDependencies);
-        
+
         WindowTest();
     }
     
     private void OnDestroy()
     {
         _viewsProvider.Dispose();
-        PlayerInteractionStateMachine?.Stop();
         _gameSystemsInitialization.Deinit();
     }
 
@@ -105,26 +77,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         provider.Deinit();
     }
 
-    private void RegisterGrids()
-    {
-        var grids = GameObject.FindObjectsOfType<GridComponent>();
-        foreach (var grid in grids)
-        {
-            _gridManager.RegisterGrid(grid);
-        }
-    }
-
-    private void InitializePlayerInteractionStateMachine(DependencyContainer dependencies)
-    {
-        PlayerInteractionStateMachine = new PlayerInteractionStateMachine(
-            new EmptyInteractionState(dependencies),
-            new CellSelectedInteractionState(dependencies),
-            new DraggingInteractionState(dependencies)
-        );
-        
-        PlayerInteractionStateMachine.Start(typeof(EmptyInteractionState));
-    }
-
     private async void InitializeGameSystems(DependencyContainer dependencies)
     {
         _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
@@ -138,11 +90,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         _gameSystemsInitialization.Update();
         
         _playerInputManager.Update();
-
-        if (PlayerInteractionStateMachine != null)
-        {
-            PlayerInteractionStateMachine.Update();
-        }
     }
     
     public void SubscribeOnUpdate(Action action)
@@ -160,10 +107,13 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     private void OnGUI()
     {
         int MaxIndex = 5;
+
+        var storage = _innerDependencies.Resolve<PlayerResourcesModel>();
+        
         for (int i = 0; i < MaxIndex; i++)
         {
             var resourceType = (ResourceType)i;
-            var amount = ResourcesManager.PlayerResourcesStorage.GetResourceAmount(resourceType);
+            var amount = storage.GetResourceAmount(resourceType);
             GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}:\n{amount}"));
         }
 

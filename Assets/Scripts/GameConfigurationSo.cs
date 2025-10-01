@@ -7,4 +7,6 @@ public class GameConfigurationSo : ScriptableObject
 {
     public BuildingsConfigSo BuildingsConfig;
     public ResourcesConfigurationSO ResourcesConfig;
+    public LayerMask InteractionRaycastLayerMask;
+    public string SelectionAssetReferenceKey;
 }

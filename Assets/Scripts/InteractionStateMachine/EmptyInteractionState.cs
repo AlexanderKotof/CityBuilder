@@ -7,7 +7,7 @@ namespace InteractionStateMachine
 {
     public class EmptyInteractionState : InteractionState
     {
-        public EmptyInteractionState(DependencyContainer dependencyContainer) : base(dependencyContainer)
+        public EmptyInteractionState(IDependencyContainer dependencyContainer) : base(dependencyContainer)
         {
         }
 

@@ -18,7 +18,9 @@ namespace GameSystems
         public static readonly HashSet<Type> GamePlayFeatures = new()
         {
             typeof(GameTimeSystem.GameTimeSystem),
+            typeof(ResourcesFeature),
             typeof(CellGridFeature),
+            typeof(GameInteractionFeature),
             typeof(BuildingFeature),
             typeof(ProducingFeature.ResourcesProductionFeature),
             typeof(PopulationFeature),
