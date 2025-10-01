@@ -1,11 +1,13 @@
+using System.Threading.Tasks;
+
 namespace GameSystems
 {
     public interface IGameSystem
     {
-        void Init();
-        void Deinit();
+        Task Init();
+        Task Deinit();
     }
-
+    
     public interface IUpdateGamSystem
     {
         void Update();

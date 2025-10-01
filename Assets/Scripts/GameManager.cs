@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
-using Configs;
-using Configs.Schemes;
-using Configs.Utilities;
 using GameSystems;
 using GameSystems.Implementation.PopulationFeature;
 using GameTimeSystem;
@@ -57,7 +52,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         Raycaster = new Raycaster(RaycasterCamera, LayerMask, _gridManager);
         CursorController = new CursorController(Cursor);
         ResourcesManager = new ResourcesManager(GameConfiguration.ResourcesConfig);
-        //BuildingManager = new(GameConfiguration.BuildingsConfig, _gridManager);
         DraggingContentController = new DraggingContentController();
 
         _innerDependencies = new DependencyContainer();
@@ -65,19 +59,16 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         _innerDependencies.Register(GameConfiguration);
         _innerDependencies.Register(_playerInputManager);
         _innerDependencies.Register<IViewsProvider>(_viewsProvider);
-        //_innerDependencies.Register(BuildingManager);
         _innerDependencies.Register(Raycaster);
         _innerDependencies.Register<IUnityUpdate>(this);
         _innerDependencies.Register(_interactionModel);
         _innerDependencies.Register(CursorController);
         _innerDependencies.Register(DraggingContentController);
-        //_innerDependencies.Register(BuildingManager.Model);
         _innerDependencies.Register(ResourcesManager.PlayerResourcesStorage);
         
         InitializeGameSystems(_innerDependencies);
         InitializePlayerInteractionStateMachine(_innerDependencies);
         
-        GameConfigsInitializationAsync();
         WindowTest();
     }
     
@@ -86,20 +77,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         _viewsProvider.Dispose();
         PlayerInteractionStateMachine?.Stop();
         _gameSystemsInitialization.Deinit();
-    }
-    
-    private async void GameConfigsInitializationAsync()
-    {
-        string path = PathUtility.ConfigsPath;
-        var initialaizer = new GameConfigInitializationSystem();
-        await initialaizer.LoadConfigs(path);
-        
-        _innerDependencies.Register(initialaizer.GameConfigProvider);
-
-        foreach (var keyValuePair in initialaizer.GameConfigProvider.Map)
-        {
-            Debug.Log($"Founded config {keyValuePair.Key} - {keyValuePair.Value}");
-        }
     }
 
     private async void WindowTest()
@@ -148,10 +125,10 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         PlayerInteractionStateMachine.Start(typeof(EmptyInteractionState));
     }
 
-    private void InitializeGameSystems(DependencyContainer dependencies)
+    private async void InitializeGameSystems(DependencyContainer dependencies)
     {
         _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
-        _gameSystemsInitialization.Init();
+        await _gameSystemsInitialization.Init();
     }
     
     private void Update()

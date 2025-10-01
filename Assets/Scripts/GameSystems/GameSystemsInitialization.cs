@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using UnityEngine;
 
 namespace GameSystems
 {
-    public class GameSystemsInitialization : IGameSystem
+    public class GameSystemsInitialization
     {
         private readonly IDependencyContainer _container;
     
@@ -22,12 +23,12 @@ namespace GameSystems
             _constructorParameters  = new object[] { _container };
         }
 
-        public void Init()
+        public async Task Init()
         {
-            CreateGameSystems(GameSystemsSets.LowLevelSystems);
+            CreateGameSystems(GameSystemsSets.CommonSystems);
             CreateGameSystems(GameSystemsSets.GamePlayFeatures);
 
-            InitializeGameSystems();
+            await InitializeGameSystems();
             
             //TODO: Add systems dismounting
         }
@@ -48,12 +49,12 @@ namespace GameSystems
             }
         }
             
-        private void InitializeGameSystems()
+        private async Task InitializeGameSystems()
         {
             foreach (var gameSystem in _gameSystems)
             {
                 Debug.Log($"Begin of initialization {gameSystem.GetType().Name}...");
-                gameSystem.Init();
+                await gameSystem.Init();
             }
         }
         

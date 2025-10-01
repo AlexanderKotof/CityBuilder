@@ -30,16 +30,6 @@ namespace GameSystems.Implementation.CheatsFeature
             _buildingManager = container.Resolve<BuildingManager>();
         }
 
-        public override void Init()
-        {
-            
-        }
-
-        public override void Deinit()
-        {
-            
-        }
-
         public void Update()
         {
             foreach (var keyKodeToIndex in _placeBuildingsKeys)

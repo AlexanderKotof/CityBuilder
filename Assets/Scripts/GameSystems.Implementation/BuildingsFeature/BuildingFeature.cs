@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using GameSystems;
@@ -29,16 +30,18 @@ namespace CityBuilder.BuildingSystem
             _buildingViewsController = new (Model, _viewWithModelProvider);
         }
 
-        public override void Init()
+        public override Task Init()
         {
             BuildingManager.Init();
             _buildingViewsController.Initialize();
+            return Task.CompletedTask;
         }
 
-        public override void Deinit()
+        public override Task Deinit()
         {
             _buildingViewsController.Deinit();
             _viewWithModelProvider.Deinit();
+            return Task.CompletedTask;
         }
     }
 }

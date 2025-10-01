@@ -2,7 +2,12 @@ using UnityEngine;
 
 namespace CityBuilder.BuildingSystem
 {
-    public abstract class BuildingFunction : ScriptableObject
+    public interface IBuildingFunction
+    {
+
+    }
+
+    public abstract class BuildingFunction : ScriptableObject, IBuildingFunction
     {
         
     }

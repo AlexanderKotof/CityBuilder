@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using GameSystems;
@@ -27,7 +28,7 @@ namespace ProducingFeature
             
             ProductionModel = new(container.Resolve<PlayerResourcesModel>());
         }
-        public override void Init()
+        public override Task Init()
         {
             _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
@@ -38,9 +39,11 @@ namespace ProducingFeature
             }
             
             _gameTimeSystem.NewDayStarted += OnNewDayStarted;
+            
+            return Task.CompletedTask;
         }
 
-        public override void Deinit()
+        public override Task Deinit()
         {
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
@@ -51,6 +54,8 @@ namespace ProducingFeature
             }
             
             _gameTimeSystem.NewDayStarted -= OnNewDayStarted;
+            
+            return Task.CompletedTask;
         }
 
         private void OnBuildingAdded(BuildingModel building)

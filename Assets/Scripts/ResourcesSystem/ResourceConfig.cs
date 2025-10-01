@@ -7,9 +7,9 @@ namespace ResourcesSystem
     public class ResourceConfig
     {
         [field: SerializeField]
-        public ResourceType Type { get; private set; }
+        public ResourceType Type { get; set; }
         [field: SerializeField]
-        public int Amount { get; private set; }
+        public int Amount { get; set; }
 
         public override string ToString()
         {

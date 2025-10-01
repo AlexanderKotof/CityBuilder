@@ -8,22 +8,24 @@ namespace CityBuilder.BuildingSystem
 {
     public class BuildingsModel
     {
-        public readonly Dictionary<CellModel, BuildingModel> BuildingsMap = new Dictionary<CellModel, BuildingModel>();
+        public readonly Dictionary<CellModel, BuildingModel> BuildingsMap = new();
         
-        public readonly ReactiveCollection<BuildingModel> Buildings = new ReactiveCollection<BuildingModel>();
+        public readonly ReactiveCollection<BuildingModel> Buildings = new();
         
         public BuildingModel MainBuilding { get; private set; }
 
         public void AddBuilding(BuildingModel building, CellModel location)
         {
+            if (!BuildingsMap.TryAdd(location, building))
+            {
+                Debug.LogError($"Building at position {location.ToString()} already exists!");
+                return;
+            }
+            
             var occupiedCells = GetBuildingCellsSet(building, location);
+
             foreach (var cell in occupiedCells)
             {
-                if (!BuildingsMap.TryAdd(location, building))
-                {
-                    Debug.LogError($"Building at position {location.ToString()} already exists!");
-                }
-                
                 //Is it really needed?
                 cell.SetContent(building);
             }

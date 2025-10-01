@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using GameSystems;
@@ -18,16 +19,18 @@ namespace ResourcesSystem
             _buildingsModel = container.Resolve<BuildingsModel>();
         }
 
-        public override void Init()
+        public override Task Init()
         {
             _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
+            return Task.CompletedTask;
         }
         
-        public override void Deinit()
+        public override Task Deinit()
         {
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
+            return Task.CompletedTask;
         }
         
         private void OnBuildingAdded(BuildingModel building)

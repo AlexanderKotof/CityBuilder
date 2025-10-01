@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
+using Configs;
 using GameSystems.Implementation.CheatsFeature;
 using GameSystems.Implementation.PopulationFeature;
 using ResourcesSystem;
@@ -9,9 +10,9 @@ namespace GameSystems
 {
     public static class GameSystemsSets
     {
-        public static readonly HashSet<Type> LowLevelSystems = new()
+        public static readonly HashSet<Type> CommonSystems = new()
         {
-
+            typeof(GameConfigInitializationSystem),
         };
         
         public static readonly HashSet<Type> GamePlayFeatures = new()

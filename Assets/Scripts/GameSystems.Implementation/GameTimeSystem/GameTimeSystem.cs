@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using GameSystems;
 using UnityEngine;
 
@@ -14,17 +15,15 @@ namespace GameTimeSystem
         public DateModel Date { get; } = new DateModel(1000, 1, 1);
         
         public event Action<int> NewDayStarted;
-        
-        public GameTimeSystem(){}
 
-        public void Init()
+        public Task Init()
         {
-            
+            return Task.CompletedTask;
         }
 
-        public void Deinit()
+        public Task Deinit()
         {
-            
+            return Task.CompletedTask;
         }
 
         public void Update()

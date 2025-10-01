@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 
 namespace GameSystems
@@ -10,8 +11,15 @@ namespace GameSystems
         {
             Container = container;
         }
-    
-        public abstract void Init();
-        public abstract void Deinit();
+
+        public virtual Task Init()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task Deinit()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

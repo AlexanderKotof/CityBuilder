@@ -1,1 +1,51 @@
-{"MainBuildingId":"MainBuilding_232","value":"abfdawaa","SomeData":[{"value1":"222","value2":333},{"value1":"22233","value2":3323}],"SomeDataDictionary":{"1":{"value1":"abfdawaa","value2":2}}}
+{
+  "MainBuildingId": "MainBuilding_232",
+  "value": "abfdawaa",
+  "BuildingConfigs": [
+    {
+      "Name": "FARM",
+      "AssetKey": "Some key",
+      "Size": {
+        "x": 1,
+        "y": 1,
+        "magnitude": 1.41421354,
+        "sqrMagnitude": 2
+      },
+      "IsMovable": true,
+      "RequiredResources": [
+        {
+          "Type": 3,
+          "Amount": 1
+        }
+      ],
+      "BuildingFunctions": [
+        {
+          "$type": "Configs.Schemes.HouseHoldsIncreaseBuildingFunction, Assembly-CSharp",
+          "AvailableHouseholdsIncrease": 5,
+          "PerBuildingLevelGrow": 5
+        },
+        {
+          "$type": "Configs.Schemes.OtherBuildingFunction, Assembly-CSharp",
+          "ssss": 1,
+          "sss": 2
+        }
+      ]
+    }
+  ],
+  "SomeData": [
+    {
+      "value1": "222",
+      "value2": 333
+    },
+    {
+      "value1": "22233",
+      "value2": 3323
+    }
+  ],
+  "SomeDataDictionary": {
+    "1": {
+      "value1": "abfdawaa",
+      "value2": 2
+    }
+  }
+}

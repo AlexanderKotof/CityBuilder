@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using GameSystems;
@@ -12,12 +13,11 @@ public class CellGridFeature : GameSystemBase
         GridManager = new GridManager();
     }
 
-    public override void Init()
+    public override Task Init()
     {
         RegisterGrids();
+        return Task.CompletedTask;
     }
-
-    public override void Deinit() { }
     
     private void RegisterGrids()
     {

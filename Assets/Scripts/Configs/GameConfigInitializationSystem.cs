@@ -5,20 +5,28 @@ using System.Threading.Tasks;
 using Configs.Extensions;
 using Configs.Schemes;
 using Configs.Utilities;
-using Newtonsoft.Json;
+using GameSystems;
 using UnityEngine;
 
 namespace Configs
 {
-    public class GameConfigInitializationSystem
+    public class GameConfigInitializationSystem : IGameSystem
     {
         public GameConfigProvider GameConfigProvider { get; } = new();
-
-        public GameConfigInitializationSystem()
+        
+        private readonly IConfigSerializer _configSerializer = new JsonConfigSerializer();
+        
+        public Task Init()
         {
-            
+            string path = PathUtility.ConfigsPath;
+            return LoadConfigs(path);
         }
 
+        public Task Deinit()
+        {
+            return Task.CompletedTask;
+        }
+        
         public async Task LoadConfigs(string path)
         {
             Debug.Log($"Begin load configs from {path}...");
@@ -43,7 +51,8 @@ namespace Configs
                 Debug.Log($"Trying to read {filePath}...");
                     
                 string fileContent = await File.ReadAllTextAsync(filePath);
-                IGameConfigScheme configScheme = JsonConvert.DeserializeObject(fileContent, configType) as IGameConfigScheme;
+                
+                IGameConfigScheme configScheme = _configSerializer.Deserialize(fileContent, configType);
                     
                 Debug.Log($"Registering config {configScheme} by type {configType.Name}");
                     

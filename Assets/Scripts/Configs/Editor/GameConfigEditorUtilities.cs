@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Configs.Extensions;
 using Configs.Schemes;
 using Configs.Utilities;
-using Unity.Plastic.Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +13,8 @@ namespace Configs.Editor
     public static class GameConfigEditorUtilities
     {
         private static readonly string Path = PathUtility.ConfigsPath;
+
+        private static readonly IConfigSerializer Serializer = new JsonConfigSerializer();
         
         [MenuItem("Tools/Configs/Create...")]
         public static async void CreateConfigsWithExistingSchemesIfNotExist()
@@ -48,7 +49,7 @@ namespace Configs.Editor
                 }
                 
                 var config = (IGameConfigScheme)Activator.CreateInstance(configType);
-                var json = JsonConvert.SerializeObject(config, Formatting.Indented);
+                var json = Serializer.Serialize(config);
                 
                 await File.WriteAllTextAsync(Path + fileName, json);
                 
@@ -64,8 +65,8 @@ namespace Configs.Editor
         private static async Task TryUpdateFile(string fileName, Type configType)
         {
             string fileContent = await File.ReadAllTextAsync(Path + fileName);
-            var config = JsonConvert.DeserializeObject(fileContent, configType) as IGameConfigScheme;
-            var json = JsonConvert.SerializeObject(config, Formatting.Indented);
+            var config = Serializer.Deserialize(fileContent, configType);
+            var json = Serializer.Serialize(config);
                 
             await File.WriteAllTextAsync(Path + fileName, json);
             
