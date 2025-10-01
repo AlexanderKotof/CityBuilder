@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CityBuilder.Grid;
+using Configs;
 using UnityEditor;
 using UnityEngine;
 using ViewSystem;
@@ -21,7 +22,10 @@ namespace CityBuilder.BuildingSystem
             _gridManager = gridManager;
 
             BuildingFactory = new();
-            
+        }
+
+        public void Init()
+        {
             CreateStartBuilding();
         }
 

@@ -26,8 +26,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     public Transform Cursor;
     
     public GameConfigurationSo GameConfiguration;
-    
-    public List<GameObject> windowsPrefabs;
 
     private PlayerInputManager _playerInputManager;
     private GridManager _gridManager;
@@ -49,9 +47,9 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     private void Awake()
     {
         _playerInputManager = new PlayerInputManager();
-        _gridManager = new GridManager();
-        
         _viewsProvider = new ViewsProvider();
+
+        _gridManager = new GridManager();
         
         RegisterGrids();
 
@@ -59,24 +57,25 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         Raycaster = new Raycaster(RaycasterCamera, LayerMask, _gridManager);
         CursorController = new CursorController(Cursor);
         ResourcesManager = new ResourcesManager(GameConfiguration.ResourcesConfig);
-        BuildingManager = new(GameConfiguration.BuildingsConfig, _gridManager);
+        //BuildingManager = new(GameConfiguration.BuildingsConfig, _gridManager);
         DraggingContentController = new DraggingContentController();
 
         _innerDependencies = new DependencyContainer();
         
+        _innerDependencies.Register(GameConfiguration);
         _innerDependencies.Register(_playerInputManager);
         _innerDependencies.Register<IViewsProvider>(_viewsProvider);
-        _innerDependencies.Register(BuildingManager);
+        //_innerDependencies.Register(BuildingManager);
         _innerDependencies.Register(Raycaster);
         _innerDependencies.Register<IUnityUpdate>(this);
         _innerDependencies.Register(_interactionModel);
         _innerDependencies.Register(CursorController);
         _innerDependencies.Register(DraggingContentController);
-        _innerDependencies.Register(BuildingManager.Model);
+        //_innerDependencies.Register(BuildingManager.Model);
         _innerDependencies.Register(ResourcesManager.PlayerResourcesStorage);
         
-        InitializePlayerInteractionStateMachine(_innerDependencies);
         InitializeGameSystems(_innerDependencies);
+        InitializePlayerInteractionStateMachine(_innerDependencies);
         
         GameConfigsInitializationAsync();
         WindowTest();

@@ -24,9 +24,12 @@ namespace GameSystems
 
         public void Init()
         {
-            CreateGameSystems();
+            CreateGameSystems(GameSystemsSets.LowLevelSystems);
+            CreateGameSystems(GameSystemsSets.GamePlayFeatures);
 
             InitializeGameSystems();
+            
+            //TODO: Add systems dismounting
         }
 
         public void Deinit()
@@ -44,7 +47,6 @@ namespace GameSystems
                 gameSystem.Update();
             }
         }
-
             
         private void InitializeGameSystems()
         {
@@ -55,11 +57,11 @@ namespace GameSystems
             }
         }
         
-        private void CreateGameSystems()
+        private void CreateGameSystems(IReadOnlyCollection<Type> systemsToSet)
         {
-            Debug.Log("Begin initializing Game Systems");
+            Debug.Log("Begin initializing game systems");
 
-            foreach (var systemType in GameSystemsSet.GameSystemTypes)
+            foreach (var systemType in systemsToSet)
             {
                 object? system;
             

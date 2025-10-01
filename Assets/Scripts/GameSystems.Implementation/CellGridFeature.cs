@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CellGridFeature : GameSystemBase
 {
-    public GridManager GridManager;
+    public GridManager GridManager { get; private set; }
 
     public CellGridFeature(IDependencyContainer container) : base(container)
     {

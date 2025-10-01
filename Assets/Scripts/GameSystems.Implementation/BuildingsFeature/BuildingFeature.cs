@@ -1,28 +1,37 @@
 using CityBuilder.Dependencies;
+using CityBuilder.Grid;
 using GameSystems;
 using ViewSystem;
 using ViewSystem.Implementation;
 
 namespace CityBuilder.BuildingSystem
 {
-    public class BuildingViewsFeature : GameSystemBase
+    public class BuildingFeature : GameSystemBase
     {
-        private readonly IViewsProvider _viewsProvider;
         private readonly ViewWithModelProvider _viewWithModelProvider;
         private readonly BuildingViewCollection _buildingViewsController;
-
-        public BuildingViewsFeature(IDependencyContainer container) : base(container)
+        
+        public BuildingManager BuildingManager { get; private set; }
+        public BuildingsModel Model => BuildingManager.Model;
+        
+        public BuildingFeature(IDependencyContainer container) : base(container)
         {
-            var buildingsModel = container.Resolve<BuildingsModel>();
+            var gameConfiguration = container.Resolve<GameConfigurationSo>();
+            var gridManager = container.Resolve<GridManager>();
+            BuildingManager = new BuildingManager(
+                gameConfiguration.BuildingsConfig,
+                gridManager);
+            
             var viewsProvider = container.Resolve<IViewsProvider>();
             
             _viewWithModelProvider = new ViewWithModelProvider(viewsProvider, container);
 
-            _buildingViewsController = new (buildingsModel, _viewWithModelProvider);
+            _buildingViewsController = new (Model, _viewWithModelProvider);
         }
-        
+
         public override void Init()
         {
+            BuildingManager.Init();
             _buildingViewsController.Initialize();
         }
 

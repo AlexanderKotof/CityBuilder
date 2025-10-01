@@ -7,16 +7,21 @@ using ResourcesSystem;
 
 namespace GameSystems
 {
-    public static class GameSystemsSet
+    public static class GameSystemsSets
     {
-        public static readonly HashSet<Type> GameSystemTypes = new()
+        public static readonly HashSet<Type> LowLevelSystems = new()
+        {
+
+        };
+        
+        public static readonly HashSet<Type> GamePlayFeatures = new()
         {
             typeof(GameTimeSystem.GameTimeSystem),
             typeof(CellGridFeature),
+            typeof(BuildingFeature),
             typeof(ProducingFeature.ResourcesProductionFeature),
             typeof(PopulationFeature),
             typeof(ResourcesStorageFeature),
-            typeof(BuildingViewsFeature),
             typeof(CheatsFeature),
         };
     }
