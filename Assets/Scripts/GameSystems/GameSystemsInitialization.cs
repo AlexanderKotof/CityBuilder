@@ -115,9 +115,7 @@ namespace GameSystems
                 {
                     continue;
                 }
-                    
-                Debug.Log($"Try register dependency from {systemType.Name} - {propertyInfo.PropertyType.Name}.");
-                    
+                
                 object? value = propertyInfo.GetValue(system);
                 if (value != null)
                 {

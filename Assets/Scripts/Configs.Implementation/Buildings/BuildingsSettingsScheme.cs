@@ -1,5 +1,6 @@
 using System;
 using CityBuilder.BuildingSystem;
+using Configs.Implementation.Buildings.Functions;
 using Newtonsoft.Json;
 using ResourcesSystem;
 using UnityEngine;

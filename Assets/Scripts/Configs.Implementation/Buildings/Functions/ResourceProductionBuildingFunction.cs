@@ -1,6 +1,6 @@
 using ResourcesSystem;
 
-namespace CityBuilder.BuildingSystem
+namespace Configs.Implementation.Buildings.Functions
 {
     public class ResourceProductionBuildingFunction : BuildingFunction
     {

@@ -1,4 +1,4 @@
-namespace CityBuilder.BuildingSystem
+namespace Configs.Implementation.Buildings.Functions
 {
     public class MercenaryBuildingFunction : BuildingFunction
     {

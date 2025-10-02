@@ -15,10 +15,13 @@ namespace Configs.Editor
         private static readonly string Path = PathUtility.ConfigsPath;
 
         private static readonly IConfigSerializer Serializer = new JsonConfigSerializer();
+        private static readonly GameConfigsProcessor ConfigsProcessor = new GameConfigsProcessor();
         
-        [MenuItem("Tools/Configs/Create...")]
+        [MenuItem("Tools/Configs/Rebuild...")]
         public static async void CreateConfigsWithExistingSchemesIfNotExist()
         {
+            ConfigsProcessor.Clear();
+            
             Debug.Log($"Begin creating configs from {Path}!");
             
             var files = Directory.GetFiles(Path, "*.json");
@@ -66,11 +69,28 @@ namespace Configs.Editor
         {
             string fileContent = await File.ReadAllTextAsync(Path + fileName);
             var config = Serializer.Deserialize(fileContent, configType);
+            
+            ValidateConfig(config);
+
             var json = Serializer.Serialize(config);
                 
             await File.WriteAllTextAsync(Path + fileName, json);
             
             Debug.Log($"Successfully updated {fileName}...");
+        }
+
+        private static void ValidateConfig(IGameConfigScheme config)
+        {
+            try
+            {
+                ConfigsProcessor.CollectReferences(config);
+                ConfigsProcessor.ResolveReferences(config);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                throw;
+            }
         }
     }
 }

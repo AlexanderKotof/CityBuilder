@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
+using Configs.Implementation.Buildings.Functions;
 using ResourcesSystem;
 
 namespace ProducingFeature

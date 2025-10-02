@@ -31,6 +31,8 @@ namespace Configs
         
         private async Task LoadConfigs(string path)
         {
+            _configsProcessor.Clear();
+            
             var list = new List<(IGameConfigScheme, Type)>();
             
             Debug.Log($"Begin load configs from {path}...");

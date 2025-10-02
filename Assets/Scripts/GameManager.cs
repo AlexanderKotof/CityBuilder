@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
 
         _innerDependencies = new DependencyContainer();
         _innerDependencies.Register(RaycasterCamera);
-        
         _innerDependencies.Register(GameConfiguration);
         _innerDependencies.Register(_playerInputManager);
         _innerDependencies.Register<IViewsProvider>(_viewsProvider);
@@ -47,7 +46,7 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     
     private void OnDestroy()
     {
-        _viewsProvider.Dispose();
+        //_viewsProvider.Dispose();
         _gameSystemsInitialization.Deinit();
     }
 

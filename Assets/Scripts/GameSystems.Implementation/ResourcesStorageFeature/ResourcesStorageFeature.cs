@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
+using Configs.Implementation.Buildings.Functions;
 using GameSystems;
 
 namespace ResourcesSystem

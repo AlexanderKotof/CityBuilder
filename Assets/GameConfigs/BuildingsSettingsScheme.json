@@ -88,17 +88,19 @@
   ],
   "BuildingFunctions": [
     {
-      "$type": "CityBuilder.BuildingSystem.MainBuildingFunction, Assembly-CSharp",
+      "$type": "Configs.Implementation.Buildings.Functions.MainBuildingFunction, Assembly-CSharp",
+      "Note": "Main building function",
       "Id": "b5fd632f-752f-4d9d-8992-6b3539ade3c4"
     },
     {
-      "$type": "CityBuilder.BuildingSystem.ResourceStorageBuildingFunction, Assembly-CSharp",
+      "$type": "Configs.Implementation.Buildings.Functions.ResourceStorageBuildingFunction, Assembly-CSharp",
       "StorageCapacityIncrease": 0,
       "PerBuildingLevelGrow": 0,
+      "Note": "Storage building default function",
       "Id": "8ecd41ef-0535-479c-a04f-423da5010b80"
     },
     {
-      "$type": "CityBuilder.BuildingSystem.ResourceProductionBuildingFunction, Assembly-CSharp",
+      "$type": "Configs.Implementation.Buildings.Functions.ResourceProductionBuildingFunction, Assembly-CSharp",
       "RequireResourcesForProduction": [
         {
           "Type": 3,
@@ -111,16 +113,19 @@
           "Amount": 1
         }
       ],
+      "Note": "Farm production",
       "Id": "ef74076e-2954-4c47-b998-b0b2754ac5c7"
     },
     {
-      "$type": "CityBuilder.BuildingSystem.HouseHoldsIncreaseBuildingFunction, Assembly-CSharp",
+      "$type": "Configs.Implementation.Buildings.Functions.HouseHoldsIncreaseBuildingFunction, Assembly-CSharp",
       "AvailableHouseholdsIncrease": 5,
       "PerBuildingLevelGrow": 5,
+      "Note": "House population function",
       "Id": "686a142b-8acd-48ef-bd39-ffde54ab4ceb"
     },
     {
-      "$type": "CityBuilder.BuildingSystem.MercenaryBuildingFunction, Assembly-CSharp",
+      "$type": "Configs.Implementation.Buildings.Functions.MercenaryBuildingFunction, Assembly-CSharp",
+      "Note": "TODO: units to hire list, etc.",
       "Id": "36b5af98-b63f-414f-be26-d7cfa5860d28"
     }
   ]

@@ -1,4 +1,5 @@
 using CityBuilder.BuildingSystem;
+using Configs.Implementation.Buildings.Functions;
 
 namespace ResourcesSystem
 {

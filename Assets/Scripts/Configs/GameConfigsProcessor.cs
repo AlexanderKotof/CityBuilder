@@ -4,12 +4,18 @@ using System.Collections.Generic;
 using System.Reflection;
 using Configs.Schemes;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Configs
 {
     public class GameConfigsProcessor
     {
         private readonly Dictionary<Guid, IGameConfigPiece> _configById = new();
+
+        public void Clear()
+        {
+            _configById.Clear();
+        }
         
         public void CollectReferences(object obj)
         {
@@ -25,7 +31,7 @@ namespace Configs
             {
                 if (_configById.TryAdd(config.Id, config) == false)
                 {
-                    throw new InvalidOperationException($"Duplicate config ID: {config.Id} ({config.GetType().Name})");
+                    return;
                 }
             }
 
@@ -71,8 +77,14 @@ namespace Configs
                 var valueProp = type.GetProperty("Value");
 
                 var id = (Guid)(idProp?.GetValue(targetObject) ?? Guid.Empty);
-                if (id != Guid.Empty && _configById.TryGetValue(id, out var target))
+                if (id != Guid.Empty)
                 {
+                    if (_configById.TryGetValue(id, out var target) == false)
+                    {
+                        throw new InvalidKeyException(
+                            $"No config with id {id} found!");
+                    }
+                    
                     var targetType = type.GetGenericArguments()[0];
                     if (targetType.IsAssignableFrom(target.GetType()))
                     {
