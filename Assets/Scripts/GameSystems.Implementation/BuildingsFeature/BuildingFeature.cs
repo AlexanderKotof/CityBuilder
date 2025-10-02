@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
+using Configs;
 using GameSystems;
 using ViewSystem;
 using ViewSystem.Implementation;
@@ -17,10 +18,11 @@ namespace CityBuilder.BuildingSystem
         
         public BuildingFeature(IDependencyContainer container) : base(container)
         {
-            var gameConfiguration = container.Resolve<GameConfigurationSo>();
+            var configProvider = container.Resolve<GameConfigProvider>();
             var gridManager = container.Resolve<GridManager>();
+            
             BuildingManager = new BuildingManager(
-                gameConfiguration.BuildingsConfig,
+                configProvider,
                 gridManager);
             
             var viewsProvider = container.Resolve<IViewsProvider>();

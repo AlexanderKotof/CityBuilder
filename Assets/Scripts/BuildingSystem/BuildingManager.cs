@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using CityBuilder.Grid;
 using Configs;
+using Configs.Schemes;
 using UnityEditor;
 using UnityEngine;
 using ViewSystem;
@@ -11,14 +12,15 @@ namespace CityBuilder.BuildingSystem
     public class BuildingManager
     {
         public BuildingFactory BuildingFactory { get; }
-        public BuildingsConfigSo Config { get; }
+        public BuildingsSettingsScheme Config => _provider.GetConfig<BuildingsSettingsScheme>();
         public BuildingsModel Model { get; } = new();
-        
+
+        private readonly GameConfigProvider _provider;
         private readonly GridManager _gridManager;
 
-        public BuildingManager(BuildingsConfigSo config, GridManager gridManager)
+        public BuildingManager(GameConfigProvider provider, GridManager gridManager)
         {
-            Config = config;
+            _provider = provider;
             _gridManager = gridManager;
 
             BuildingFactory = new();
@@ -52,12 +54,12 @@ namespace CityBuilder.BuildingSystem
         
         public void TryPlaceBuilding(CellModel cellModel, int configIndex)
         {
-            if (Config.Configs.Length <= configIndex || configIndex < 0)
+            if (Config.BuildingConfigs.Length <= configIndex || configIndex < 0)
             {
                 return;
             }
             
-            var config = Config.Configs[configIndex];
+            BuildingConfigScheme config = Config.BuildingConfigs[configIndex];
             var building = BuildingFactory.Create(config, cellModel);
             
             if (CanPlaceBuilding(config, cellModel))
@@ -99,14 +101,14 @@ namespace CityBuilder.BuildingSystem
             return Model.BuildingsMap.TryGetValue(location, out building);
         }
 
-        public bool CanPlaceBuilding(BuildingConfig config, CellModel startCell)
+        public bool CanPlaceBuilding(BuildingConfigScheme config, CellModel startCell)
         {
             var gridModel = startCell.GridModel;
             var position = startCell.Position;
 
-            for (int i = position.X; i < position.X + config.Size.x; i++)
+            for (int i = position.X; i < position.X + config.Size.X; i++)
             {
-                for (int j = position.Y; j < position.Y + config.Size.y; j++)
+                for (int j = position.Y; j < position.Y + config.Size.Y; j++)
                 {
                     var targetCell = gridModel.GetCell(i, j);
                     var targetContent = targetCell.Content.Value;

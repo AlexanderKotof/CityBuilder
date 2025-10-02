@@ -16,6 +16,7 @@ namespace Configs.Schemes
             Name = "Main Building",
             AssetKey = "Cityhall",
             IsMovable = false,
+            Size = new Size(2, 2),
             RequiredResources = new ResourceConfig[1]
             {
                 new() { Type = ResourceType.Food, Amount = 1 }
@@ -42,7 +43,7 @@ namespace Configs.Schemes
                 {
                     new ConfigReference<BuildingFunction>()
                 },
-                Size = Vector2Int.one,
+                Size = new Size(1, 1)
             }
         };
 
@@ -58,7 +59,14 @@ namespace Configs.Schemes
             },
             new ResourceProductionBuildingFunction()
             {
-
+                RequireResourcesForProduction = new ResourceConfig[]
+                {
+                    new() { Type = ResourceType.Food, Amount = 5 },
+                },
+                ProduceResourcesByTick = new ResourceConfig[]
+                {
+                    new() { Type = ResourceType.Food, Amount = 5 },
+                }
             },
             new HouseHoldsIncreaseBuildingFunction
             {

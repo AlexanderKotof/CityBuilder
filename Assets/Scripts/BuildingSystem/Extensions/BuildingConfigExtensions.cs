@@ -1,10 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
+using Configs.Schemes;
 
 namespace CityBuilder.BuildingSystem
 {
     public static class BuildingConfigExtensions
     {
-        public static bool TryGetProducingResourcesFunction(this BuildingConfig bc, [NotNullWhen(true)] out ResourceProductionBuildingFunction production)
+        public static bool TryGetProducingResourcesFunction(this BuildingConfigScheme bc, [NotNullWhen(true)] out ResourceProductionBuildingFunction production)
         {
             production = null;
 
@@ -15,7 +16,7 @@ namespace CityBuilder.BuildingSystem
             
             foreach (var function in bc.BuildingFunctions)
             {
-                if (function is ResourceProductionBuildingFunction buildingFunction)
+                if (function.Value is ResourceProductionBuildingFunction buildingFunction)
                 {
                     production = buildingFunction;
                     return true;
@@ -25,7 +26,7 @@ namespace CityBuilder.BuildingSystem
             return false;
         }
         
-        public static bool TryGetHouseholdsCapacityFunction(this BuildingConfig bc, [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunction production)
+        public static bool TryGetHouseholdsCapacityFunction(this BuildingConfigScheme bc, [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunction production)
         {
             production = null;
             
@@ -36,7 +37,7 @@ namespace CityBuilder.BuildingSystem
             
             foreach (var function in bc.BuildingFunctions)
             {
-                if (function is HouseHoldsIncreaseBuildingFunction buildingFunction)
+                if (function.Value is HouseHoldsIncreaseBuildingFunction buildingFunction)
                 {
                     production = buildingFunction;
                     return true;
@@ -46,7 +47,7 @@ namespace CityBuilder.BuildingSystem
             return false;
         }
         
-        public static bool TryGetResourceStorageCapacityFunction(this BuildingConfig bc, [NotNullWhen(true)] out ResourceStorageBuildingFunction production)
+        public static bool TryGetResourceStorageCapacityFunction(this BuildingConfigScheme bc, [NotNullWhen(true)] out ResourceStorageBuildingFunction production)
         {
             production = null;
             
@@ -57,7 +58,7 @@ namespace CityBuilder.BuildingSystem
             
             foreach (var function in bc.BuildingFunctions)
             {
-                if (function is ResourceStorageBuildingFunction buildingFunction)
+                if (function.Value is ResourceStorageBuildingFunction buildingFunction)
                 {
                     production = buildingFunction;
                     return true;

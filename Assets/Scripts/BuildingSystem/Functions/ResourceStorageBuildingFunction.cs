@@ -4,8 +4,7 @@ namespace CityBuilder.BuildingSystem
 {
     public class ResourceStorageBuildingFunction : BuildingFunction
     {
-        public int StorageCapacityIncrease;
-        public int PerBuildingLevelGrow;
-        //ToDo: how to calculate capacity or someth by building level?
+        public int StorageCapacityIncrease { get; set;}
+        public int PerBuildingLevelGrow { get; set;}
     }
 }

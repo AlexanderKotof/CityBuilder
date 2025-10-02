@@ -4,10 +4,8 @@
     "Name": "Main Building",
     "AssetKey": "Cityhall",
     "Size": {
-      "x": 2,
-      "y": 2,
-      "magnitude": 2.828427,
-      "sqrMagnitude": 8
+      "X": 2,
+      "Y": 2
     },
     "IsMovable": false,
     "RequiredResources": [
@@ -28,10 +26,8 @@
       "Name": "FARM",
       "AssetKey": "Farm",
       "Size": {
-        "x": 1,
-        "y": 1,
-        "magnitude": 1.41421354,
-        "sqrMagnitude": 2
+        "X": 1,
+        "Y": 1
       },
       "IsMovable": true,
       "RequiredResources": [
@@ -51,10 +47,8 @@
       "Name": "HOUSE",
       "AssetKey": "House",
       "Size": {
-        "x": 1,
-        "y": 1,
-        "magnitude": 1.41421354,
-        "sqrMagnitude": 2
+        "X": 1,
+        "Y": 1
       },
       "IsMovable": true,
       "RequiredResources": [
@@ -74,10 +68,8 @@
       "Name": "STORAGE",
       "AssetKey": "Storage",
       "Size": {
-        "x": 1,
-        "y": 1,
-        "magnitude": 1.41421354,
-        "sqrMagnitude": 2
+        "X": 1,
+        "Y": 1
       },
       "IsMovable": true,
       "RequiredResources": [
@@ -107,8 +99,18 @@
     },
     {
       "$type": "CityBuilder.BuildingSystem.ResourceProductionBuildingFunction, Assembly-CSharp",
-      "RequireResourcesForProduction": null,
-      "ProduceResourcesByTick": null,
+      "RequireResourcesForProduction": [
+        {
+          "Type": 3,
+          "Amount": 1
+        }
+      ],
+      "ProduceResourcesByTick": [
+        {
+          "Type": 3,
+          "Amount": 1
+        }
+      ],
       "Id": "ef74076e-2954-4c47-b998-b0b2754ac5c7"
     },
     {

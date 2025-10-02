@@ -8,7 +8,7 @@ namespace Configs.Schemes
     {
         public string Name;
         public string AssetKey;
-        public Vector2Int Size = Vector2Int.one;
+        public Size Size = new Size(1, 1);
 
         public bool IsMovable = true;
 

@@ -4,8 +4,8 @@ namespace CityBuilder.BuildingSystem
 {
     public class ResourceProductionBuildingFunction : BuildingFunction
     {
-        public ResourceConfig[] RequireResourcesForProduction;
+        public ResourceConfig[] RequireResourcesForProduction { get; set;}
         
-        public ResourceConfig[] ProduceResourcesByTick;
+        public ResourceConfig[] ProduceResourcesByTick { get; set;}
     }
 }

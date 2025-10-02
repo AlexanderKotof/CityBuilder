@@ -70,9 +70,9 @@ namespace CityBuilder.BuildingSystem
             var position = startCell.Position;
             var config = building.Config;
             
-            for (int i = position.X; i < position.X + config.Size.x; i++)
+            for (int i = position.X; i < position.X + config.Size.X; i++)
             {
-                for (int j = position.Y; j < position.Y + config.Size.y; j++)
+                for (int j = position.Y; j < position.Y + config.Size.Y; j++)
                 {
                     list.Add(startCell.GridModel.GetCell(i, j));
                 }
