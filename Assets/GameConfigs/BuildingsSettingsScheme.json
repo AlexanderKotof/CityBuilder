@@ -1,0 +1,125 @@
+{
+  "Id": "c029fc96-77b3-4e25-9c73-53dc54afbc26",
+  "MainBuildingConfig": {
+    "Name": "Main Building",
+    "AssetKey": "Cityhall",
+    "Size": {
+      "x": 2,
+      "y": 2,
+      "magnitude": 2.828427,
+      "sqrMagnitude": 8
+    },
+    "IsMovable": false,
+    "RequiredResources": [
+      {
+        "Type": 3,
+        "Amount": 1
+      }
+    ],
+    "BuildingFunctions": [
+      {
+        "id": "b5fd632f-752f-4d9d-8992-6b3539ade3c4"
+      }
+    ],
+    "Id": "00eba01d-16b3-4a6e-b368-8a00a9a03eb1"
+  },
+  "BuildingConfigs": [
+    {
+      "Name": "FARM",
+      "AssetKey": "Farm",
+      "Size": {
+        "x": 1,
+        "y": 1,
+        "magnitude": 1.41421354,
+        "sqrMagnitude": 2
+      },
+      "IsMovable": true,
+      "RequiredResources": [
+        {
+          "Type": 3,
+          "Amount": 1
+        }
+      ],
+      "BuildingFunctions": [
+        {
+          "id": "ef74076e-2954-4c47-b998-b0b2754ac5c7"
+        }
+      ],
+      "Id": "dcc2e09c-4708-4934-b2ef-6811a4eb4f95"
+    },
+    {
+      "Name": "HOUSE",
+      "AssetKey": "House",
+      "Size": {
+        "x": 1,
+        "y": 1,
+        "magnitude": 1.41421354,
+        "sqrMagnitude": 2
+      },
+      "IsMovable": true,
+      "RequiredResources": [
+        {
+          "Type": 3,
+          "Amount": 1
+        }
+      ],
+      "BuildingFunctions": [
+        {
+          "id": "686a142b-8acd-48ef-bd39-ffde54ab4ceb"
+        }
+      ],
+      "Id": "1016b92e-865a-4881-9667-aa9d4ef564c7"
+    },
+    {
+      "Name": "STORAGE",
+      "AssetKey": "Storage",
+      "Size": {
+        "x": 1,
+        "y": 1,
+        "magnitude": 1.41421354,
+        "sqrMagnitude": 2
+      },
+      "IsMovable": true,
+      "RequiredResources": [
+        {
+          "Type": 3,
+          "Amount": 1
+        }
+      ],
+      "BuildingFunctions": [
+        {
+          "id": "8ecd41ef-0535-479c-a04f-423da5010b80"
+        }
+      ],
+      "Id": "8199e218-cbdc-4fd5-8f78-70170e358ae0"
+    }
+  ],
+  "BuildingFunctions": [
+    {
+      "$type": "CityBuilder.BuildingSystem.MainBuildingFunction, Assembly-CSharp",
+      "Id": "b5fd632f-752f-4d9d-8992-6b3539ade3c4"
+    },
+    {
+      "$type": "CityBuilder.BuildingSystem.ResourceStorageBuildingFunction, Assembly-CSharp",
+      "StorageCapacityIncrease": 0,
+      "PerBuildingLevelGrow": 0,
+      "Id": "8ecd41ef-0535-479c-a04f-423da5010b80"
+    },
+    {
+      "$type": "CityBuilder.BuildingSystem.ResourceProductionBuildingFunction, Assembly-CSharp",
+      "RequireResourcesForProduction": null,
+      "ProduceResourcesByTick": null,
+      "Id": "ef74076e-2954-4c47-b998-b0b2754ac5c7"
+    },
+    {
+      "$type": "CityBuilder.BuildingSystem.HouseHoldsIncreaseBuildingFunction, Assembly-CSharp",
+      "AvailableHouseholdsIncrease": 5,
+      "PerBuildingLevelGrow": 5,
+      "Id": "686a142b-8acd-48ef-bd39-ffde54ab4ceb"
+    },
+    {
+      "$type": "CityBuilder.BuildingSystem.MercenaryBuildingFunction, Assembly-CSharp",
+      "Id": "36b5af98-b63f-414f-be26-d7cfa5860d28"
+    }
+  ]
+}

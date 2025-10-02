@@ -40,8 +40,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cd190ae5d6eb9fd4297e9d96fcc52b8d
-    m_Address: Assets/GameConfigs/BuildingsSettings.json
+  - m_GUID: a4cfbb97039759648ad72608f9c8f7b9
+    m_Address: cursor
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Configs
         public GameConfigProvider GameConfigProvider { get; } = new();
         
         private readonly IConfigSerializer _configSerializer = new JsonConfigSerializer();
+        private readonly GameConfigsProcessor _configsProcessor = new();
         
         public Task Init()
         {
@@ -27,8 +29,10 @@ namespace Configs
             return Task.CompletedTask;
         }
         
-        public async Task LoadConfigs(string path)
+        private async Task LoadConfigs(string path)
         {
+            var list = new List<(IGameConfigScheme, Type)>();
+            
             Debug.Log($"Begin load configs from {path}...");
             
             string[] files = Directory.GetFiles(path, "*.json");
@@ -47,16 +51,20 @@ namespace Configs
                     Debug.LogError($"No file found for config {configType.Name}...");
                     continue;
                 }
-                
-                Debug.Log($"Trying to read {filePath}...");
                     
                 string fileContent = await File.ReadAllTextAsync(filePath);
-                
                 IGameConfigScheme configScheme = _configSerializer.Deserialize(fileContent, configType);
-                    
-                Debug.Log($"Registering config {configScheme} by type {configType.Name}");
-                    
+                
+                list.Add((configScheme, configType));
+                _configsProcessor.CollectReferences(configScheme);
+            }
+            
+            foreach (var (configScheme, configType) in list)
+            {
+                _configsProcessor.ResolveReferences(configScheme);
                 GameConfigProvider.Register(configScheme, configType);
+                
+                Debug.Log($"Registered config {configScheme} by type {configType.Name}");
             }
         }
     }

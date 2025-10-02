@@ -1,3 +1,5 @@
+using System;
+using Configs.Schemes;
 using UnityEngine;
 
 namespace CityBuilder.BuildingSystem
@@ -7,8 +9,7 @@ namespace CityBuilder.BuildingSystem
 
     }
 
-    public abstract class BuildingFunction : ScriptableObject, IBuildingFunction
+    public abstract class BuildingFunction : ConfigBase, IBuildingFunction
     {
-        
     }
 }

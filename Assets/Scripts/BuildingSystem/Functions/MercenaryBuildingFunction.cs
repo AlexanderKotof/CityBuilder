@@ -1,6 +1,6 @@
 namespace CityBuilder.BuildingSystem
 {
-    public class MersenaryBuildingFunction : BuildingFunction
+    public class MercenaryBuildingFunction : BuildingFunction
     {
         public class UnitConfig
         {

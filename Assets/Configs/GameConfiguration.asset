@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingsConfig: {fileID: 11400000, guid: 7acc723c0e54da34585af9a3c800f191, type: 2}
   ResourcesConfig: {fileID: 11400000, guid: 6ed4fffe89f563242bd083cedcec30c8, type: 2}
+  InteractionRaycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 32
+  SelectionAssetReferenceKey: cursor

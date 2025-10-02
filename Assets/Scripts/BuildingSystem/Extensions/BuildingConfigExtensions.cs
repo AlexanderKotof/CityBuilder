@@ -7,6 +7,12 @@ namespace CityBuilder.BuildingSystem
         public static bool TryGetProducingResourcesFunction(this BuildingConfig bc, [NotNullWhen(true)] out ResourceProductionBuildingFunction production)
         {
             production = null;
+
+            if (bc.BuildingFunctions == null)
+            {
+                return false;
+            }
+            
             foreach (var function in bc.BuildingFunctions)
             {
                 if (function is ResourceProductionBuildingFunction buildingFunction)
@@ -22,6 +28,12 @@ namespace CityBuilder.BuildingSystem
         public static bool TryGetHouseholdsCapacityFunction(this BuildingConfig bc, [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunction production)
         {
             production = null;
+            
+            if (bc.BuildingFunctions == null)
+            {
+                return false;
+            }
+            
             foreach (var function in bc.BuildingFunctions)
             {
                 if (function is HouseHoldsIncreaseBuildingFunction buildingFunction)
@@ -37,6 +49,12 @@ namespace CityBuilder.BuildingSystem
         public static bool TryGetResourceStorageCapacityFunction(this BuildingConfig bc, [NotNullWhen(true)] out ResourceStorageBuildingFunction production)
         {
             production = null;
+            
+            if (bc.BuildingFunctions == null)
+            {
+                return false;
+            }
+            
             foreach (var function in bc.BuildingFunctions)
             {
                 if (function is ResourceStorageBuildingFunction buildingFunction)

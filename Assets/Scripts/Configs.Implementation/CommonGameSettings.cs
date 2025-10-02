@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Configs.Schemes
@@ -15,5 +17,7 @@ namespace Configs.Schemes
         
         [JsonProperty]
         public string value { get; set; } = "abfda";
+        
+        public Guid Id { get; set; } = Guid.NewGuid();
     }
 }

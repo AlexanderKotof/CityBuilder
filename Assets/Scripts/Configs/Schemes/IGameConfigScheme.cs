@@ -1,6 +1,14 @@
+using System;
+using System.Collections.Generic;
+
 namespace Configs.Schemes
 {
-    public interface IGameConfigScheme
+    public interface IConfigBase
+    {
+        
+    }
+    
+    public interface IGameConfigScheme : IGameConfigPiece
     {
     }
 }
