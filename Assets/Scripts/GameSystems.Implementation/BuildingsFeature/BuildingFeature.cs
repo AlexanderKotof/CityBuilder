@@ -3,8 +3,8 @@ using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using Configs;
 using GameSystems;
+using Views.Implementation.BuildingSystem;
 using ViewSystem;
-using ViewSystem.Implementation;
 
 namespace CityBuilder.BuildingSystem
 {

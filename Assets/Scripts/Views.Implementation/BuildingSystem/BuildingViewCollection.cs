@@ -1,7 +1,8 @@
 using CityBuilder.BuildingSystem;
 using UnityEngine;
+using ViewSystem;
 
-namespace ViewSystem.Implementation
+namespace Views.Implementation.BuildingSystem
 {
     public class BuildingViewCollection : ReactiveCollectionViewBase<BuildingModel, BuildingView>
     {

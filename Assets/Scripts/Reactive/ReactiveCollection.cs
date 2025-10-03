@@ -47,12 +47,15 @@ namespace CityBuilder.Reactive
             throw new NotImplementedException();
         }
         
-        public void Remove(T item)
+        public bool Remove(T item)
         {
             if (_innerCollection.Remove(item))
             {
                 _onRemove?.Invoke(item);
+                return true;
             }
+            
+            return false;
         }
 
         public IEnumerator<T> GetEnumerator()

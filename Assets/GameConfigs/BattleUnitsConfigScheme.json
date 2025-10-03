@@ -1,0 +1,15 @@
+{
+  "Configs": [
+    {
+      "Name": "Unit",
+      "Health": 100.0,
+      "Damage": 5.0,
+      "AttackRange": 1.0,
+      "Defense": 0.0,
+      "MoveSpeed": 1.0,
+      "AttackSpeed": 1.0,
+      "Id": "14e80a78-6faa-416b-949d-ea277530c2d5"
+    }
+  ],
+  "Id": "8aa5bf81-b609-44d3-9a72-ba6be8731dbf"
+}

@@ -1,16 +1,13 @@
-using System.Linq;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
-using CityBuilder.Reactive;
 using TMPro;
 using UnityEngine;
+using ViewSystem;
 
-namespace ViewSystem.Implementation
+namespace Views.Implementation.BuildingSystem
 {
     public class BuildingView : ViewWithModel<BuildingModel>
     {
-        //public override string AssetId { get; } = "BuildingView";
-
         public TextMeshProUGUI LevelIndicator;
         public TextMeshProUGUI NameText;
 

@@ -6,7 +6,6 @@ using Configs.Schemes;
 using UnityEditor;
 using UnityEngine;
 using ViewSystem;
-using ViewSystem.Implementation;
 
 namespace CityBuilder.BuildingSystem
 {

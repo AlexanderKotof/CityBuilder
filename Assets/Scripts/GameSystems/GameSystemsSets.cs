@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
 using Configs;
+using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.CheatsFeature;
 using GameSystems.Implementation.PopulationFeature;
 using ResourcesSystem;
@@ -25,6 +26,7 @@ namespace GameSystems
             typeof(ProducingFeature.ResourcesProductionFeature),
             typeof(PopulationFeature),
             typeof(ResourcesStorageFeature),
+            typeof(BattleFeature),
             typeof(CheatsFeature),
         };
     }

@@ -13,9 +13,9 @@ namespace ViewSystem
         private readonly Transform _parent;
 
         private readonly IViewWithModelProvider _viewsProvider;
-        public ReactiveCollection<TViewModel> Collection { get; }
+        private readonly ReactiveCollection<TViewModel> _collection;
         
-        private readonly Dictionary<TViewModel, TView> _views = new Dictionary<TViewModel, TView>();
+        private readonly Dictionary<TViewModel, TView> _views = new();
         
         public ReactiveCollectionViewBase(
             ReactiveCollection<TViewModel> collection,
@@ -24,16 +24,15 @@ namespace ViewSystem
         {
             _parent = parent;
             _viewsProvider = viewsProvider;
-            
-            Collection = collection;
+            _collection = collection;
         }
 
         public void Initialize()
         {
-            Collection.SubscribeAdd(OnViewModelAdded);
-            Collection.SubscribeRemove(OnViewModelRemoved);
+            _collection.SubscribeAdd(OnViewModelAdded);
+            _collection.SubscribeRemove(OnViewModelRemoved);
 
-            foreach (var viewModel in Collection)
+            foreach (var viewModel in _collection)
             {
                 OnViewModelAdded(viewModel);
             }
@@ -41,8 +40,8 @@ namespace ViewSystem
         
         public void Deinit()
         {
-            Collection.UnsubscribeAdd(OnViewModelAdded);
-            Collection.UnsubscribeRemove(OnViewModelRemoved);
+            _collection.UnsubscribeAdd(OnViewModelAdded);
+            _collection.UnsubscribeRemove(OnViewModelRemoved);
         }
 
         private async void OnViewModelAdded(TViewModel viewModel)
