@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using CityBuilder.Dependencies;
@@ -11,10 +12,10 @@ namespace GameSystems
     {
         private readonly IDependencyContainer _container;
     
-        private readonly Type[] _dependencyContainerType = new [] { typeof(IDependencyContainer) };
+        private static readonly Type[] DependencyContainerType = { typeof(IDependencyContainer) };
         private readonly object[] _constructorParameters;
         
-        private readonly List<IGameSystem> _gameSystems = new();
+        private readonly List<IGameSystem> _allGameSystems = new();
         private readonly List<IUpdateGamSystem> _updateGameSystems = new();
 
         public GameSystemsInitialization(IDependencyContainer container)
@@ -25,20 +26,21 @@ namespace GameSystems
 
         public async Task Init()
         {
-            CreateGameSystems(GameSystemsSets.CommonSystems);
-            CreateGameSystems(GameSystemsSets.GamePlayFeatures);
+            var systems = CreateGameSystems(GameSystemsSets.CommonSystems, _container, _constructorParameters);
+            
+            await InitializeGameSystems(systems);
+            
+            //TODO: turn into states
+            systems = CreateGameSystems(GameSystemsSets.GamePlayFeatures, _container, _constructorParameters);
 
-            await InitializeGameSystems();
+            await InitializeGameSystems(systems);
             
             //TODO: Add systems dismounting
         }
 
-        public void Deinit()
+        public Task Deinit()
         {
-            foreach (var gameSystem in _gameSystems)
-            {
-                gameSystem.Deinit();
-            }
+            return Task.WhenAll(_allGameSystems.Select<IGameSystem, Task>(system => system.Deinit()));
         }
 
         public void Update()
@@ -49,28 +51,43 @@ namespace GameSystems
             }
         }
             
-        private async Task InitializeGameSystems()
+        private async Task InitializeGameSystems(IReadOnlyCollection<IGameSystem> gameSystems)
         {
-            foreach (var gameSystem in _gameSystems)
+            foreach (var gameSystem in gameSystems)
             {
                 Debug.Log($"Begin of initialization {gameSystem.GetType().Name}...");
+                
                 await gameSystem.Init();
+                
+                _allGameSystems.Add(gameSystem);
+                
+                if (gameSystem is IUpdateGamSystem updateGamSystem)
+                {
+                    _updateGameSystems.Add(updateGamSystem);
+                }
+                
+                Debug.Log($"Successfully initialized {gameSystem.GetType().Name}!");
             }
         }
         
-        private void CreateGameSystems(IReadOnlyCollection<Type> systemsToSet)
+        private static IReadOnlyCollection<IGameSystem> CreateGameSystems(
+            IReadOnlyCollection<Type> systemsToSet, 
+            IDependencyContainer container,
+            object[] constructorParameters)
         {
             Debug.Log("Begin initializing game systems");
+            
+            var gameSystems = new List<IGameSystem>();
 
             foreach (var systemType in systemsToSet)
             {
                 object? system;
             
-                ConstructorInfo constructorWithDependencies = systemType.GetConstructor(_dependencyContainerType);
+                ConstructorInfo constructorWithDependencies = systemType.GetConstructor(DependencyContainerType);
 
                 if (constructorWithDependencies != null)
                 { 
-                    system = constructorWithDependencies.Invoke(_constructorParameters);
+                    system = constructorWithDependencies.Invoke(constructorParameters);
                     Debug.Log($"System of type {systemType.Name} has constructor with dependencies");
                 }
                 else
@@ -93,20 +110,18 @@ namespace GameSystems
                 }
 
                 Debug.Log($"Successfully created game system {systemType.Name}.");
-                _gameSystems.Add(gameSystem);
                 
-                if (system is IUpdateGamSystem updateGamSystem)
-                {
-                    _updateGameSystems.Add(updateGamSystem);
-                }
-                
-                RegisterPublicProperties(systemType, system);
+                gameSystems.Add(gameSystem);
 
-                _container.Register(systemType, gameSystem);
+                RegisterPublicProperties(systemType, system, container);
+
+                container.Register(systemType, gameSystem);
             }
+            
+            return gameSystems;
         }
 
-        private void RegisterPublicProperties(Type systemType, object system)
+        private static void RegisterPublicProperties(Type systemType, object system, IDependencyContainer container)
         {
             PropertyInfo[] properties = systemType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo propertyInfo in properties)
@@ -120,7 +135,7 @@ namespace GameSystems
                 if (value != null)
                 {
                     Debug.Log($"Registered dependency from {systemType.Name} - {propertyInfo.PropertyType.Name}.");
-                    _container.Register(propertyInfo.PropertyType, value);
+                    container.Register(propertyInfo.PropertyType, value);
                 }
             }
         }

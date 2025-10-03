@@ -2,6 +2,9 @@ using System;
 using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
+using Configs;
+using Configs.Extensions;
+using Configs.Schemes;
 using GameSystems;
 using InteractionStateMachine;
 using UnityEngine;
@@ -10,7 +13,7 @@ using ViewSystem;
 public class GameInteractionFeature : GameSystemBase, IUpdateGamSystem
 {
     public CursorController CursorController { get; private set; }
-    public Raycaster Raycaster { get; }
+    public Raycaster Raycaster { get; private set; }
     public DraggingContentController DraggingContentController { get; }
 
     public InteractionModel InteractionModel { get; } = new InteractionModel();
@@ -18,19 +21,17 @@ public class GameInteractionFeature : GameSystemBase, IUpdateGamSystem
     private PlayerInteractionStateMachine? _playerInteractionStateMachine;
     
     private readonly IViewsProvider _viewsProvider;
-    private readonly GameConfigurationSo _settings;
+    private readonly CommonGameSettings _settings;
     private Transform _cursor;
 
     public GameInteractionFeature(IDependencyContainer container) : base(container)
     {
-        _settings = container.Resolve<GameConfigurationSo>();
-        
+        _settings = container.Resolve<GameConfigProvider>().CommonGameSettings();
         var raycasterCamera = container.Resolve<Camera>();
-        var layerMask = _settings.InteractionRaycastLayerMask;
         var gridManager = container.Resolve<GridManager>();
-        
         _viewsProvider = container.Resolve<IViewsProvider>();
         
+        LayerMask layerMask = (LayerMask)_settings.InteractionRaycastLayerMask;
         Raycaster = new Raycaster(raycasterCamera, layerMask, gridManager);
         
         DraggingContentController = new DraggingContentController();
@@ -38,7 +39,7 @@ public class GameInteractionFeature : GameSystemBase, IUpdateGamSystem
 
     public override async Task Init()
     {
-        _cursor = await _viewsProvider.ProvideViewAsync<Transform>(_settings.SelectionAssetReferenceKey);
+        _cursor = await _viewsProvider.ProvideViewAsync<Transform>(_settings.SelectorAssetReferenceKey);
         CursorController = new CursorController(_cursor);
         
         Container.Register(CursorController);

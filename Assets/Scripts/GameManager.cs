@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
 
     private void Awake()
     {
+        Initialized = false;
+        
         _playerInputManager = new PlayerInputManager();
         _viewsProvider = new ViewsProvider();
 
@@ -44,10 +46,10 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         WindowTest();
     }
     
-    private void OnDestroy()
+    private async void OnDestroy()
     {
         //_viewsProvider.Dispose();
-        _gameSystemsInitialization.Deinit();
+        await _gameSystemsInitialization.Deinit();
     }
 
     private async void WindowTest()
@@ -80,6 +82,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     {
         _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
         await _gameSystemsInitialization.Init();
+
+        Initialized = true;
     }
     
     private void Update()
@@ -107,6 +111,11 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     {
         int MaxIndex = 5;
 
+        if (!Initialized)
+        {
+            return;
+        }
+
         var storage = _innerDependencies.Resolve<PlayerResourcesModel>();
         
         for (int i = 0; i < MaxIndex; i++)
@@ -129,4 +138,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
                 new GUIContent($"Population: {_populationModel.CurrentPopulation.Value.ToString()} / {_populationModel.AvailableHouseholds.Value.ToString()} houses"));
         }
     }
+
+    public bool Initialized { get; set; }
 }
