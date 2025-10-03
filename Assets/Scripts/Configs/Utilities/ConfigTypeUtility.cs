@@ -13,5 +13,10 @@ namespace Configs.Utilities
                 Where(type => typeof(IGameConfigScheme).IsAssignableFrom(type) && type.IsAbstract == false && type.IsInterface == false);
             return configTypes;
         }
+        
+        public static string GetConfigFileName(this Type gameConfig)
+        {
+            return gameConfig.Name + ".json";
+        }
     }
 }

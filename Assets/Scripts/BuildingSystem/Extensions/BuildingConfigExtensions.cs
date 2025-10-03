@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Configs.Implementation.Buildings;
 using Configs.Implementation.Buildings.Functions;
 using Configs.Schemes;
 

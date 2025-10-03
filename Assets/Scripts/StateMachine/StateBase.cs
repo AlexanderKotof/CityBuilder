@@ -25,7 +25,7 @@ namespace StateMachine
 
         public void ExitState()
         {
-            Debug.Log($"Exeting state {GetType().Name}");
+            Debug.Log($"Exiting state {GetType().Name}");
             OnExitState();
         }
 

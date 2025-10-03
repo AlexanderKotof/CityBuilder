@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using CityBuilder.Grid;
+using Configs.Implementation.Buildings;
 using Configs.Schemes;
 using UnityEngine;
 using ViewSystem;

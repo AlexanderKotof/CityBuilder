@@ -1,11 +1,10 @@
 using System;
-using CityBuilder.BuildingSystem;
 using Configs.Implementation.Buildings.Functions;
+using Configs.Schemes;
 using Newtonsoft.Json;
 using ResourcesSystem;
-using UnityEngine;
 
-namespace Configs.Schemes
+namespace Configs.Implementation.Buildings
 {
     public class BuildingsSettingsScheme : IGameConfigScheme
     {
@@ -34,7 +33,7 @@ namespace Configs.Schemes
             new()
             {
                 Name = "FARM",
-                AssetKey = "Some key",
+                AssetKey = "Farm",
                 IsMovable = true,
                 RequiredResources = new ResourceConfig[1]
                 {

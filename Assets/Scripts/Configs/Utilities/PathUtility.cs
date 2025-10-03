@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Configs.Utilities
 {
-    public class PathUtility
+    public static class PathUtility
     {
         public static string AssetsPath => Application.dataPath;
 

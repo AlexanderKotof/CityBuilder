@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Configs.Extensions;
 using Configs.Schemes;
 using Configs.Utilities;
 using UnityEditor;
@@ -28,15 +27,6 @@ namespace Configs.Editor
             var configTypes = ConfigTypeUtility.GetAllConfigTypes().ToArray();
             
             Debug.Log($"Found {configTypes.Length} config types and {files.Length} files.");
-            foreach (var configType in configTypes)
-            {
-                Debug.Log($"Config: {configType}");
-            }
-            
-            foreach (var file in files)
-            {
-                Debug.Log($"File: {file}");
-            }
 
             foreach (Type configType in configTypes)
             {

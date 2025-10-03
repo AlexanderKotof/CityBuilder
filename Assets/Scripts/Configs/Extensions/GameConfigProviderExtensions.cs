@@ -1,3 +1,4 @@
+using Configs.Implementation.Buildings;
 using Configs.Schemes;
 
 namespace Configs.Extensions
