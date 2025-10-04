@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
-using CityBuilder.Grid;
 using GameSystems;
+using GameSystems.Implementation.GameTimeSystem;
 using GameSystems.Implementation.PopulationFeature;
-using GameTimeSystem;
-using InteractionStateMachine;
 using JetBrains.Annotations;
 using PlayerInput;
 using ResourcesSystem;
@@ -20,8 +17,6 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     public GameConfigurationSo GameConfiguration;
 
     private PlayerInputManager _playerInputManager;
-    private GridManager _gridManager;
-    private ViewsProvider _viewsProvider;
     
     private Action? UpdateHandler;
     private GameSystemsInitialization _gameSystemsInitialization;
@@ -32,13 +27,11 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         Initialized = false;
         
         _playerInputManager = new PlayerInputManager();
-        _viewsProvider = new ViewsProvider();
 
         _innerDependencies = new DependencyContainer();
         _innerDependencies.Register(RaycasterCamera);
         _innerDependencies.Register(GameConfiguration);
         _innerDependencies.Register(_playerInputManager);
-        _innerDependencies.Register<IViewsProvider>(_viewsProvider);
         _innerDependencies.Register<IUnityUpdate>(this);
         
         InitializeGameSystems(_innerDependencies);
@@ -48,36 +41,9 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     
     private async void OnDestroy()
     {
-        //_viewsProvider.Dispose();
         await _gameSystemsInitialization.Deinit();
     }
-
-    private async void WindowTest()
-    {
-        var provider = new WindowViewProvider(_viewsProvider, _innerDependencies);
-
-        var viewModel1 = new BuildingModel(1, null);
-        var viewModel2 = new BuildingModel(2, null);
-
-        string assetKey = "BuildingWindow";
-        await provider.ProvideViewWithModel(assetKey, viewModel1);
-        
-        await provider.ProvideViewWithModel(assetKey, viewModel2);
-
-        await Task.Delay(5000);
-        
-        provider.Recycle(viewModel1);
-        
-        await Task.Delay(1000);
-        provider.Recycle(viewModel2);
-        
-        await Task.Delay(1000);
-
-        await provider.ProvideViewWithModel(assetKey, viewModel1);
-        
-        provider.Deinit();
-    }
-
+    
     private async void InitializeGameSystems(DependencyContainer dependencies)
     {
         _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
@@ -85,7 +51,25 @@ public class GameManager : MonoBehaviour, IUnityUpdate
 
         Initialized = true;
     }
+
+    private async void WindowTest()
+    {
+        var provider = _innerDependencies.Resolve<WindowsProvider>();
     
+        string assetKey = "BuildingWindow";
+        var viewModel1 = await provider.CreateWindow<BuildingInfoWindowModel>(new WindowCreationData(assetKey, 0), _innerDependencies);
+        
+        viewModel1.IsActive.Set(true);
+    
+        await Task.Delay(5000);
+        
+        provider.Recycle(viewModel1);
+
+        
+        await Task.Delay(1000);
+    }
+
+
     private void Update()
     {
         UpdateHandler?.Invoke();
@@ -104,6 +88,8 @@ public class GameManager : MonoBehaviour, IUnityUpdate
     {
         UpdateHandler -= action;
     }
+    
+    public bool Initialized { get; set; }
 
     [CanBeNull] private DateModel _dateModel;
     [CanBeNull] private PopulationModel _populationModel;
@@ -138,6 +124,4 @@ public class GameManager : MonoBehaviour, IUnityUpdate
                 new GUIContent($"Population: {_populationModel.CurrentPopulation.Value.ToString()} / {_populationModel.AvailableHouseholds.Value.ToString()} houses"));
         }
     }
-
-    public bool Initialized { get; set; }
 }

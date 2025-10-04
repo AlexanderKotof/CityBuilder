@@ -11,11 +11,13 @@ namespace ViewSystem
         public Task<ViewWithModel<TViewModel>> ProvideViewWithModel<TViewModel>(
             string assetKey,
             TViewModel viewModel,
+            IDependencyContainer dependencyContainer,
             Transform parent = null) where TViewModel : IViewModel;
 
         public Task<TView> ProvideViewWithModel<TViewModel, TView>(
             string assetKey,
             TViewModel viewModel,
+            IDependencyContainer dependencyContainer,
             Transform parent = null)
             where TViewModel : IViewModel
             where TView : ViewWithModel<TViewModel>;
@@ -40,14 +42,11 @@ namespace ViewSystem
         }
         
         private readonly Dictionary<IViewModel, Window> _viewModelViews = new();
-
         private readonly IViewsProvider _viewsProvider;
-        private readonly IDependencyContainer _dependencies;
 
-        public ViewWithModelProvider(IViewsProvider viewsProvider, IDependencyContainer dependencies)
+        public ViewWithModelProvider(IViewsProvider viewsProvider)
         {
             _viewsProvider = viewsProvider;
-            _dependencies = dependencies;
         }
 
         public void Deinit()
@@ -60,19 +59,21 @@ namespace ViewSystem
         }
         
         public Task<ViewWithModel<TViewModel>> ProvideViewWithModel<TViewModel>(string assetKey, TViewModel viewModel,
+            IDependencyContainer dependencyContainer,
             Transform parent = null) where TViewModel : IViewModel
         {
-            return ProvideViewWithModel<TViewModel, ViewWithModel<TViewModel>>(assetKey, viewModel, parent);
+            return ProvideViewWithModel<TViewModel, ViewWithModel<TViewModel>>(assetKey, viewModel, dependencyContainer, parent);
         }
         
         public async Task<TView> ProvideViewWithModel<TViewModel, TView>(string assetKey, TViewModel viewModel,
+            IDependencyContainer dependencyContainer,
             Transform parent = null)
             where TViewModel : IViewModel
             where TView : ViewWithModel<TViewModel>
         {
             var viewGo = await _viewsProvider.ProvideViewAsync<TView>(assetKey, parent);
 
-            viewGo.Initialize(viewModel, _dependencies);
+            viewGo.Initialize(viewModel, dependencyContainer);
             
             var window = new Window(viewModel, viewGo, viewGo.Deinit);
             _viewModelViews.Add(viewModel, window);

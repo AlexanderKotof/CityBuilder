@@ -2,11 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
-using GameSystems;
 using ResourcesSystem;
-using UnityEngine;
 
-namespace ProducingFeature
+namespace GameSystems.Implementation.ProducingFeature
 {
     //ToDo: convert to production feature (can produce not only resources)
     // and add support of workers

@@ -1,4 +1,5 @@
 using CityBuilder.BuildingSystem;
+using CityBuilder.Dependencies;
 using UnityEngine;
 using ViewSystem;
 
@@ -8,7 +9,7 @@ namespace Views.Implementation.BuildingSystem
     {
         public BuildingViewCollection(
             BuildingsModel model,
-            IViewWithModelProvider viewsProvider) : base(model.Buildings, viewsProvider, new GameObject("---Buildings Root---").transform)
+            IDependencyContainer dependencies) : base(model.Buildings, dependencies, new GameObject("---Buildings Root---").transform)
         {
         }
 

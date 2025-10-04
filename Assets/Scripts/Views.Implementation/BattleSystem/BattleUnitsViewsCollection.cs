@@ -1,3 +1,4 @@
+using CityBuilder.Dependencies;
 using CityBuilder.Reactive;
 using GameSystems.Implementation.BattleSystem;
 using UnityEngine;
@@ -9,8 +10,8 @@ namespace Views.Implementation.BattleSystem
     {
         public BattleUnitsViewsCollection(
             ReactiveCollection<BattleUnitModel> collection,
-            IViewWithModelProvider viewsProvider,
-            Transform parent) : base(collection, viewsProvider, parent)
+            IDependencyContainer dependencies,
+            Transform parent) : base(collection, dependencies, parent)
         {
         }
 

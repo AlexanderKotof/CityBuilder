@@ -1,15 +1,17 @@
 using CityBuilder.Dependencies;
-using GameSystems;
 using ResourcesSystem;
 
-public class ResourcesFeature : GameSystemBase
+namespace GameSystems.Implementation
 {
-    public ResourcesManager ResourcesManager { get; }
-
-    public PlayerResourcesModel PlayerResourcesModel => ResourcesManager.PlayerResourcesStorage;
-    
-    public ResourcesFeature(IDependencyContainer container) : base(container)
+    public class ResourcesFeature : GameSystemBase
     {
-        ResourcesManager = new ResourcesManager(container.Resolve<GameConfigurationSo>().ResourcesConfig);
+        public ResourcesManager ResourcesManager { get; }
+
+        public PlayerResourcesModel PlayerResourcesModel => ResourcesManager.PlayerResourcesStorage;
+    
+        public ResourcesFeature(IDependencyContainer container) : base(container)
+        {
+            ResourcesManager = new ResourcesManager(container.Resolve<GameConfigurationSo>().ResourcesConfig);
+        }
     }
 }

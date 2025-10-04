@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ResourcesSystem;
 
-namespace ProducingFeature
+namespace GameSystems.Implementation.ProducingFeature
 {
     public interface IResourceProducer
     {

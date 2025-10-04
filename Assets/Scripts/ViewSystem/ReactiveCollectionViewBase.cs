@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CityBuilder.Dependencies;
 using JetBrains.Annotations;
 using CityBuilder.Reactive;
 using UnityEngine;
@@ -16,15 +17,17 @@ namespace ViewSystem
         private readonly ReactiveCollection<TViewModel> _collection;
         
         private readonly Dictionary<TViewModel, TView> _views = new();
-        
-        public ReactiveCollectionViewBase(
+        private readonly IDependencyContainer _dependencies;
+
+        protected ReactiveCollectionViewBase(
             ReactiveCollection<TViewModel> collection,
-            IViewWithModelProvider viewsProvider,
+            IDependencyContainer dependencies,
             Transform parent = null)
         {
             _parent = parent;
-            _viewsProvider = viewsProvider;
             _collection = collection;
+            _dependencies = dependencies;
+            _viewsProvider = dependencies.Resolve<IViewWithModelProvider>();
         }
 
         public void Initialize()
@@ -49,6 +52,7 @@ namespace ViewSystem
             var view = await _viewsProvider.ProvideViewWithModel<TViewModel, TView>(
                 ProvideAssetKey(viewModel),
                 viewModel,
+                _dependencies,
                 _parent);
             
             _views.Add(viewModel, view);

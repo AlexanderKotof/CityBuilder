@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using Configs.Implementation.Buildings.Functions;
-using GameTimeSystem;
+using GameSystems.Implementation.GameTimeSystem;
 
 namespace GameSystems.Implementation.PopulationFeature
 {

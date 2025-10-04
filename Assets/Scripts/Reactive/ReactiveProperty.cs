@@ -8,7 +8,57 @@ namespace CityBuilder.Reactive
         void AddListener(Action<T?> listener);
         void RemoveListener(Action<T?> listener);
     }
+
+    public class ReactiveCommand : IDisposable
+    {
+        private Action _innerAction = delegate { };
+
+        public void Invoke()
+        {
+            _innerAction();
+        }
+        
+        public void AddListener(Action listener)
+        {
+            _innerAction += listener;
+        }
+
+        public void RemoveListener(Action listener)
+        {
+            _innerAction -= listener;
+        }
+
+        public void Dispose()
+        {
+            _innerAction = null;
+        }
+    }
     
+    public class ReactiveCommand<T> : IDisposable
+    {
+        private Action<T> _innerAction = delegate { };
+
+        public void Invoke(T value)
+        {
+            _innerAction(value);
+        }
+        
+        public void AddListener(Action<T> listener)
+        {
+            _innerAction += listener;
+        }
+
+        public void RemoveListener(Action<T> listener)
+        {
+            _innerAction -= listener;
+        }
+
+        public void Dispose()
+        {
+            _innerAction = null;
+        }
+    }
+
     public class ReactiveProperty<T> : IReadonlyReactiveProperty<T>, IDisposable
     {
         public T? Value

@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using Configs.Implementation.Buildings.Functions;
-using GameSystems;
+using ResourcesSystem;
 
-namespace ResourcesSystem
+namespace GameSystems.Implementation.ResourcesStorageFeature
 {
     public class ResourcesStorageFeature : GameSystemBase
     {

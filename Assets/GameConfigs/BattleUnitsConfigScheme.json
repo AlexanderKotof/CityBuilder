@@ -8,6 +8,7 @@
       "Defense": 0.0,
       "MoveSpeed": 1.0,
       "AttackSpeed": 1.0,
+      "AssetKey": "Unit",
       "Id": "14e80a78-6faa-416b-949d-ea277530c2d5"
     }
   ],

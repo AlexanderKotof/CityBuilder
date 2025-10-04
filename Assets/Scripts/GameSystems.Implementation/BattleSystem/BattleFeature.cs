@@ -4,7 +4,6 @@ using Configs;
 using Configs.Schemes.BattleSystem;
 using UnityEngine;
 using Views.Implementation.BattleSystem;
-using ViewSystem;
 
 namespace GameSystems.Implementation.BattleSystem
 {
@@ -23,17 +22,16 @@ namespace GameSystems.Implementation.BattleSystem
             
             BattleManager = new BattleManager(BattleUnitsModel);
             
-            var viewsProvider = container.Resolve<IViewsProvider>();
-            var viewsWithModelProvider = new ViewWithModelProvider(viewsProvider, container);
             var parentGo = new GameObject(" --- Battle Units --- ").transform;
-
+            
+            //TODO: create inner feature dependencies container
             _playerUnitsViewsCollection = new BattleUnitsViewsCollection(
                 BattleUnitsModel.PlayerUnits,
-                viewsWithModelProvider,
+                container,
                 parentGo);
             _enemiesUnitsViewsCollection = new BattleUnitsViewsCollection(
                 BattleUnitsModel.Enemies,
-                viewsWithModelProvider,
+                container,
                 parentGo);
         }
 

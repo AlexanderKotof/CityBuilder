@@ -22,7 +22,7 @@ namespace InteractionStateMachine
             base.OnEnterState();
             
             //ToDo content manager
-            if (_buildingManager.TryGetBuilding(InteractionModel.DraggedCell, out var building))
+            if (_buildingManager.TryGetBuilding(InteractionModel.DraggedCell.Value, out var building))
             {
                 _draggingContentController.StartDraggingContent(building);
             }
@@ -36,7 +36,7 @@ namespace InteractionStateMachine
         {
             base.OnExitState();
             _draggingContentController.EndDragging();
-            InteractionModel.DraggedCell = null;
+            InteractionModel.DraggedCell.Set(null);
         }
 
         protected override void ProcessDragging(Vector3 mousePosition)
@@ -67,12 +67,12 @@ namespace InteractionStateMachine
         {
             if (InteractionModel.DraggedCell == null ||
                 cellModel == null ||
-                InteractionModel.DraggedCell == cellModel)
+                Equals(InteractionModel.DraggedCell.Value, cellModel))
             {
                 return false;
             }
             
-            return _buildingManager.TryDragCellFromTo(InteractionModel.DraggedCell, cellModel);;
+            return _buildingManager.TryDragCellFromTo(InteractionModel.DraggedCell.Value, cellModel);;
         }
     }
 }

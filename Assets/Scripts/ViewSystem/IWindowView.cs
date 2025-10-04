@@ -2,7 +2,7 @@ using System;
 
 namespace ViewSystem
 {
-    public interface IWindow
+    public interface IWindowView
     {
         internal Type ViewModelType { get; }
     }

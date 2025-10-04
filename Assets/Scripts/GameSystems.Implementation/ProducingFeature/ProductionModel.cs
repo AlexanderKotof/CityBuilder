@@ -4,7 +4,7 @@ using System.Linq;
 using ResourcesSystem;
 using UnityEngine;
 
-namespace ProducingFeature
+namespace GameSystems.Implementation.ProducingFeature
 {
     public class ProductionModel
     {

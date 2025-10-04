@@ -2,11 +2,9 @@ using System;
 
 namespace ViewSystem
 {
-    public abstract class WindowViewBase<TViewModel> : ViewWithModel<TViewModel>, IWindow
-        where TViewModel : IViewModel
+    public abstract class WindowViewBase<TViewModel> : ViewWithModel<TViewModel>, IWindowView
+        where TViewModel : IWindowViewModel
     {
-        //public abstract string AssetId { get; }
-
-        Type IWindow.ViewModelType => typeof(TViewModel);
+        Type IWindowView.ViewModelType => typeof(TViewModel);
     }
 }

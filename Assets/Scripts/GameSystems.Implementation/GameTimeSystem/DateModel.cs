@@ -1,6 +1,6 @@
 using System;
 
-namespace GameTimeSystem
+namespace GameSystems.Implementation.GameTimeSystem
 {
     public class DateModel
     {

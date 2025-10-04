@@ -135,13 +135,13 @@ namespace InteractionStateMachine
 
         protected void StartDragCell(CellModel cellModel)
         {
-            InteractionModel.DraggedCell = cellModel;
+            InteractionModel.DraggedCell.Set(cellModel);
             ChangeState<DraggingInteractionState>();
         }
 
         protected void SelectCell(CellModel cellModel)
         {
-            InteractionModel.SelectedCell = cellModel;
+            InteractionModel.SelectedCell.Set(cellModel);
 
             _cursorController.SetActive(true);
             _cursorController.SetPosition(GetCursorPositionFromCell(cellModel));
@@ -166,7 +166,7 @@ namespace InteractionStateMachine
                 return;
             }
             
-            InteractionModel.SelectedCell = null;
+            InteractionModel.SelectedCell.Set(null);
             _cursorController.SetActive(false);
             OnCellSelected();
         }

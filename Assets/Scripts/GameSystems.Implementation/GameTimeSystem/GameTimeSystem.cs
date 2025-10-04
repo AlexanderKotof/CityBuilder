@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using GameSystems;
 using UnityEngine;
 
-namespace GameTimeSystem
+namespace GameSystems.Implementation.GameTimeSystem
 {
     public class GameTimeSystem : IGameSystem, IUpdateGamSystem
     {

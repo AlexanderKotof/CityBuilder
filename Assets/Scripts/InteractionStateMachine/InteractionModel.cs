@@ -1,11 +1,12 @@
 using CityBuilder.Grid;
+using CityBuilder.Reactive;
 
 namespace InteractionStateMachine
 {
     public class InteractionModel
     {
-        public CellModel? SelectedCell { get;  set; }
-        
-        public CellModel? DraggedCell { get;  set; }
+        public ReactiveProperty<CellModel?> SelectedCell { get; } = new();
+
+        public ReactiveProperty<CellModel?> DraggedCell { get; } = new();
     }
 }

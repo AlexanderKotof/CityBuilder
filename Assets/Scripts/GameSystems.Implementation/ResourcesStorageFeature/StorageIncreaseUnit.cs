@@ -1,7 +1,7 @@
 using CityBuilder.BuildingSystem;
 using Configs.Implementation.Buildings.Functions;
 
-namespace ResourcesSystem
+namespace GameSystems.Implementation.ResourcesStorageFeature
 {
     public record StorageIncreaseUnit(ResourceStorageBuildingFunction Function, BuildingModel Building)
     {
