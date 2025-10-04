@@ -4,7 +4,7 @@ using PlayerInput;
 using StateMachine;
 using UnityEngine;
 
-namespace InteractionStateMachine
+namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.States
 {
     public abstract class InteractionState : StateBase, IUpdateState
     {

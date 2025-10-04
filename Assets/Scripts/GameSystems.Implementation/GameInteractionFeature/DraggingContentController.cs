@@ -1,9 +1,8 @@
-using CityBuilder.BuildingSystem;
 using CityBuilder.Reactive;
 using UnityEngine;
 using ViewSystem;
 
-namespace InteractionStateMachine
+namespace GameSystems.Implementation.GameInteraction
 {
     public interface IDraggableViewModel : IViewModel
     {

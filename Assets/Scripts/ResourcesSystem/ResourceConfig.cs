@@ -1,4 +1,6 @@
 using System;
+using Newtonsoft.Json;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ResourcesSystem
@@ -8,6 +10,10 @@ namespace ResourcesSystem
     {
         [field: SerializeField]
         public ResourceType Type { get; set; }
+
+        [JsonProperty] 
+        public string ResourceType => Type.ToString();
+        
         [field: SerializeField]
         public int Amount { get; set; }
 
@@ -17,12 +23,12 @@ namespace ResourcesSystem
         }
     }
 
-    public enum ResourceType
+    public enum ResourceType : int
     {
+        Food,
         Wood,
         Rock,
         Metal,
-        Food,
         Gold,
     }
 }

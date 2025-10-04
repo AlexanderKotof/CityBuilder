@@ -1,7 +1,7 @@
 {
   "Id": "c029fc96-77b3-4e25-9c73-53dc54afbc26",
   "MainBuildingConfig": {
-    "Name": "Main Building",
+    "Name": "Townhall",
     "AssetKey": "Cityhall",
     "Health": 0.0,
     "Size": {
@@ -12,6 +12,7 @@
     "RequiredResources": [
       {
         "Type": 3,
+        "ResourceType": "Metal",
         "Amount": 1
       }
     ],
@@ -34,8 +35,9 @@
       "IsMovable": true,
       "RequiredResources": [
         {
-          "Type": 3,
-          "Amount": 1
+          "Type": 1,
+          "ResourceType": "Wood",
+          "Amount": 5
         }
       ],
       "BuildingFunctions": [
@@ -56,8 +58,9 @@
       "IsMovable": true,
       "RequiredResources": [
         {
-          "Type": 3,
-          "Amount": 1
+          "Type": 2,
+          "ResourceType": "Rock",
+          "Amount": 5
         }
       ],
       "BuildingFunctions": [
@@ -79,7 +82,8 @@
       "RequiredResources": [
         {
           "Type": 3,
-          "Amount": 1
+          "ResourceType": "Metal",
+          "Amount": 5
         }
       ],
       "BuildingFunctions": [
@@ -98,8 +102,8 @@
     },
     {
       "$type": "Configs.Implementation.Buildings.Functions.ResourceStorageBuildingFunction, Assembly-CSharp",
-      "StorageCapacityIncrease": 0,
-      "PerBuildingLevelGrow": 0,
+      "StorageCapacityIncrease": 10,
+      "PerBuildingLevelGrow": 10,
       "Note": "Storage building default function",
       "Id": "8ecd41ef-0535-479c-a04f-423da5010b80"
     },
@@ -107,14 +111,16 @@
       "$type": "Configs.Implementation.Buildings.Functions.ResourceProductionBuildingFunction, Assembly-CSharp",
       "RequireResourcesForProduction": [
         {
-          "Type": 3,
+          "Type": 1,
+          "ResourceType": "Wood",
           "Amount": 1
         }
       ],
       "ProduceResourcesByTick": [
         {
-          "Type": 3,
-          "Amount": 1
+          "Type": 0,
+          "ResourceType": "Food",
+          "Amount": 2
         }
       ],
       "Note": "Farm production",

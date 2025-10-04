@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Configs;
 using Configs.Schemes;
-using GameSystems;
 using UnityEngine;
 
-namespace Configs
+namespace GameSystems.Common.GameConfigs
 {
     public class GameConfigInitializationSystem : IGameSystem
     {

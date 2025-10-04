@@ -1,6 +1,7 @@
-﻿using StateMachine;
+﻿using GameSystems.Implementation.GameInteraction.InteractionStateMachine.States;
+using StateMachine;
 
-namespace InteractionStateMachine
+namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine
 {
     public class PlayerInteractionStateMachine : StateMachineBase<InteractionState>
     {

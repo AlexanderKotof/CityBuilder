@@ -1,26 +1,25 @@
-using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
-using UnityEngine;
 
-namespace InteractionStateMachine
+namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.States
 {
-    public class EmptyInteractionState : InteractionState
+    public class CellSelectedInteractionState : InteractionState
     {
-        public EmptyInteractionState(IDependencyContainer dependencyContainer) : base(dependencyContainer)
+        public CellSelectedInteractionState(IDependencyContainer dependencyContainer) : base(dependencyContainer)
         {
         }
 
         protected override void OnEnterState()
         {
             base.OnEnterState();
+            //ToDo: show selected cell info
         }
 
         protected override void OnExitState()
         {
             base.OnExitState();
         }
-
+        
         protected override void ProcessClick(CellModel cellModel)
         {
             TrySelectCell(cellModel);
@@ -30,16 +29,25 @@ namespace InteractionStateMachine
         {
             if (InteractionModel.SelectedCell == null)
             {
-                return;
+                ChangeState<EmptyInteractionState>();
             }
-            
-            ChangeState<CellSelectedInteractionState>();
         }
 
         protected override void ProcessDragStarted(CellModel cellModel)
         {
             base.ProcessDragStarted(cellModel);
             StartDragCell(cellModel);
+        }
+
+        protected override void ProcessRightClick(CellModel cellModel)
+        {
+            base.ProcessRightClick(cellModel);
+            DeselectCell();
+        }
+
+        protected override void TryCancel()
+        {
+            DeselectCell();
         }
     }
 }

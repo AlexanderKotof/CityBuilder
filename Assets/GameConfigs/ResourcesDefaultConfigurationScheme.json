@@ -1,0 +1,31 @@
+{
+  "DefaultCapacity": 1000,
+  "Resources": [
+    {
+      "Type": 0,
+      "ResourceType": "Food",
+      "Amount": 100
+    },
+    {
+      "Type": 1,
+      "ResourceType": "Wood",
+      "Amount": 100
+    },
+    {
+      "Type": 2,
+      "ResourceType": "Rock",
+      "Amount": 100
+    },
+    {
+      "Type": 3,
+      "ResourceType": "Metal",
+      "Amount": 100
+    },
+    {
+      "Type": 4,
+      "ResourceType": "Gold",
+      "Amount": 100
+    }
+  ],
+  "Id": "72aa30d4-1040-4c4e-b07a-1f69d1512a7d"
+}

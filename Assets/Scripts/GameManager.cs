@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using GameSystems;
 using GameSystems.Implementation.GameTimeSystem;
@@ -11,32 +10,49 @@ using UnityEngine;
 using ViewSystem;
 
 
-public class GameManager : MonoBehaviour, IUnityUpdate
+public class PlayerInputSystem : IGameSystem, IUpdateGamSystem
+{
+    public PlayerInputManager PlayerInputManager { get; } = new();
+    
+    public Task Init()
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task Deinit()
+    {
+        return Task.CompletedTask;
+    }
+
+    public void Update()
+    {
+        PlayerInputManager.Update();
+    }
+}
+
+public class GameManager : MonoBehaviour
 {
     public Camera RaycasterCamera;
     public GameConfigurationSo GameConfiguration;
 
-    private PlayerInputManager _playerInputManager;
     
-    private Action? UpdateHandler;
     private GameSystemsInitialization _gameSystemsInitialization;
     private DependencyContainer _innerDependencies;
 
     private void Awake()
     {
         Initialized = false;
-        
-        _playerInputManager = new PlayerInputManager();
+
+        var unityUpdate = new GameObject("UnityUpdate").AddComponent<UnityUpdate>();
+        DontDestroyOnLoad(unityUpdate);
 
         _innerDependencies = new DependencyContainer();
         _innerDependencies.Register(RaycasterCamera);
         _innerDependencies.Register(GameConfiguration);
-        _innerDependencies.Register(_playerInputManager);
-        _innerDependencies.Register<IUnityUpdate>(this);
+        _innerDependencies.Register<IUnityUpdate>(unityUpdate);
+        _innerDependencies.Register<IUnityFixedUpdate>(unityUpdate);
         
         InitializeGameSystems(_innerDependencies);
-
-        WindowTest();
     }
     
     private async void OnDestroy()
@@ -52,41 +68,9 @@ public class GameManager : MonoBehaviour, IUnityUpdate
         Initialized = true;
     }
 
-    private async void WindowTest()
-    {
-        var provider = _innerDependencies.Resolve<WindowsProvider>();
-    
-        string assetKey = "BuildingWindow";
-        var viewModel1 = await provider.CreateWindow<BuildingInfoWindowModel>(new WindowCreationData(assetKey, 0), _innerDependencies);
-        
-        viewModel1.IsActive.Set(true);
-    
-        await Task.Delay(5000);
-        
-        provider.Recycle(viewModel1);
-
-        
-        await Task.Delay(1000);
-    }
-
-
     private void Update()
     {
-        UpdateHandler?.Invoke();
-
         _gameSystemsInitialization.Update();
-        
-        _playerInputManager.Update();
-    }
-    
-    public void SubscribeOnUpdate(Action action)
-    {
-        UpdateHandler += action;
-    }
-
-    public void UnsubscribeOnUpdate(Action action)
-    {
-        UpdateHandler -= action;
     }
     
     public bool Initialized { get; set; }

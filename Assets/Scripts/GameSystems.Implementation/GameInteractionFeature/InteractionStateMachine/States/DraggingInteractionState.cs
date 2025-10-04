@@ -3,7 +3,7 @@ using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using UnityEngine;
 
-namespace InteractionStateMachine
+namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.States
 {
     public class DraggingInteractionState : InteractionState
     {

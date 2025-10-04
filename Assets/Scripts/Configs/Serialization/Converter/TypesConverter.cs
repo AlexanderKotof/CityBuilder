@@ -5,11 +5,35 @@ using Configs.Implementation.Buildings.Functions;
 using Configs.Schemes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ResourcesSystem;
 using UnityEngine;
 using HouseHoldsIncreaseBuildingFunction = Configs.Implementation.Buildings.Functions.HouseHoldsIncreaseBuildingFunction;
 
 namespace Configs.Converter
 {
+    public class ResourceTypeConverter : JsonConverter<ResourceType>
+    {
+        public override void WriteJson(JsonWriter writer, ResourceType value, JsonSerializer serializer)
+        {
+            JObject jo = JObject.FromObject(value.ToString(), serializer);
+            jo.WriteTo(writer);
+        }
+
+        public override ResourceType ReadJson(JsonReader reader, Type objectType, ResourceType existingValue, bool hasExistingValue,
+            JsonSerializer serializer)
+        {
+            JObject jo = JObject.Load(reader);
+
+            if (ResourceType.TryParse(jo.Value<string>(), out ResourceType result))
+            {
+                return result;
+            }
+            
+            return hasExistingValue ? existingValue : ResourceType.Food;
+        }
+    }
+    
+    
     // public class Vector2IntConverter : JsonConverter<Vector2Int>
     // {
     //     public override void WriteJson(JsonWriter writer, Vector2Int value, JsonSerializer serializer)

@@ -6,3 +6,10 @@ public interface IUnityUpdate
 
     void UnsubscribeOnUpdate(Action action);
 }
+
+public interface IUnityFixedUpdate
+{
+    void SubscribeOnFixedUpdate(Action action);
+
+    void UnsubscribeOnFixedUpdate(Action action);
+}

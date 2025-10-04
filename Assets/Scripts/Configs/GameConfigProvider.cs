@@ -6,8 +6,6 @@ namespace Configs
 {
     public class GameConfigProvider
     {
-        public IReadOnlyDictionary<Type, IGameConfigScheme> Map => _configsMap;
-        
         private readonly Dictionary<Type, IGameConfigScheme> _configsMap = new();
 
         public void Register(IGameConfigScheme scheme, Type type)

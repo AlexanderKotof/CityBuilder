@@ -4,11 +4,12 @@ using CityBuilder.Grid;
 using Configs;
 using Configs.Extensions;
 using Configs.Schemes;
-using InteractionStateMachine;
+using GameSystems.Implementation.GameInteraction.InteractionStateMachine;
+using GameSystems.Implementation.GameInteraction.InteractionStateMachine.States;
 using UnityEngine;
 using ViewSystem;
 
-namespace GameSystems.Implementation
+namespace GameSystems.Implementation.GameInteraction
 {
     public class GameInteractionFeature : GameSystemBase, IUpdateGamSystem
     {
