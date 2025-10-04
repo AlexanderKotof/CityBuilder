@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CityBuilder.Dependencies;
 using CityBuilder.Reactive;
+using JetBrains.Annotations;
 
 namespace ViewSystem
 {
@@ -26,6 +27,18 @@ namespace ViewSystem
                 action.Invoke();
             }
             _deinitActions.Clear();
+        }
+        
+        protected void InitView<TViewModel>([CanBeNull] ViewWithModel<TViewModel> view, TViewModel model)
+            where TViewModel : IViewModel
+        {
+            if (view == null)
+            {
+                return;
+            }
+            
+            view.Initialize(model, Container);
+            _deinitActions.Add(view.Deinit);
         }
 
         protected void Subscribe<T>(ReactiveProperty<T> property, Action<T> handler, bool invokeOnSubscribe = true)

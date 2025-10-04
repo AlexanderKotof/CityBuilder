@@ -1,0 +1,45 @@
+using CityBuilder.Dependencies;
+using GameSystems.Implementation.BattleSystem;
+using UnityEngine;
+using ViewSystem;
+
+namespace Views.Implementation.BattleSystem
+{
+    public class BattleUnitNavigationComponent : ViewWithModel<BattleUnitModel>
+    {
+        private Transform? _targetTransform;
+
+        public override void Initialize(BattleUnitModel model, IDependencyContainer dependencies)
+        {
+            base.Initialize(model, dependencies);
+            
+            Subscribe(model.Target, OnTargetUpdated);
+        }
+
+        private void OnTargetUpdated(BattleUnitModel target)
+        {
+            if (target == null)
+            {
+                return;
+            }
+            
+            _targetTransform = target.ThisTransform.Value;
+        }
+
+        private void Update()
+        {
+            if (_targetTransform == null)
+            {
+                return;
+            }
+
+            var tr = Model.ThisTransform.Value;
+            var direction = _targetTransform.position - tr.position;
+            var targetPosition = tr.position + direction - direction.normalized * Model.Config.AttackRange * 0.9f;
+            
+            var newPosition = tr.position = 
+                Vector3.Lerp(tr.position, targetPosition, Time.deltaTime * Model.Config.MoveSpeed);
+            Model.CurrentPosition.Set(newPosition);
+        }
+    }
+}

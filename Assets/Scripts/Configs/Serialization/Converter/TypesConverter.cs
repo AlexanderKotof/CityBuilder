@@ -101,7 +101,7 @@ namespace Configs.Converter
             ["main-building-func"] = () => new MainBuildingFunction(),
             ["production-building-func"] = () => new ResourceProductionBuildingFunction(),
             ["house-building-func"] = () => new HouseHoldsIncreaseBuildingFunction(),
-            ["mercenary-building-func"] = () => new MercenaryBuildingFunction(),
+            ["mercenary-building-func"] = () => new MercenaryTrainingBuildingFunction(),
             ["storage-building-func"] = () => new ResourceStorageBuildingFunction(),
         };
 

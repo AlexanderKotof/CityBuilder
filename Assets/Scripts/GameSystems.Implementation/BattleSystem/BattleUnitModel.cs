@@ -11,9 +11,12 @@ namespace GameSystems.Implementation.BattleSystem
         public Guid Id { get; } = Guid.NewGuid();
         
         public ReactiveProperty<Vector3> StartPosition { get; } = new();
+        public ReactiveProperty<Vector3> DesiredPosition { get; } = new();
         public ReactiveProperty<Vector3> CurrentPosition { get; } = new();
         
         public ReactiveProperty<BattleUnitModel?> Target { get; } = new();
+        
+        public ReactiveProperty<float> LastAttackTime { get; } = new();
         
         
         public UnitHealthAttribute Health { get; } = new();
@@ -36,6 +39,8 @@ namespace GameSystems.Implementation.BattleSystem
             //TODO: calculate damage by defence and etc
             
             Health.CurrentValue.Value -= Mathf.Min(damage, Health.CurrentValue.Value);
+            
+            Debug.Log("Taking damage {}");
 
             if (Health.CurrentValue.Value <= 0)
             {

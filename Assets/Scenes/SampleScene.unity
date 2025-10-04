@@ -560,7 +560,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RaycasterCamera: {fileID: 963194227}
-  GameConfiguration: {fileID: 11400000, guid: ae60e8ef18512484c949f17215c29f35, type: 2}
 --- !u!4 &2084401947
 Transform:
   m_ObjectHideFlags: 0

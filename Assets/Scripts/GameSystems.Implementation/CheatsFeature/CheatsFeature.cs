@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
+using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.GameInteractionFeature;
 using UnityEngine;
 
@@ -25,20 +27,41 @@ namespace GameSystems.Implementation.CheatsFeature
             { KeyCode.Alpha0, 9 },
         };
         
+        private readonly BattleManager _battleManager;
+
         public CheatsFeature(IDependencyContainer container) : base(container)
         {
             _raycaster = container.Resolve<Raycaster>();
             _buildingManager = container.Resolve<BuildingManager>();
+            _battleManager = container.Resolve<BattleManager>(); 
         }
 
         public void Update()
         {
+            
+            //Buidings
             foreach (var keyKodeToIndex in _placeBuildingsKeys)
             {
                 if (Input.GetKeyDown(keyKodeToIndex.Key) &&
                     _raycaster.TryGetCellFromScreenPoint(Input.mousePosition, out var cell))
                 {
                     _buildingManager.TryPlaceBuilding(cell, keyKodeToIndex.Value);
+                }
+            }
+
+            
+            //Encounters
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (Guid.TryParse("14e80a78-6faa-416b-949d-ea277530c2d5", out var guid))
+                {
+                    _battleManager.EncounterBegins(new EncounterData()
+                    {
+                        Encounters = new()
+                        {
+                            (guid, 5),
+                        }
+                    });
                 }
             }
         }

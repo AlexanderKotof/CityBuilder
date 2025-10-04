@@ -134,9 +134,16 @@
       "Id": "686a142b-8acd-48ef-bd39-ffde54ab4ceb"
     },
     {
-      "$type": "Configs.Implementation.Buildings.Functions.MercenaryBuildingFunction, Assembly-CSharp",
+      "$type": "Configs.Implementation.Buildings.Functions.MercenaryTrainingBuildingFunction, Assembly-CSharp",
+      "CanPurchase": null,
       "Note": "TODO: units to hire list, etc.",
       "Id": "36b5af98-b63f-414f-be26-d7cfa5860d28"
+    },
+    {
+      "$type": "Configs.Implementation.Buildings.Functions.MercenaryContainingFunction, Assembly-CSharp",
+      "Amount": 0,
+      "Note": "TODO: units to hire list, etc.",
+      "Id": "f47b6700-e007-4f40-bb19-0fc81566cc79"
     }
   ]
 }

@@ -44,7 +44,7 @@ namespace CityBuilder.Reactive
         
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return _innerCollection.Contains(item);
         }
         
         public bool Remove(T item)
