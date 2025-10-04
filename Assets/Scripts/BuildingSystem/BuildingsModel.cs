@@ -14,27 +14,27 @@ namespace CityBuilder.BuildingSystem
         
         public BuildingModel MainBuilding { get; private set; }
 
-        public void AddBuilding(BuildingModel building, CellModel location)
+        public void AddBuilding(BuildingModel building, CellModel startLocation)
         {
-            if (!BuildingsMap.TryAdd(location, building))
-            {
-                Debug.LogError($"Building at position {location.ToString()} already exists!");
-                return;
-            }
-            
-            var occupiedCells = GetBuildingCellsSet(building, location);
+            var occupiedCells = GetBuildingCellsSet(building, startLocation);
 
             foreach (var cell in occupiedCells)
             {
+                if (!BuildingsMap.TryAdd(cell, building))
+                {
+                    Debug.LogError($"Building at position {startLocation.ToString()} already exists!");
+                    return;
+                }
+                
                 //Is it really needed?
                 cell.SetContent(building);
             }
             
-            building.WorldPosition.Set(location.WorldPosition);
+            building.WorldPosition.Set(startLocation.WorldPosition);
             building.SetOccupiedCells(occupiedCells);
             Buildings.Add(building);
             
-            Debug.Log($"Building added, position {location.ToString()}");
+            Debug.Log($"Building added, position {startLocation.ToString()}");
         }
     
         public bool TryGetBuilding(CellModel location, out BuildingModel building) =>
@@ -42,12 +42,16 @@ namespace CityBuilder.BuildingSystem
         
         public void RemoveBuilding(CellModel location)
         {
-            var building = BuildingsMap[location];
-            foreach (var cell in GetBuildingCellsSet(building, location))
+            RemoveBuilding(BuildingsMap[location]);
+        }
+
+        public void RemoveBuilding(BuildingModel building)
+        {
+            foreach (var cell in building.OccupiedCells)
             {
                 if (!BuildingsMap.Remove(cell))
                 {
-                    Debug.LogError($"No Building found at position {cell.ToString()}!");
+                    Debug.LogError($"No Building found at position {cell.ToString()}! CHECK THIS!");
                 }
                 
                 cell.SetContent(null);
@@ -56,7 +60,7 @@ namespace CityBuilder.BuildingSystem
             building.SetOccupiedCells(Array.Empty<CellModel>());
             Buildings.Remove(building);
             
-            Debug.Log($"Building removed from position {location.ToString()}");
+            Debug.Log($"Building removed {building.BuildingName} from {building.WorldPosition.ToString()}");
         }
 
         public void SetMainBuilding(BuildingModel building)

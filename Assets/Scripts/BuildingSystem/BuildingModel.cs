@@ -5,7 +5,7 @@ using CityBuilder.Grid;
 using CityBuilder.Reactive;
 using Configs.Implementation.Buildings;
 using Configs.Schemes;
-using GameSystems.Implementation.GameInteraction;
+using GameSystems.Implementation.GameInteractionFeature;
 using Unity.VisualScripting;
 using UnityEngine;
 using ViewSystem;

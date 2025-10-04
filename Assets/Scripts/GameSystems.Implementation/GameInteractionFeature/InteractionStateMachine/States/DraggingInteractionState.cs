@@ -3,7 +3,7 @@ using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using UnityEngine;
 
-namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.States
+namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
     public class DraggingInteractionState : InteractionState
     {
@@ -32,11 +32,17 @@ namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.Sta
             }
         }
 
+        public override void Update()
+        {
+            LightenCellUnderCursor();
+        }
+
         protected override void OnExitState()
         {
             base.OnExitState();
             _draggingContentController.EndDragging();
             InteractionModel.DraggedCell.Set(null);
+            InteractionModel.SelectedCell.Notify();
         }
 
         protected override void ProcessDragging(Vector3 mousePosition)

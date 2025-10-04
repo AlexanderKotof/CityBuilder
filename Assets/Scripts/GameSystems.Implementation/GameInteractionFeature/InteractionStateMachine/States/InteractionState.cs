@@ -1,16 +1,18 @@
+using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using PlayerInput;
 using StateMachine;
 using UnityEngine;
 
-namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.States
+namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
     public abstract class InteractionState : StateBase, IUpdateState
     {
         private readonly PlayerInputManager _playerInput;
         private readonly CursorController _cursorController;
         private readonly Raycaster _raycastController;
+        private readonly BuildingManager _buildingManager;
 
         protected InteractionModel InteractionModel { get; }
         protected Raycaster Raycaster => _raycastController;
@@ -20,23 +22,36 @@ namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.Sta
             _playerInput = dependencyContainer.Resolve<PlayerInputManager>();
             _cursorController = dependencyContainer.Resolve<CursorController>();
             _raycastController = dependencyContainer.Resolve<Raycaster>();
+            _buildingManager = dependencyContainer.Resolve<BuildingManager>();
 
             InteractionModel = dependencyContainer.Resolve<InteractionModel>();
         }
 
-        public void Update()
+        public virtual void Update()
         {
-            //ToDo Lighten cells under cursor position
-            OnUpdate();
+            
         }
 
-        protected virtual void OnUpdate()
+        protected void LightenCellUnderCursor()
         {
-            bool showCursor = Raycaster.TryGetCursorPositionFromScreenPoint(Input.mousePosition, out var cursorPosition);
+            bool showCursor = Raycaster.TryGetCursorPositionFromScreenPoint(Input.mousePosition, out Vector3? cursorPosition);
             _cursorController.SetActive(showCursor);
             if (showCursor)
             {
-                _cursorController.SetPosition(cursorPosition.Value);
+                _cursorController.SetPosition(cursorPosition.Value, Vector2Int.one);
+            }
+        }
+        
+        protected void LightenCell(CellModel cellModel)
+        {
+            if (cellModel != null)
+            {
+                _cursorController.SetActive(true);
+                _cursorController.SetPosition(cellModel.WorldPosition, Vector2Int.one);
+            }
+            else
+            {
+                _cursorController.SetActive(false);
             }
         }
 
@@ -142,21 +157,8 @@ namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.Sta
         protected void SelectCell(CellModel cellModel)
         {
             InteractionModel.SelectedCell.Set(cellModel);
-
-            _cursorController.SetActive(true);
-            _cursorController.SetPosition(GetCursorPositionFromCell(cellModel));
             
             OnCellSelected();
-        }
-        
-        private Vector3 GetCursorPositionFromCell(CellModel cellModel)
-        {
-            Vector3 hitPosition2d = new Vector3(
-                Mathf.FloorToInt(cellModel.Position.X),
-                0,
-                Mathf.FloorToInt(cellModel.Position.Y));
-
-            return cellModel.GridModel.Transform.TransformPoint(hitPosition2d);
         }
         
         protected void DeselectCell()

@@ -67,7 +67,7 @@ namespace CityBuilder.Reactive
             set
             {
                 _value = value;
-                _onValueChanged?.Invoke(_value);
+                Notify();
             }
         }
 
@@ -89,6 +89,8 @@ namespace CityBuilder.Reactive
         {
             Value = value;
         }
+        
+        public void Notify() => _onValueChanged?.Invoke(_value);
 
         public void AddListener(Action<T?> listener)
         {

@@ -1,7 +1,7 @@
 using CityBuilder.Grid;
 using CityBuilder.Reactive;
 
-namespace GameSystems.Implementation.GameInteraction
+namespace GameSystems.Implementation.GameInteractionFeature
 {
     public class InteractionModel
     {

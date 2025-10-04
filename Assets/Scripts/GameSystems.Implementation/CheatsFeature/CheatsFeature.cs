@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
-using GameSystems.Implementation.GameInteraction;
+using GameSystems.Implementation.GameInteractionFeature;
 using UnityEngine;
 
 namespace GameSystems.Implementation.CheatsFeature

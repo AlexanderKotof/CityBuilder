@@ -2,7 +2,7 @@ using CityBuilder.Reactive;
 using UnityEngine;
 using ViewSystem;
 
-namespace GameSystems.Implementation.GameInteraction
+namespace GameSystems.Implementation.GameInteractionFeature
 {
     public interface IDraggableViewModel : IViewModel
     {

@@ -2,7 +2,7 @@
 using CityBuilder.Grid;
 using UnityEngine;
 
-namespace GameSystems.Implementation.GameInteraction
+namespace GameSystems.Implementation.GameInteractionFeature
 {
     public class Raycaster
     {

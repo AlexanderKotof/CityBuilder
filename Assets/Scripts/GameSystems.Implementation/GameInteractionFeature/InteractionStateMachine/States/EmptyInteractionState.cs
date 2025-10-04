@@ -1,7 +1,7 @@
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 
-namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.States
+namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
     public class EmptyInteractionState : InteractionState
     {

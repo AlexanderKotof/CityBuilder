@@ -3,7 +3,7 @@ using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using Configs;
-using GameSystems.Implementation.GameInteraction;
+using GameSystems.Implementation.GameInteractionFeature;
 using JetBrains.Annotations;
 using Views.Implementation.BuildingSystem;
 using ViewSystem;

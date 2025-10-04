@@ -5,7 +5,7 @@ using GameSystems.Implementation;
 using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.BuildingsFeature;
 using GameSystems.Implementation.CheatsFeature;
-using GameSystems.Implementation.GameInteraction;
+using GameSystems.Implementation.GameInteractionFeature;
 using GameSystems.Implementation.GameTimeSystem;
 using GameSystems.Implementation.PopulationFeature;
 using GameSystems.Implementation.ProducingFeature;

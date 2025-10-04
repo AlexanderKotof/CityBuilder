@@ -1,7 +1,7 @@
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 
-namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.States
+namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
     public class CellSelectedInteractionState : InteractionState
     {
@@ -12,12 +12,13 @@ namespace GameSystems.Implementation.GameInteraction.InteractionStateMachine.Sta
         protected override void OnEnterState()
         {
             base.OnEnterState();
-            //ToDo: show selected cell info
+            //LightenCell(InteractionModel.SelectedCell.Value);
         }
 
         protected override void OnExitState()
         {
             base.OnExitState();
+           // LightenCell(null);
         }
         
         protected override void ProcessClick(CellModel cellModel)

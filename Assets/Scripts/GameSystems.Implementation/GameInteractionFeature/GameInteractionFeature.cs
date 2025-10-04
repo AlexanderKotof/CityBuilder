@@ -1,15 +1,16 @@
 using System.Threading.Tasks;
+using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using Configs;
 using Configs.Extensions;
 using Configs.Schemes;
-using GameSystems.Implementation.GameInteraction.InteractionStateMachine;
-using GameSystems.Implementation.GameInteraction.InteractionStateMachine.States;
+using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine;
+using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States;
 using UnityEngine;
 using ViewSystem;
 
-namespace GameSystems.Implementation.GameInteraction
+namespace GameSystems.Implementation.GameInteractionFeature
 {
     public class GameInteractionFeature : GameSystemBase, IUpdateGamSystem
     {
@@ -24,6 +25,7 @@ namespace GameSystems.Implementation.GameInteraction
         private readonly IViewsProvider _viewsProvider;
         private readonly CommonGameSettings _settings;
         private Transform _cursor;
+        private CellSelectionController _cellSelectionController;
 
         public GameInteractionFeature(IDependencyContainer container) : base(container)
         {
@@ -42,8 +44,14 @@ namespace GameSystems.Implementation.GameInteraction
         {
             _cursor = await _viewsProvider.ProvideViewAsync<Transform>(_settings.SelectorAssetReferenceKey);
             CursorController = new CursorController(_cursor);
-        
+            
+            //TODO: ???
             Container.Register(CursorController);
+
+            var buildingManager = Container.Resolve<BuildingManager>();
+            _cellSelectionController =
+                new CellSelectionController(CursorController, InteractionModel, buildingManager);
+            _cellSelectionController.Init();
         
             _playerInteractionStateMachine = new PlayerInteractionStateMachine(
                 new EmptyInteractionState(Container),
@@ -56,6 +64,7 @@ namespace GameSystems.Implementation.GameInteraction
 
         public override Task Deinit()
         {
+            _cellSelectionController.Deinit();
             _playerInteractionStateMachine?.Stop();
             _viewsProvider.ReturnView(_cursor);
             return base.Deinit();
