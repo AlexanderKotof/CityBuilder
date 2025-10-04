@@ -1,4 +1,6 @@
 using CityBuilder.Dependencies;
+using Configs;
+using Configs.Schemes;
 using ResourcesSystem;
 
 namespace GameSystems.Implementation
@@ -11,7 +13,8 @@ namespace GameSystems.Implementation
     
         public ResourcesFeature(IDependencyContainer container) : base(container)
         {
-            ResourcesManager = new ResourcesManager(container.Resolve<GameConfigurationSo>().ResourcesConfig);
+            var resourcesConfig = Container.Resolve<GameConfigProvider>().GetConfig<ResourcesDefaultConfigurationScheme>();
+            ResourcesManager = new ResourcesManager(resourcesConfig);
         }
     }
 }

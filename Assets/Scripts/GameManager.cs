@@ -33,8 +33,6 @@ public class PlayerInputSystem : IGameSystem, IUpdateGamSystem
 public class GameManager : MonoBehaviour
 {
     public Camera RaycasterCamera;
-    public GameConfigurationSo GameConfiguration;
-
     
     private GameSystemsInitialization _gameSystemsInitialization;
     private DependencyContainer _innerDependencies;
@@ -48,7 +46,6 @@ public class GameManager : MonoBehaviour
 
         _innerDependencies = new DependencyContainer();
         _innerDependencies.Register(RaycasterCamera);
-        _innerDependencies.Register(GameConfiguration);
         _innerDependencies.Register<IUnityUpdate>(unityUpdate);
         _innerDependencies.Register<IUnityFixedUpdate>(unityUpdate);
         

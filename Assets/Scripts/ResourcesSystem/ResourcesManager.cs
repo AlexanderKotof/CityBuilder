@@ -1,10 +1,12 @@
+using Configs.Schemes;
+
 namespace ResourcesSystem
 {
     public class ResourcesManager
     {
         public PlayerResourcesModel PlayerResourcesStorage { get; }
 
-        public ResourcesManager(ResourcesConfigurationSO resourcesConfiguration)
+        public ResourcesManager(ResourcesDefaultConfigurationScheme resourcesConfiguration)
         {
             PlayerResourcesStorage = new(resourcesConfiguration.DefaultCapacity);
             

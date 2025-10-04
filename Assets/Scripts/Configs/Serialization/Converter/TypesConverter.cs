@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using CityBuilder.BuildingSystem;
 using Configs.Implementation.Buildings.Functions;
 using Configs.Schemes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ResourcesSystem;
-using UnityEngine;
 using HouseHoldsIncreaseBuildingFunction = Configs.Implementation.Buildings.Functions.HouseHoldsIncreaseBuildingFunction;
 
 namespace Configs.Converter
