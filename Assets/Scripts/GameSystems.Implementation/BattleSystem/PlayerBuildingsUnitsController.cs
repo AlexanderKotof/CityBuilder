@@ -48,9 +48,10 @@ namespace GameSystems.Implementation.BattleSystem
             
             void OnBuildingUnitDestroyed(IBattleUnit _)
             {
-                Debug.Log($"Building {building.BuildingName} destroyed!");
+                Debug.LogError($"Building {building.BuildingName} destroyed!");
 
                 buildingUnit.OnUnitDied -= OnBuildingUnitDestroyed;
+                
                 _buildingsModel.RemoveBuilding(building);
             }
         }
@@ -82,7 +83,9 @@ namespace GameSystems.Implementation.BattleSystem
         {
             if (_battleUnitsByBuildingRuntimeId.Remove(building.RuntimeId, out var buildingUnit))
             {
-                buildingUnit.Dispose();
+                Debug.LogError("Removed building battle unit");
+                
+                _battleUnitsModel.RemoveUnit(buildingUnit);
             }
         }
     }

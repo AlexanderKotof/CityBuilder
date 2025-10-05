@@ -29,11 +29,15 @@ namespace GameSystems.Implementation.CheatsFeature
         
         private readonly BattleManager _battleManager;
 
+        private readonly Guid _defaultUnitGuid;
+
         public CheatsFeature(IDependencyContainer container) : base(container)
         {
             _raycaster = container.Resolve<Raycaster>();
             _buildingManager = container.Resolve<BuildingManager>();
-            _battleManager = container.Resolve<BattleManager>(); 
+            _battleManager = container.Resolve<BattleManager>();
+
+            _ = Guid.TryParse("14e80a78-6faa-416b-949d-ea277530c2d5", out _defaultUnitGuid);
         }
 
         public void Update()
@@ -53,16 +57,18 @@ namespace GameSystems.Implementation.CheatsFeature
             //Encounters
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (Guid.TryParse("14e80a78-6faa-416b-949d-ea277530c2d5", out var guid))
+                _battleManager.EncounterBegins(new EncounterData()
                 {
-                    _battleManager.EncounterBegins(new EncounterData()
+                    Encounters = new()
                     {
-                        Encounters = new()
-                        {
-                            (guid, 5),
-                        }
-                    });
-                }
+                        (_defaultUnitGuid, 1),
+                    }
+                });
+            }
+            
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                _battleManager.PlayerUnitCreate(new List<Guid>() { _defaultUnitGuid });
             }
         }
     }

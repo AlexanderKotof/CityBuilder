@@ -48,6 +48,9 @@ namespace GameSystems.Implementation.BattleSystem
         public bool CanAttack => Config.Damage > 0 && Config.AttackSpeed > 0 && Config.AttackRange > 0;
         public bool CanMove => Config.MoveSpeed > 0;
         
+        public ReactiveProperty<Vector3> StartPosition { get; } = new();
+        public ReactiveProperty<Vector3> DesiredPosition { get; } = new();
+        
         public BattleUnitBase(BattleUnitConfig config)
         {
             Config = config;
@@ -91,9 +94,6 @@ namespace GameSystems.Implementation.BattleSystem
     
     public class BattleUnitModel : BattleUnitBase
     {
-        public ReactiveProperty<Vector3> StartPosition { get; } = new();
-        public ReactiveProperty<Vector3> DesiredPosition { get; } = new();
-
         public BattleUnitModel(BattleUnitConfig config, int level, Vector3 startPosition) : base(config)
         {
             StartPosition.Set(startPosition);

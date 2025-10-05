@@ -19,7 +19,9 @@ namespace Views.Implementation.BattleSystem
         {
             base.OnViewAdded(viewModel, view);
             
-            viewModel.ThisTransform.Set(view.ThisTransform);
+            var transform = view.ThisTransform;
+            viewModel.ThisTransform.Set(transform);
+            transform.position = viewModel.StartPosition.Value;
         }
 
         protected override string ProvideAssetKey(BattleUnitBase viewModel)

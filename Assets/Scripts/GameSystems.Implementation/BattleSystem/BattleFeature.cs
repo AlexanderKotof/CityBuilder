@@ -31,7 +31,6 @@ namespace GameSystems.Implementation.BattleSystem
         
         private readonly PlayerBuildingsUnitsController _playerBuildingsUnitsController;
 
-
         public BattleFeature(IDependencyContainer container) : base(container)
         {
             var settings = container.Resolve<GameConfigProvider>().GetConfig<BattleUnitsConfigScheme>();
@@ -40,7 +39,7 @@ namespace GameSystems.Implementation.BattleSystem
             _playerBuildingsUnitsController =
                 new PlayerBuildingsUnitsController(BattleUnitsModel, settings, buildingsModel);
             
-            var parentGo = new GameObject(" --- Battle Units --- ").transform;
+            var parentGo = new GameObject("--- Battle Units ---").transform;
             
             //TODO: create inner feature dependencies container
             _playerUnitsViewsCollection = new BattleUnitsViewsCollection(
