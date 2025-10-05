@@ -3,7 +3,6 @@
   "MainBuildingConfig": {
     "Name": "Townhall",
     "AssetKey": "Cityhall",
-    "Health": 0.0,
     "Size": {
       "X": 2,
       "Y": 2
@@ -21,13 +20,13 @@
         "id": "b5fd632f-752f-4d9d-8992-6b3539ade3c4"
       }
     ],
+    "UnitConfig": null,
     "Id": "00eba01d-16b3-4a6e-b368-8a00a9a03eb1"
   },
   "BuildingConfigs": [
     {
       "Name": "FARM",
       "AssetKey": "Farm",
-      "Health": 0.0,
       "Size": {
         "X": 1,
         "Y": 1
@@ -45,12 +44,12 @@
           "id": "ef74076e-2954-4c47-b998-b0b2754ac5c7"
         }
       ],
+      "UnitConfig": null,
       "Id": "dcc2e09c-4708-4934-b2ef-6811a4eb4f95"
     },
     {
       "Name": "HOUSE",
       "AssetKey": "House",
-      "Health": 0.0,
       "Size": {
         "X": 1,
         "Y": 1
@@ -68,12 +67,12 @@
           "id": "686a142b-8acd-48ef-bd39-ffde54ab4ceb"
         }
       ],
+      "UnitConfig": null,
       "Id": "1016b92e-865a-4881-9667-aa9d4ef564c7"
     },
     {
       "Name": "STORAGE",
       "AssetKey": "Storage",
-      "Health": 0.0,
       "Size": {
         "X": 1,
         "Y": 1
@@ -91,6 +90,7 @@
           "id": "8ecd41ef-0535-479c-a04f-423da5010b80"
         }
       ],
+      "UnitConfig": null,
       "Id": "8199e218-cbdc-4fd5-8f78-70170e358ae0"
     }
   ],

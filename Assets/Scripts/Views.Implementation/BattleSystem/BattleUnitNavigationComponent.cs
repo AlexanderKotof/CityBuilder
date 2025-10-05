@@ -5,18 +5,23 @@ using ViewSystem;
 
 namespace Views.Implementation.BattleSystem
 {
-    public class BattleUnitNavigationComponent : ViewWithModel<BattleUnitModel>
+    public class BattleUnitNavigationComponent : ViewWithModel<BattleUnitBase>
     {
         private Transform? _targetTransform;
 
-        public override void Initialize(BattleUnitModel model, IDependencyContainer dependencies)
+        public override void Initialize(BattleUnitBase model, IDependencyContainer dependencies)
         {
             base.Initialize(model, dependencies);
+
+            if (model.AttackModel == null)
+            {
+                return;
+            }
             
-            Subscribe(model.Target, OnTargetUpdated);
+            Subscribe(model.AttackModel.Target, OnTargetUpdated);
         }
 
-        private void OnTargetUpdated(BattleUnitModel target)
+        private void OnTargetUpdated(IBattleUnit target)
         {
             if (target == null)
             {
@@ -39,7 +44,10 @@ namespace Views.Implementation.BattleSystem
             
             var newPosition = tr.position = 
                 Vector3.Lerp(tr.position, targetPosition, Time.deltaTime * Model.Config.MoveSpeed);
-            Model.CurrentPosition.Set(newPosition);
+            
+            //tr.position = newPosition;
+            
+            //Model.CurrentPosition.Set(newPosition);
         }
     }
 }

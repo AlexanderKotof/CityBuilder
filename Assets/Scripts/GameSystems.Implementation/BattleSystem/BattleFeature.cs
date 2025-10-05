@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using Configs;
 using Configs.Schemes.BattleSystem;
@@ -27,11 +28,17 @@ namespace GameSystems.Implementation.BattleSystem
 
         private readonly BattleUnitsViewsCollection _playerUnitsViewsCollection;
         private readonly BattleUnitsViewsCollection _enemiesUnitsViewsCollection;
+        
+        private readonly PlayerBuildingsUnitsController _playerBuildingsUnitsController;
+
 
         public BattleFeature(IDependencyContainer container) : base(container)
         {
             var settings = container.Resolve<GameConfigProvider>().GetConfig<BattleUnitsConfigScheme>();
+            var buildingsModel = container.Resolve<BuildingsModel>();
             BattleManager = new BattleManager(BattleUnitsModel, settings);
+            _playerBuildingsUnitsController =
+                new PlayerBuildingsUnitsController(BattleUnitsModel, settings, buildingsModel);
             
             var parentGo = new GameObject(" --- Battle Units --- ").transform;
             
@@ -50,11 +57,13 @@ namespace GameSystems.Implementation.BattleSystem
         {
             _playerUnitsViewsCollection.Initialize();
             _enemiesUnitsViewsCollection.Initialize();
+            _playerBuildingsUnitsController.Init();
             return Task.CompletedTask;         
         }
 
         public override Task Deinit()
         {
+            _playerBuildingsUnitsController.Deinit();
             _playerUnitsViewsCollection.Deinit();
             _enemiesUnitsViewsCollection.Deinit();
             return Task.CompletedTask;

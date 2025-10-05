@@ -20,9 +20,18 @@ namespace Configs.Schemes.BattleSystem
         [JsonProperty]
         public BattleUnitConfig[] Configs { get; set; }
         
+        [JsonProperty]
+        public BattleUnitConfig DefaultBuildingUnit { get; set; }
+        
+        [JsonProperty]
+        public BattleUnitConfig MainBuildingUnit { get; set; }
+        
         public BattleUnitsConfigScheme()
         {
             Configs  = new [] { new BattleUnitConfig() };
+            
+            DefaultBuildingUnit = new BattleUnitConfig();
+            MainBuildingUnit = new();
         }
     }
 }

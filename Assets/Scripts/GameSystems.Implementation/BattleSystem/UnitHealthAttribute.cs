@@ -7,5 +7,11 @@ namespace GameSystems.Implementation.BattleSystem
     {
         public readonly ReactiveProperty<float> CurrentValue = new ();
         public readonly ReactiveProperty<float> StartValue = new ();
+
+        public UnitHealthAttribute(float startValue)
+        {
+            CurrentValue.Set(startValue);
+            StartValue.Set(startValue);
+        }
     }
 }

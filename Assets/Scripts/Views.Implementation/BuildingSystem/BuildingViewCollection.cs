@@ -13,6 +13,12 @@ namespace Views.Implementation.BuildingSystem
         {
         }
 
+        protected override void OnViewAdded(BuildingModel viewModel, BuildingView view)
+        {
+            base.OnViewAdded(viewModel, view);
+            viewModel.ThisTransform.Set(view.transform);
+        }
+
         protected override string ProvideAssetKey(BuildingModel viewModel)
         {
             return viewModel.Config.AssetKey;

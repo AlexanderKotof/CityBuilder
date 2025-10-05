@@ -1,49 +1,88 @@
+using System;
+using System.Collections.Generic;
 using CityBuilder.Reactive;
 
 namespace GameSystems.Implementation.BattleSystem
 {
     public class BattleUnitsModel
     {
-        public readonly ReactiveCollection<BattleUnitModel> PlayerUnits = new();
-        public readonly ReactiveCollection<BattleUnitModel> Enemies = new();
+        public readonly ReactiveCollection<BattleUnitBase> PlayerUnits = new();
+        public readonly ReactiveCollection<BattleUnitBase> Enemies = new();
+        
+        public readonly ReactiveCollection<BattleUnitBase> PlayerBuildings = new();
+        
+        private readonly Dictionary<Guid, Action<BattleUnitBase>> _removeUnitActions = new();
         
         public bool IsInBattleState => Enemies.Count > 0;
 
-        public void AddPlayerUnit(BattleUnitModel unit)
+        public void AddPlayerUnit(BattleUnitBase unit)
         {
             if (PlayerUnits.Contains(unit) == false)
             {
                 PlayerUnits.Add(unit);
                 unit.OnUnitDied += OnPlayerUnitDied;
+                _removeUnitActions.Add(unit.RuntimeId, RemovePlayerUnit);
             }
         }
         
-        public void RemovePlayerUnit(BattleUnitModel unit)
+        private void RemovePlayerUnit(BattleUnitBase unit)
         {
             if (PlayerUnits.Remove(unit))
             {
                 unit.OnUnitDied -= OnPlayerUnitDied;
+                _removeUnitActions.Remove(unit.RuntimeId);
             }
         }
         
-        public void AddEnemyUnit(BattleUnitModel unit)
+        public void AddPlayerBuilding(BattleUnitBase unit)
+        {
+            if (PlayerBuildings.Contains(unit) == false)
+            {
+                PlayerBuildings.Add(unit);
+                unit.OnUnitDied += OnPlayerBuildingUnitDied;
+                _removeUnitActions.Add(unit.RuntimeId, RemovePlayerBuildingUnit);
+            }
+        }
+        
+        private void RemovePlayerBuildingUnit(BattleUnitBase unit)
+        {
+            if (PlayerBuildings.Remove(unit))
+            {
+                unit.OnUnitDied -= OnPlayerBuildingUnitDied;
+                _removeUnitActions.Remove(unit.RuntimeId);
+            }
+        }
+        
+        public void AddEnemyUnit(BattleUnitBase unit)
         {
             if (Enemies.Contains(unit) == false)
             {
                 Enemies.Add(unit);
                 unit.OnUnitDied += OnEnemyUnitDied;
+                _removeUnitActions.Add(unit.RuntimeId, RemoveEnemyUnit);
             }
         }
         
-        public void RemoveEnemyUnit(BattleUnitModel unit)
+        public void RemoveEnemyUnit(BattleUnitBase unit)
         {
             if (Enemies.Remove(unit))
             {
                 unit.OnUnitDied -= OnEnemyUnitDied;
+                _removeUnitActions.Remove(unit.RuntimeId);
             }
         }
         
-        private void OnPlayerUnitDied(BattleUnitModel died) => RemovePlayerUnit(died);
-        private void OnEnemyUnitDied(BattleUnitModel unit) => RemoveEnemyUnit(unit);
+        public void RemoveUnit(BattleUnitBase unit)
+        {
+            if (_removeUnitActions.TryGetValue(unit.RuntimeId, out Action<BattleUnitBase> action))
+            {
+                action.Invoke(unit);
+            }
+        }
+        
+        private void OnPlayerUnitDied(IBattleUnit died) => RemovePlayerUnit(died as BattleUnitBase);
+        private void OnPlayerBuildingUnitDied(IBattleUnit died) => RemovePlayerUnit(died as BattleUnitBase);
+        private void OnEnemyUnitDied(IBattleUnit unit) => RemoveEnemyUnit(unit as BattleUnitBase);
+
     }
 }

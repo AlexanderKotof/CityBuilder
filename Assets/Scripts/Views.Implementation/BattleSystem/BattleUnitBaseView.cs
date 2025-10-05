@@ -7,7 +7,7 @@ using ViewSystem;
 
 namespace Views.Implementation.BattleSystem
 {
-    public class BattleUnitBaseView : ViewWithModel<BattleUnitModel>
+    public class BattleUnitBaseView : ViewWithModel<BattleUnitBase>
     {
         public Transform ThisTransform;
         
@@ -15,9 +15,11 @@ namespace Views.Implementation.BattleSystem
         public TextMeshProUGUI LevelIndicator;
         public TextMeshProUGUI NameText;
 
-        public override void Initialize(BattleUnitModel model, IDependencyContainer container)
+        public override void Initialize(BattleUnitBase model, IDependencyContainer container)
         {
             base.Initialize(model, container);
+            
+            Debug.LogError("Unit view initialized");
             
             model.ThisTransform.Set(ThisTransform);
             

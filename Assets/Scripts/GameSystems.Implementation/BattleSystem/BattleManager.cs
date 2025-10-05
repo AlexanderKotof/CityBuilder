@@ -8,11 +8,6 @@ using Random = UnityEngine.Random;
 
 namespace GameSystems.Implementation.BattleSystem
 {
-    public class EncounterData
-    {
-        public List<(Guid UnitConfigId, int Amount)> Encounters = new ();
-    }
-    
     public class BattleManager
     {
         public BattleUnitsModel BattleUnitsModel { get; }
@@ -21,12 +16,16 @@ namespace GameSystems.Implementation.BattleSystem
         
         private readonly BattleUnitsConfigScheme _battleUnitsConfigScheme;
         private readonly Dictionary<Guid, BattleUnitConfig> _battleUnitConfigsMap;
+        
 
         public BattleManager(BattleUnitsModel battleUnitsModel, BattleUnitsConfigScheme battleUnitsConfigScheme)
         {
             BattleUnitsModel = battleUnitsModel;
             _battleUnitsConfigScheme = battleUnitsConfigScheme;
+            
             _battleUnitConfigsMap = battleUnitsConfigScheme.Configs.ToDictionary(config => config.Id);
+            _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.DefaultBuildingUnit.Id, battleUnitsConfigScheme.DefaultBuildingUnit);
+            _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.MainBuildingUnit.Id, battleUnitsConfigScheme.MainBuildingUnit);
         }
 
         public void EncounterBegins(EncounterData data)
@@ -47,7 +46,7 @@ namespace GameSystems.Implementation.BattleSystem
                 }
             }
         }
-
+        
         public void Update()
         {
             if (_battleUnits.Count == 0)
@@ -57,33 +56,47 @@ namespace GameSystems.Implementation.BattleSystem
 
             foreach (var unit in _battleUnits.Values)
             {
-                SelectTarget(unit);
-                ProcessMove(unit);
-                ProcessAttack(unit);
+                bool canAttack = unit.CanAttack;
+                if (canAttack)
+                {
+                    SelectTarget(unit, unit.AttackModel!);
+                }
+
+                if (unit.CanMove)
+                {
+                    ProcessMove(unit);
+                }
+
+                if (canAttack)
+                {
+                    ProcessAttack(unit, unit.AttackModel!);
+                }
             }
         }
 
-        private void ProcessAttack(BattleUnitModel unit)
+        private void ProcessAttack(BattleUnitModel unit, UnitAttackModel attackModel)
         {
-            if (unit.Target.Value == null)
+            if (attackModel.Target.Value == null)
             {
                 return;
             }
             
-            var sqrDistance = GetSqrDistanceToTarget(unit);
-            bool distanceChack = sqrDistance <= unit.Config.AttackRange * unit.Config.AttackRange;
-            bool timingCheck = unit.LastAttackTime.Value < Time.timeSinceLevelLoad + GetAttacksPerSecond(unit);
+            var sqrDistance = GetSqrDistanceToTarget(unit, attackModel);
+            bool distanceCheck = sqrDistance <= unit.Config.AttackRange * unit.Config.AttackRange;
+            bool timingCheck = attackModel.LastAttackTime.Value < Time.timeSinceLevelLoad + GetAttacksPerSecond(unit);
             
-            if (distanceChack && timingCheck)
+            if (distanceCheck && timingCheck)
             {
                 //TODO: begin attack check timing and successfulness of
                 
-                unit.LastAttackTime.Value = Time.timeSinceLevelLoad;
+                attackModel.LastAttackTime.Value = Time.timeSinceLevelLoad;
 
-                var target = unit.Target.Value;
+                var target = attackModel.Target.Value;
                 var damage = unit.Config.Damage;
                 
                 target.TakeDamage(damage);
+                
+                //TODO: On damage dealed
             }
         }
 
@@ -94,41 +107,43 @@ namespace GameSystems.Implementation.BattleSystem
 
         private void ProcessMove(BattleUnitModel unit)
         {
-            if (unit.CurrentPosition.Value == unit.DesiredPosition.Value)
+            if (unit.ThisTransform.Value == null ||
+                unit.CurrentPosition == unit.DesiredPosition.Value)
             {
                 return;
             }
             
             var deltaTime = Time.deltaTime;
-            var impulse = Vector3.ClampMagnitude( unit.DesiredPosition.Value - unit.CurrentPosition.Value, 1f) * unit.Config.MoveSpeed * deltaTime;
+            var impulse = Vector3.ClampMagnitude( unit.DesiredPosition.Value - unit.CurrentPosition, 1f) * unit.Config.MoveSpeed * deltaTime;
             
-            unit.CurrentPosition.Value += impulse;
+            unit.ThisTransform.Value.position += impulse;
         }
 
-        private void SelectTarget(BattleUnitModel unit)
+        private void SelectTarget(BattleUnitModel unit, UnitAttackModel attackModel)
         {
             bool isEnemy = BattleUnitsModel.Enemies.Contains(unit);
             if (isEnemy)
             {
-                var target = SelectNearUnitOf(unit, BattleUnitsModel.PlayerUnits);
-                unit.Target.Set(target);
+                var target = SelectNearUnitOf(unit, 
+                    BattleUnitsModel.PlayerUnits.AppendMany(BattleUnitsModel.PlayerBuildings));
+                attackModel.SetTarget(target);
             }
             else
             {
                 var target = SelectNearUnitOf(unit, BattleUnitsModel.Enemies);
-                unit.Target.Set(target);
+                attackModel.SetTarget(target);
             }
 
-            UpdateDesiredPosition(unit);
+            UpdateDesiredPosition(unit, attackModel);
         }
 
-        private static void UpdateDesiredPosition(BattleUnitModel unit)
+        private static void UpdateDesiredPosition(BattleUnitModel unit, UnitAttackModel attackModel)
         {
             Vector3 desiredPosition;
-            if (unit.Target.Value != null)
+            if (attackModel.Target.Value != null)
             {
-                var normalizedDelta = (unit.CurrentPosition.Value - unit.Target.Value.CurrentPosition.Value).normalized;
-                desiredPosition = unit.Target.Value.CurrentPosition.Value - normalizedDelta * unit.Config.AttackRange;
+                var normalizedDelta = (unit.CurrentPosition - attackModel.Target.Value.CurrentPosition).normalized;
+                desiredPosition = attackModel.Target.Value.CurrentPosition - normalizedDelta * unit.Config.AttackRange;
             }
             else
             {
@@ -137,26 +152,25 @@ namespace GameSystems.Implementation.BattleSystem
             unit.DesiredPosition.Set(desiredPosition);
         }
 
-        private float GetSqrDistanceToTarget(BattleUnitModel unit)
+        private float GetSqrDistanceToTarget(BattleUnitModel unit, UnitAttackModel attackModel)
         {
-            if (unit.Target.Value == null)
+            if (attackModel.Target.Value == null)
             {
                 return float.MaxValue;
             }
 
-            return Vector3.SqrMagnitude(
-                unit.ThisTransform.Value.position - unit.Target.Value.ThisTransform.Value.position);
+            return Vector3.SqrMagnitude(unit.CurrentPosition - attackModel.Target.Value.CurrentPosition);
         }
 
         [CanBeNull]
-        private static BattleUnitModel SelectNearUnitOf(BattleUnitModel unit, IEnumerable<BattleUnitModel> otherUnits)
+        private static IBattleUnit SelectNearUnitOf(IBattleUnit unit, IEnumerable<IBattleUnit> otherUnits)
         {
-            BattleUnitModel target = null;
+            IBattleUnit target = null;
             float minDistance = float.MaxValue;
 
             foreach (var playerUnit in otherUnits)
             {
-                var sqrDistance = Vector3.SqrMagnitude(unit.CurrentPosition.Value - playerUnit.CurrentPosition.Value);
+                var sqrDistance = Vector3.SqrMagnitude(unit.CurrentPosition - playerUnit.CurrentPosition);
                 if (sqrDistance <= minDistance)
                 {
                     minDistance = sqrDistance;
@@ -177,8 +191,20 @@ namespace GameSystems.Implementation.BattleSystem
         public BattleUnitModel SpawnUnit(BattleUnitConfig config, Vector3 position)
         {
             var unitModel = new BattleUnitModel(config, 1, position);
-            _battleUnits.Add(unitModel.Id, unitModel);
+            _battleUnits.Add(unitModel.RuntimeId, unitModel);
+
+            unitModel.OnUnitDied += OnUnitDied;
+            
             return unitModel;
+        }
+        
+        private void OnUnitDied(IBattleUnit unit)
+        {
+            unit.OnUnitDied -= OnUnitDied;
+
+            _battleUnits.Remove(unit.RuntimeId);
+
+            //BattleUnitsModel.RemoveUnit(unit);
         }
     }
 }

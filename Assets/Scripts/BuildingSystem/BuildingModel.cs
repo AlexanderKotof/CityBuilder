@@ -25,7 +25,9 @@ namespace CityBuilder.BuildingSystem
         public ReactiveProperty<Vector3> WorldPosition { get; } = new();
         
         public BuildingConfigScheme Config { get; }
-        public GameObject View { get; private set; }
+
+        public ReactiveProperty<Transform?> ThisTransform { get; } = new();
+
         // 0-4 
         public readonly Guid RuntimeId = Guid.NewGuid();
         
