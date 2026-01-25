@@ -37,22 +37,36 @@ namespace GameSystems.Implementation.BattleSystem
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
         }
-        
+
         private void OnBuildingAdded(BuildingModel building)
         {
             var buildingUnit = CreateBattleUnit(building);
             buildingUnit.OnUnitDied += OnBuildingUnitDestroyed;
             _battleUnitsByBuildingRuntimeId.Add(building.RuntimeId, buildingUnit);
             _battleUnitsModel.AddPlayerBuilding(buildingUnit);
+
+            if (_buildingsModel.MainBuilding == building)
+            {
+                Debug.LogError("Created main building battle model...");
+                _battleUnitsModel.SetMainBuilding(buildingUnit);
+            }
             return;
-            
+
             void OnBuildingUnitDestroyed(IBattleUnit _)
             {
                 Debug.LogError($"Building {building.BuildingName} destroyed!");
 
                 buildingUnit.OnUnitDied -= OnBuildingUnitDestroyed;
                 
+                
+                if (_buildingsModel.MainBuilding == building)
+                {
+                    Debug.LogError("Destroyed main building battle model... GAME OVER");
+                }
+                
                 _buildingsModel.RemoveBuilding(building);
+
+           
             }
         }
         

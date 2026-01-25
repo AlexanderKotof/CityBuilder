@@ -1,36 +1,11 @@
 using System;
-using CityBuilder.BuildingSystem;
 using CityBuilder.Reactive;
 using Configs.Schemes.BattleSystem;
-using JetBrains.Annotations;
 using UnityEngine;
 using ViewSystem;
 
 namespace GameSystems.Implementation.BattleSystem
 {
-    public class UnitAttackModel : IViewModel
-    {
-        public readonly ReactiveProperty<Transform?> TargetTransform = new();
-        
-        public readonly ReactiveProperty<IBattleUnit?> Target = new();
-        
-        public ReactiveProperty<float> LastAttackTime { get; } = new();
-
-        public void SetTarget([CanBeNull] IBattleUnit unit)
-        {
-            if (unit == null)
-            {
-                Target.Value = null;
-                TargetTransform.Value = null;
-                return;
-            }
-
-            Target.Value = unit;
-            TargetTransform.Value = unit.ThisTransform.Value;
-        }
-        
-    }
-
     public class BattleUnitBase : IViewModel, IBattleUnit
     {
         public Guid RuntimeId { get; } = Guid.NewGuid();
@@ -84,16 +59,6 @@ namespace GameSystems.Implementation.BattleSystem
         {
             OnUnitDied = null;
             ThisTransform.Dispose();
-        }
-    }
-
-    public class BuildingBattleUnitModel : BattleUnitBase
-    {
-        private readonly BuildingModel _building;
-
-        public BuildingBattleUnitModel(BattleUnitConfig config, BuildingModel building) : base(config)
-        {
-            _building = building;
         }
     }
 }

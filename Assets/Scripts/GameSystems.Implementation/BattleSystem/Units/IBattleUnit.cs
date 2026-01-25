@@ -13,15 +13,9 @@ namespace GameSystems.Implementation.BattleSystem
         public BattleUnitConfig Config { get; }
         
         public Vector3 CurrentPosition { get; }
-        bool CanAttack { get; }
-    }
-    
-    public interface IHasHealth
-    {
-        public UnitHealthAttribute Health { get; }
-
-        void TakeDamage(float damage);
         
-        event Action<IBattleUnit> OnUnitDied;
+        public UnitAttackModel? AttackModel { get; }
+        
+        bool CanAttack { get; }
     }
 }

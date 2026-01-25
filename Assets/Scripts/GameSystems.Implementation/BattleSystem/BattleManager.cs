@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Configs.Schemes.BattleSystem;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -24,6 +25,7 @@ namespace GameSystems.Implementation.BattleSystem
             _battleUnitsProcessor = new BattleUnitsProcessor(battleUnitsModel);
             
             _battleUnitConfigsMap = battleUnitsConfigScheme.Configs.ToDictionary(config => config.Id);
+            _battleUnitConfigsMap.AddRange(battleUnitsConfigScheme.EnemiesConfigs.ToDictionary(config => config.Id));
             _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.DefaultBuildingUnit.Id, battleUnitsConfigScheme.DefaultBuildingUnit);
             _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.MainBuildingUnit.Id, battleUnitsConfigScheme.MainBuildingUnit);
         }
@@ -68,7 +70,7 @@ namespace GameSystems.Implementation.BattleSystem
             }
         }
 
-        public BattleUnitBase SpawnUnit(BattleUnitConfig config, Vector3 position)
+        private BattleUnitBase SpawnUnit(BattleUnitConfig config, Vector3 position)
         {
             var unitModel = new BattleUnitBase(config, 1, position);
 

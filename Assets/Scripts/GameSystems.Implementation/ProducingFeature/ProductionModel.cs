@@ -27,7 +27,7 @@ namespace GameSystems.Implementation.ProducingFeature
             var costs = GetDailyCostsRaw();
             UpdateResourceModel(_innerCostsModel, costs);
             
-            Write("Costs for day is: {0}", _innerCostsModel.Resources);
+            //Write("Costs for day is: {0}", _innerCostsModel.Resources);
 
             var hasDailyCosts = _playerResourcesModel.HasResources(_innerCostsModel);
 
@@ -38,14 +38,14 @@ namespace GameSystems.Implementation.ProducingFeature
                 var production = GetDailyProductionRaw();
                 UpdateResourceModel(_innerCostsModel, production);
                 
-                Write("Production for day is: {0}", _innerCostsModel.Resources);
+                //Write("Production for day is: {0}", _innerCostsModel.Resources);
                 
                 _playerResourcesModel.AddResources(_innerCostsModel);
             }
             else
             {
                 //ToDo: some magic
-                Debug.LogError("No production!!!");
+                // Debug.LogError("No production!!!");
             }
         }
 
@@ -97,17 +97,17 @@ namespace GameSystems.Implementation.ProducingFeature
                             return true;
                         }
                         
-                        Debug.Log("Cannot produce");
+                        // Debug.Log("Cannot produce");
                         return false;
                     }).
                     Select(producer =>
                     {
-                        Debug.Log("return costs " + producer.GetCosts().Count());
+                        // Debug.Log("return costs " + producer.GetCosts().Count());
                         return producer.GetCosts();
                     }).
                     SelectMany(resources =>
                     {
-                        Debug.Log("selecting resources " + resources.Count());
+                        // Debug.Log("selecting resources " + resources.Count());
                         return resources;
                     });
             return dailyCostsRaw;

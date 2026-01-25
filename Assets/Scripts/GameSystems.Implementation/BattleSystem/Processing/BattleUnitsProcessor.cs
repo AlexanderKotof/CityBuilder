@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Configs.Schemes.BattleSystem;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -128,29 +131,51 @@ namespace GameSystems.Implementation.BattleSystem
 
         private void SelectTarget(IBattleUnit unit, UnitAttackModel attackModel, bool isPlayer)
         {
+            IBattleUnit target;
+            // Для юнитов игрока
             if (isPlayer)
             {
-                var target = SelectNearUnitOf(unit, _battleUnitsModel.Enemies);
+                target = SelectNearUnitOf(unit, _battleUnitsModel.Enemies);
                 attackModel.SetTarget(target);
+                return;
             }
-            else
+
+            // Для энемисов используем стратегию на основе конфига
+            var strategy = GetTargetSelectionStrategy(unit);
+            target = strategy();
+            attackModel.SetTarget(target);
+        }
+
+        private Func<IBattleUnit> GetTargetSelectionStrategy(IBattleUnit unit)
+        {
+            return unit.Config.AttackPossibilityAndPriority switch
             {
-                if (attackModel.Target.Value == null &&
-                    _battleUnitsModel.PlayerUnits.Count == 0)
+                AttackPossibilityAndPriority.UnitsOnly => () => SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits),
+                AttackPossibilityAndPriority.BuildingsOnly => () =>
+                    SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings),
+                AttackPossibilityAndPriority.DefensiveBuildingsOnly => () =>
+                    SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings.Where(building => building.CanAttack)),
+                AttackPossibilityAndPriority.MainBuildingOnly => () => _battleUnitsModel.MainBuilding.Value,
+                AttackPossibilityAndPriority.UnitsThenBuildings => () =>
                 {
-                    IBattleUnit target = SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings);
-                    attackModel.SetTarget(target);
-                    return;
-                }
-                
-                var t = SelectNearUnitOf(unit, 
-                    _battleUnitsModel.PlayerUnits.AppendMany(_battleUnitsModel.PlayerBuildings));
-                
-                if (attackModel.Target.Value != t)
+                    if (_battleUnitsModel.PlayerUnits.Count > 0)
+                    {
+                        return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
+                    }
+
+                    return SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings);
+                },
+                AttackPossibilityAndPriority.UnitsThenMainBuildings => () =>
                 {
-                    attackModel.SetTarget(t);
-                }
-            }
+                    if (_battleUnitsModel.PlayerUnits.Count > 0)
+                    {
+                        return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
+                    }
+
+                    return _battleUnitsModel.MainBuilding.Value;
+                },
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private static void UpdateDesiredPosition(BattleUnitBase unit, UnitAttackModel attackModel)

@@ -29,7 +29,9 @@ namespace GameSystems.Implementation.CheatsFeature
         
         private readonly BattleManager _battleManager;
 
-        private readonly Guid _defaultUnitGuid;
+        private readonly Guid _defaultPlayerUnitGuid;
+        private readonly Guid _defaultEnemyUnitGuid;
+
 
         public CheatsFeature(IDependencyContainer container) : base(container)
         {
@@ -37,7 +39,8 @@ namespace GameSystems.Implementation.CheatsFeature
             _buildingManager = container.Resolve<BuildingManager>();
             _battleManager = container.Resolve<BattleManager>();
 
-            _ = Guid.TryParse("14e80a78-6faa-416b-949d-ea277530c2d5", out _defaultUnitGuid);
+            _ = Guid.TryParse("14e80a78-6faa-416b-949d-ea277530c2d5", out _defaultPlayerUnitGuid);
+            _ = Guid.TryParse("af712df2-2896-4cd6-8085-1aba3d1d2f31", out _defaultEnemyUnitGuid);
         }
 
         public void Update()
@@ -61,14 +64,14 @@ namespace GameSystems.Implementation.CheatsFeature
                 {
                     Invaders = new()
                     {
-                        (_defaultUnitGuid, 1),
+                        (_defaultEnemyUnitGuid, 3),
                     }
                 });
             }
             
             if (Input.GetKeyDown(KeyCode.A))
             {
-                _battleManager.PlayerUnitCreate(new List<Guid>() { _defaultUnitGuid });
+                _battleManager.PlayerUnitCreate(new List<Guid>() { _defaultPlayerUnitGuid });
             }
         }
     }

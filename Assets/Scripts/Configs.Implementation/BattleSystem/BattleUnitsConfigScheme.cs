@@ -3,9 +3,22 @@ using Newtonsoft.Json;
 
 namespace Configs.Schemes.BattleSystem
 {
+    public enum AttackPossibilityAndPriority
+    {
+        UnitsOnly = 0,
+        BuildingsOnly = 1,
+        
+        MainBuildingOnly = 10,
+        DefensiveBuildingsOnly = 11,
+        
+        UnitsThenBuildings = 20,
+        UnitsThenMainBuildings = 21,
+    }
+    
     public class BattleUnitConfig : ConfigBase
     {
         public string Name = "Unit";
+        public string InternalDescription = "Some battle unit";
         public float Health = 100;
         public float Damage = 5;
         public float AttackRange = 1;
@@ -13,12 +26,16 @@ namespace Configs.Schemes.BattleSystem
         public float MoveSpeed = 1;
         public float AttackSpeed = 1;
         public string AssetKey = "Unit";
+        public AttackPossibilityAndPriority AttackPossibilityAndPriority = 0;
     }
     
     public class BattleUnitsConfigScheme : ConfigBase, IGameConfigScheme
     {
         [JsonProperty]
         public BattleUnitConfig[] Configs { get; set; }
+        
+        [JsonProperty]
+        public BattleUnitConfig[] EnemiesConfigs { get; set; }
         
         [JsonProperty]
         public BattleUnitConfig DefaultBuildingUnit { get; set; }
@@ -29,6 +46,7 @@ namespace Configs.Schemes.BattleSystem
         public BattleUnitsConfigScheme()
         {
             Configs  = new [] { new BattleUnitConfig() };
+            EnemiesConfigs = new [] { new BattleUnitConfig() };
             
             DefaultBuildingUnit = new BattleUnitConfig();
             MainBuildingUnit = new();

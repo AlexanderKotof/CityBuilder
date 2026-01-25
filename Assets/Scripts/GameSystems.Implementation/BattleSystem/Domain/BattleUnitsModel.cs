@@ -10,6 +10,7 @@ namespace GameSystems.Implementation.BattleSystem
         public readonly ReactiveCollection<BattleUnitBase> Enemies = new();
         
         public readonly ReactiveCollection<BattleUnitBase> PlayerBuildings = new();
+        public readonly ReactiveProperty<BattleUnitBase> MainBuilding = new();
         
         private readonly Dictionary<Guid, Action<BattleUnitBase>> _removeUnitActions = new();
         
@@ -51,6 +52,11 @@ namespace GameSystems.Implementation.BattleSystem
                 unit.OnUnitDied -= OnPlayerBuildingUnitDied;
                 _removeUnitActions.Remove(unit.RuntimeId);
             }
+        }
+
+        public void SetMainBuilding(BattleUnitBase unit)
+        {
+            MainBuilding.Value = unit;
         }
         
         public void AddEnemyUnit(BattleUnitBase unit)
