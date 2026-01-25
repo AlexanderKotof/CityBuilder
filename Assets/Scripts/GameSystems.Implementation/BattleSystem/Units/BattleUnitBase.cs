@@ -13,6 +13,7 @@ namespace GameSystems.Implementation.BattleSystem
         public BattleUnitConfig Config { get; }
         
         public UnitHealthAttribute Health { get; }
+        public bool IsAlive => Health.CurrentValue > 0;
         public event Action<IBattleUnit>? OnUnitDied;
         
         public ReactiveProperty<Transform?> ThisTransform { get; } = new();

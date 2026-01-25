@@ -131,6 +131,11 @@ namespace GameSystems.Implementation.BattleSystem
 
         private void SelectTarget(IBattleUnit unit, UnitAttackModel attackModel, bool isPlayer)
         {
+            if (attackModel.HasTarget)
+            {
+                return;
+            }
+            
             IBattleUnit target;
             // Для юнитов игрока
             if (isPlayer)
@@ -148,32 +153,63 @@ namespace GameSystems.Implementation.BattleSystem
 
         private Func<IBattleUnit> GetTargetSelectionStrategy(IBattleUnit unit)
         {
+            IBattleUnit UnitsOnly()
+            {
+                Debug.LogWarning(nameof(UnitsOnly));
+                return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
+            }
+
+            IBattleUnit BuildingsOnly()
+            {
+                Debug.LogWarning(nameof(BuildingsOnly));
+                return SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings);
+            }
+
+            IBattleUnit DefensiveBuildingsOnly()
+            {                
+                Debug.LogWarning(nameof(DefensiveBuildingsOnly));
+                return SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings.Where(building => building.CanAttack));
+            }
+
+            IBattleUnit MainBuildingOnly()
+            {
+                Debug.LogWarning(nameof(MainBuildingOnly));
+
+                return _battleUnitsModel.MainBuilding.Value;
+            }
+
+            IBattleUnit UnitsThenBuildings()
+            {
+                Debug.LogWarning(nameof(UnitsThenBuildings));
+
+                if (_battleUnitsModel.PlayerUnits.Count > 0)
+                {
+                    return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
+                }
+
+                return SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings);
+            }
+
+            IBattleUnit UnitsThenMainBuildings()
+            {
+                Debug.LogWarning(nameof(UnitsThenMainBuildings));
+
+                if (_battleUnitsModel.PlayerUnits.Count > 0)
+                {
+                    return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
+                }
+
+                return _battleUnitsModel.MainBuilding.Value;
+            }
+
             return unit.Config.AttackPossibilityAndPriority switch
             {
-                AttackPossibilityAndPriority.UnitsOnly => () => SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits),
-                AttackPossibilityAndPriority.BuildingsOnly => () =>
-                    SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings),
-                AttackPossibilityAndPriority.DefensiveBuildingsOnly => () =>
-                    SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings.Where(building => building.CanAttack)),
-                AttackPossibilityAndPriority.MainBuildingOnly => () => _battleUnitsModel.MainBuilding.Value,
-                AttackPossibilityAndPriority.UnitsThenBuildings => () =>
-                {
-                    if (_battleUnitsModel.PlayerUnits.Count > 0)
-                    {
-                        return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
-                    }
-
-                    return SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings);
-                },
-                AttackPossibilityAndPriority.UnitsThenMainBuildings => () =>
-                {
-                    if (_battleUnitsModel.PlayerUnits.Count > 0)
-                    {
-                        return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
-                    }
-
-                    return _battleUnitsModel.MainBuilding.Value;
-                },
+                AttackPossibilityAndPriority.UnitsOnly => UnitsOnly,
+                AttackPossibilityAndPriority.BuildingsOnly => BuildingsOnly,
+                AttackPossibilityAndPriority.DefensiveBuildingsOnly => DefensiveBuildingsOnly,
+                AttackPossibilityAndPriority.MainBuildingOnly => MainBuildingOnly,
+                AttackPossibilityAndPriority.UnitsThenBuildings => UnitsThenBuildings,
+                AttackPossibilityAndPriority.UnitsThenMainBuildings => UnitsThenMainBuildings,
                 _ => throw new NotImplementedException(),
             };
         }
@@ -189,7 +225,7 @@ namespace GameSystems.Implementation.BattleSystem
                     return;
                 }
                 
-                desiredPosition = unit.CurrentPosition - direction * (1 - 0.9f / unit.GetAttackRange());
+                desiredPosition = unit.CurrentPosition + direction * (1 - 0.9f / unit.GetAttackRange());
             }
             else
             {

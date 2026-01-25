@@ -12,6 +12,7 @@ namespace GameSystems.Implementation.BattleSystem
         public readonly ReactiveProperty<IBattleUnit?> Target = new();
         
         public ReactiveProperty<float> LastAttackTime { get; } = new();
+        public bool HasTarget => Target.Value is { IsAlive: true };
 
         public void SetTarget([CanBeNull] IBattleUnit unit)
         {
