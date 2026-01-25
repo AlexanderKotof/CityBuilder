@@ -9,20 +9,21 @@ namespace GameSystems.Implementation.BattleSystem
 {
     public class BattleUnitsProcessor
     {
-        private readonly BattleUnitsModel _battleUnitsModel;
+        private readonly BattleSystemModel _battleSystemModel;
+        private const float MovementThreshold = 0.1f;
 
-        public BattleUnitsProcessor(BattleUnitsModel battleUnitsModel)
+        public BattleUnitsProcessor(BattleSystemModel battleSystemModel)
         {
-            _battleUnitsModel = battleUnitsModel;
+            _battleSystemModel = battleSystemModel;
         }
         
         public void Update()
         {
-            var enemyUnitsCount = _battleUnitsModel.Enemies.Count;
+            var enemyUnitsCount = _battleSystemModel.Enemies.Count;
 
             if (enemyUnitsCount == 0)
             {
-                foreach (var playerUnit in _battleUnitsModel.PlayerUnits)
+                foreach (var playerUnit in _battleSystemModel.PlayerUnits)
                 {
                     ProcessReturnToStart(playerUnit);
                 }
@@ -30,19 +31,19 @@ namespace GameSystems.Implementation.BattleSystem
             }
 
             // Process player units
-            foreach (var playerUnit in _battleUnitsModel.PlayerUnits)
+            foreach (var playerUnit in _battleSystemModel.PlayerUnits)
             {
                 UpdateUnit(playerUnit, true);
             }
             
             // Process enemies
-            foreach (var playerUnit in _battleUnitsModel.Enemies)
+            foreach (var playerUnit in _battleSystemModel.Enemies)
             {
                 UpdateUnit(playerUnit, false);
             }
 
             // Process player buildings
-            foreach (var buildingUnit in _battleUnitsModel.PlayerBuildings)
+            foreach (var buildingUnit in _battleSystemModel.PlayerBuildings)
             {
                 UpdateUnit(buildingUnit, true);
             }
@@ -97,14 +98,24 @@ namespace GameSystems.Implementation.BattleSystem
                 var target = attackModel.Target.Value;
                 var damage = unit.Config.Damage;
                 
-                Debug.LogError($"Unit {unit.RuntimeId} attacks {target.RuntimeId} w damage {damage}");
+                Debug.Log($"[{nameof(BattleUnitsProcessor)}] Unit {unit.Config.Name} attacks {target.Config.Name}");
                 
                 target.TakeDamage(damage);
                 
                 //TODO: On damage dealed
+                if (target == _battleSystemModel.MainBuilding.Value)
+                {
+                    OnMainBuildingDamaged(damage, unit);
+                }
             }
         }
-        
+
+        private void OnMainBuildingDamaged(float damage, IBattleUnit by)
+        {
+            Debug.LogError("Main building damaged!");
+            _battleSystemModel.OnMainBuildingDamaged(damage, by);
+        }
+
         private float GetSqrDistanceToTarget(IBattleUnit unit, UnitAttackModel attackModel)
         {
             if (attackModel.Target.Value == null)
@@ -118,29 +129,29 @@ namespace GameSystems.Implementation.BattleSystem
         private void ProcessMove(BattleUnitBase unit)
         {
             if (unit.ThisTransform.Value == null ||
-                unit.CurrentPosition == unit.DesiredPosition.Value)
+                Vector3.SqrMagnitude(unit.CurrentPosition - unit.DesiredPosition.Value) < MovementThreshold * MovementThreshold)
             {
                 return;
             }
             
             var deltaTime = Time.deltaTime;
             var impulse = unit.DesiredPosition.Value - unit.CurrentPosition;
-            var delta = deltaTime * unit.GetRealMoveSpeed() * Vector3.ClampMagnitude(impulse, 1);
+            var delta = deltaTime * unit.GetRealMoveSpeed() * impulse.normalized;
             unit.ThisTransform.Value.Translate(delta);
         }
-
+        
         private void SelectTarget(IBattleUnit unit, UnitAttackModel attackModel, bool isPlayer)
         {
-            if (attackModel.HasTarget)
-            {
-                return;
-            }
+            // if (attackModel.HasTarget)
+            // {
+            //     return;
+            // }
             
             IBattleUnit target;
             // Для юнитов игрока
             if (isPlayer)
             {
-                target = SelectNearUnitOf(unit, _battleUnitsModel.Enemies);
+                target = SelectNearUnitOf(unit, _battleSystemModel.Enemies);
                 attackModel.SetTarget(target);
                 return;
             }
@@ -155,51 +166,51 @@ namespace GameSystems.Implementation.BattleSystem
         {
             IBattleUnit UnitsOnly()
             {
-                Debug.LogWarning(nameof(UnitsOnly));
-                return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
+                //Debug.LogWarning(nameof(UnitsOnly));
+                return SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits);
             }
 
             IBattleUnit BuildingsOnly()
             {
-                Debug.LogWarning(nameof(BuildingsOnly));
-                return SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings);
+                //Debug.LogWarning(nameof(BuildingsOnly));
+                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildings);
             }
 
             IBattleUnit DefensiveBuildingsOnly()
             {                
-                Debug.LogWarning(nameof(DefensiveBuildingsOnly));
-                return SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings.Where(building => building.CanAttack));
+                //Debug.LogWarning(nameof(DefensiveBuildingsOnly));
+                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildings.Where(building => building.CanAttack));
             }
 
             IBattleUnit MainBuildingOnly()
             {
-                Debug.LogWarning(nameof(MainBuildingOnly));
+                //Debug.LogWarning(nameof(MainBuildingOnly));
 
-                return _battleUnitsModel.MainBuilding.Value;
+                return _battleSystemModel.MainBuilding.Value;
             }
 
             IBattleUnit UnitsThenBuildings()
             {
-                Debug.LogWarning(nameof(UnitsThenBuildings));
+                //Debug.LogWarning(nameof(UnitsThenBuildings));
 
-                if (_battleUnitsModel.PlayerUnits.Count > 0)
+                if (_battleSystemModel.PlayerUnits.Count > 0)
                 {
-                    return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
+                    return SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits);
                 }
 
-                return SelectNearUnitOf(unit, _battleUnitsModel.PlayerBuildings);
+                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildings);
             }
 
             IBattleUnit UnitsThenMainBuildings()
             {
-                Debug.LogWarning(nameof(UnitsThenMainBuildings));
+                //Debug.LogWarning(nameof(UnitsThenMainBuildings));
 
-                if (_battleUnitsModel.PlayerUnits.Count > 0)
+                if (_battleSystemModel.PlayerUnits.Count > 0)
                 {
-                    return SelectNearUnitOf(unit, _battleUnitsModel.PlayerUnits);
+                    return SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits);
                 }
 
-                return _battleUnitsModel.MainBuilding.Value;
+                return _battleSystemModel.MainBuilding.Value;
             }
 
             return unit.Config.AttackPossibilityAndPriority switch

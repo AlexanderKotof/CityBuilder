@@ -8,15 +8,15 @@ namespace GameSystems.Implementation.BattleSystem
 {
     public class PlayerBuildingsUnitsController
     {
-        private readonly BattleUnitsModel _battleUnitsModel;
+        private readonly BattleSystemModel _battleSystemModel;
         private readonly BattleUnitsConfigScheme _config;
         private readonly BuildingsModel _buildingsModel;
 
         private readonly Dictionary<Guid, BattleUnitBase> _battleUnitsByBuildingRuntimeId = new();
 
-        public PlayerBuildingsUnitsController(BattleUnitsModel battleUnitsModel, BattleUnitsConfigScheme config, BuildingsModel buildingsModel)
+        public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigScheme config, BuildingsModel buildingsModel)
         {
-            _battleUnitsModel = battleUnitsModel;
+            _battleSystemModel = battleSystemModel;
             _config = config;
             _buildingsModel = buildingsModel;
         }
@@ -43,12 +43,12 @@ namespace GameSystems.Implementation.BattleSystem
             var buildingUnit = CreateBattleUnit(building);
             buildingUnit.OnUnitDied += OnBuildingUnitDestroyed;
             _battleUnitsByBuildingRuntimeId.Add(building.RuntimeId, buildingUnit);
-            _battleUnitsModel.AddPlayerBuilding(buildingUnit);
+            _battleSystemModel.AddPlayerBuilding(buildingUnit);
 
             if (_buildingsModel.MainBuilding == building)
             {
                 Debug.LogError("Created main building battle model...");
-                _battleUnitsModel.SetMainBuilding(buildingUnit);
+                _battleSystemModel.SetMainBuilding(buildingUnit);
             }
             return;
 
@@ -99,7 +99,7 @@ namespace GameSystems.Implementation.BattleSystem
             {
                 Debug.LogError("Removed building battle unit");
                 
-                _battleUnitsModel.RemoveUnit(buildingUnit);
+                _battleSystemModel.RemoveUnit(buildingUnit);
             }
         }
     }

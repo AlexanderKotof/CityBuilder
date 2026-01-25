@@ -45,11 +45,14 @@ namespace GameSystems.Implementation.BattleSystem
         
         public void TakeDamage(float damage)
         {
+            if (IsAlive == false)
+                return;
+            
             Health.CurrentValue.Value -= Mathf.Min(damage, Health.CurrentValue.Value);
             
-            Debug.Log($"Taking damage {damage.ToString()}");
+            Debug.Log($"[{nameof(BattleUnitBase)}] Unit {Config.Name} Received {damage.ToString()} damage");
 
-            if (Health.CurrentValue.Value <= 0)
+            if (IsAlive == false)
             {
                 //TODO: unit is died
                 OnUnitDied?.Invoke(this);

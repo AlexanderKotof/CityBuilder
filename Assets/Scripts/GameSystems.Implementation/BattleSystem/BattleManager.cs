@@ -10,19 +10,19 @@ namespace GameSystems.Implementation.BattleSystem
 {
     public class BattleManager
     {
-        public BattleUnitsModel BattleUnitsModel { get; }
+        public BattleSystemModel BattleSystemModel { get; }
         
         private readonly BattleUnitsConfigScheme _battleUnitsConfigScheme;
         private readonly BattleUnitsProcessor _battleUnitsProcessor;
 
         private readonly Dictionary<Guid, BattleUnitConfig> _battleUnitConfigsMap;
 
-        public BattleManager(BattleUnitsModel battleUnitsModel, BattleUnitsConfigScheme battleUnitsConfigScheme)
+        public BattleManager(BattleSystemModel battleSystemModel, BattleUnitsConfigScheme battleUnitsConfigScheme)
         {
-            BattleUnitsModel = battleUnitsModel;
+            BattleSystemModel = battleSystemModel;
             _battleUnitsConfigScheme = battleUnitsConfigScheme;
             
-            _battleUnitsProcessor = new BattleUnitsProcessor(battleUnitsModel);
+            _battleUnitsProcessor = new BattleUnitsProcessor(battleSystemModel);
             
             _battleUnitConfigsMap = battleUnitsConfigScheme.Configs.ToDictionary(config => config.Id);
             _battleUnitConfigsMap.AddRange(battleUnitsConfigScheme.EnemiesConfigs.ToDictionary(config => config.Id));
@@ -33,6 +33,12 @@ namespace GameSystems.Implementation.BattleSystem
         public void Update()
         {
             _battleUnitsProcessor.Update();
+            
+            bool isInBattle = BattleSystemModel.Enemies.Count > 0;
+            if (isInBattle != BattleSystemModel.IsInBattle.Value)
+            {
+                BattleSystemModel.IsInBattle.Value = isInBattle;
+            }
         }
         
         public void PlayerUnitCreate(IEnumerable<Guid> guids)
@@ -47,7 +53,7 @@ namespace GameSystems.Implementation.BattleSystem
 
                 Vector3 position = new Vector3(5, 0, 5);
                 var unit = SpawnUnit(battleUnitConfig, position);
-                BattleUnitsModel.AddPlayerUnit(unit);
+                BattleSystemModel.AddPlayerUnit(unit);
             }
         }
 
@@ -65,7 +71,7 @@ namespace GameSystems.Implementation.BattleSystem
 
                     Vector3 position = GetEncounterPosition();
                     var unit = SpawnUnit(battleUnitConfig, position);
-                    BattleUnitsModel.AddEnemyUnit(unit);
+                    BattleSystemModel.AddEnemyUnit(unit);
                 }
             }
         }

@@ -37,6 +37,8 @@ namespace Configs.Schemes.BattleSystem
         [JsonProperty]
         public BattleUnitConfig[] EnemiesConfigs { get; set; }
         
+        
+        
         [JsonProperty]
         public BattleUnitConfig DefaultBuildingUnit { get; set; }
         

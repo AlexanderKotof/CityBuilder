@@ -24,7 +24,7 @@ namespace GameSystems.Implementation.BattleSystem
     public class BattleFeature : GameSystemBase, IUpdateGamSystem
     {
         public BattleManager BattleManager { get; }
-        public BattleUnitsModel BattleUnitsModel { get; } = new();
+        public BattleSystemModel BattleSystemModel { get; } = new();
 
         private readonly BattleUnitsViewsCollection _playerUnitsViewsCollection;
         private readonly BattleUnitsViewsCollection _enemiesUnitsViewsCollection;
@@ -35,19 +35,19 @@ namespace GameSystems.Implementation.BattleSystem
         {
             var settings = container.Resolve<GameConfigProvider>().GetConfig<BattleUnitsConfigScheme>();
             var buildingsModel = container.Resolve<BuildingsModel>();
-            BattleManager = new BattleManager(BattleUnitsModel, settings);
+            BattleManager = new BattleManager(BattleSystemModel, settings);
             _playerBuildingsUnitsController =
-                new PlayerBuildingsUnitsController(BattleUnitsModel, settings, buildingsModel);
+                new PlayerBuildingsUnitsController(BattleSystemModel, settings, buildingsModel);
             
             var parentGo = new GameObject("--- Battle Units ---").transform;
             
             //TODO: create inner feature dependencies container
             _playerUnitsViewsCollection = new BattleUnitsViewsCollection(
-                BattleUnitsModel.PlayerUnits,
+                BattleSystemModel.PlayerUnits,
                 container,
                 parentGo);
             _enemiesUnitsViewsCollection = new BattleUnitsViewsCollection(
-                BattleUnitsModel.Enemies,
+                BattleSystemModel.Enemies,
                 container,
                 parentGo);
         }

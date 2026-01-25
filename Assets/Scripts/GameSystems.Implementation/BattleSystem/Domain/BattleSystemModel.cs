@@ -4,7 +4,7 @@ using CityBuilder.Reactive;
 
 namespace GameSystems.Implementation.BattleSystem
 {
-    public class BattleUnitsModel
+    public class BattleSystemModel
     {
         public readonly ReactiveCollection<BattleUnitBase> PlayerUnits = new();
         public readonly ReactiveCollection<BattleUnitBase> Enemies = new();
@@ -14,7 +14,9 @@ namespace GameSystems.Implementation.BattleSystem
         
         private readonly Dictionary<Guid, Action<BattleUnitBase>> _removeUnitActions = new();
         
-        public bool IsInBattleState => Enemies.Count > 0;
+        public event Action<float, IBattleUnit> MainBuildingDamaged = delegate { }; 
+        
+        public readonly ReactiveProperty<bool> IsInBattle = new();
 
         public void AddPlayerUnit(BattleUnitBase unit)
         {
@@ -58,7 +60,9 @@ namespace GameSystems.Implementation.BattleSystem
         {
             MainBuilding.Value = unit;
         }
-        
+
+        public void OnMainBuildingDamaged(float damage, IBattleUnit by) => MainBuildingDamaged?.Invoke(damage, by);
+
         public void AddEnemyUnit(BattleUnitBase unit)
         {
             if (Enemies.Contains(unit) == false)
