@@ -29,6 +29,7 @@
       "Id": "af712df2-2896-4cd6-8085-1aba3d1d2f31"
     }
   ],
+  "BattleUiAssetKey": "BattleUnitUI",
   "DefaultBuildingUnit": {
     "Name": "Building",
     "InternalDescription": "Default battle config for building",

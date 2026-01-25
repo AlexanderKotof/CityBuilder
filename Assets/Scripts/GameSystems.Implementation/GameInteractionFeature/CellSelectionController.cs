@@ -19,14 +19,14 @@ namespace GameSystems.Implementation.GameInteractionFeature
 
         public void Init()
         {
-            _interactionModel.SelectedCell.AddListener(OnCellSelected);
-            _interactionModel.DraggedCell.AddListener(OnDraggingCell);
+            _interactionModel.SelectedCell.Subscribe(OnCellSelected);
+            _interactionModel.DraggedCell.Subscribe(OnDraggingCell);
         }
 
         public void Deinit()
         {
-            _interactionModel.SelectedCell.RemoveListener(OnCellSelected);
-            _interactionModel.DraggedCell.RemoveListener(OnDraggingCell);
+            _interactionModel.SelectedCell.Unsubscribe(OnCellSelected);
+            _interactionModel.DraggedCell.Unsubscribe(OnDraggingCell);
         }
         
         private void OnCellSelected(CellModel cellModel)

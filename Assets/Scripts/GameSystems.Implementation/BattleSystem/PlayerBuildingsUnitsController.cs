@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
+using CityBuilder.Dependencies;
 using Configs.Schemes.BattleSystem;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Views.Implementation.BattleSystem;
+using ViewSystem;
 
 namespace GameSystems.Implementation.BattleSystem
 {
@@ -11,14 +15,19 @@ namespace GameSystems.Implementation.BattleSystem
         private readonly BattleSystemModel _battleSystemModel;
         private readonly BattleUnitsConfigScheme _config;
         private readonly BuildingsModel _buildingsModel;
+        private readonly IDependencyContainer _container;
 
         private readonly Dictionary<Guid, BattleUnitBase> _battleUnitsByBuildingRuntimeId = new();
+        private readonly BattleUnitsViewsCollection _buildingsUi;
+        private readonly IViewsProvider _viewsProvider;
 
-        public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigScheme config, BuildingsModel buildingsModel)
+        public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigScheme config, BuildingsModel buildingsModel, IDependencyContainer container)
         {
             _battleSystemModel = battleSystemModel;
             _config = config;
             _buildingsModel = buildingsModel;
+            _container = container;
+            _viewsProvider = container.Resolve<IViewsProvider>();
         }
 
         public void Init()
@@ -73,26 +82,23 @@ namespace GameSystems.Implementation.BattleSystem
         private BattleUnitBase CreateBattleUnit(BuildingModel building)
         {
             var config = building.Config.UnitConfig?.Value ?? _config.DefaultBuildingUnit;
-            var unitConfig = new BattleUnitBase(config);
+            var battleUnit = new BattleUnitBase(config, building.Level, building.WorldPosition);
+            
+            Action<Transform> handle = (value) => OnTransformUpdated(value).Forget();
+            handle += _ => building.ThisTransform.Unsubscribe(handle);
+            building.ThisTransform.Subscribe(handle, true);
 
-            if (building.ThisTransform.Value != null)
-            {
-                unitConfig.ThisTransform.Set(building.ThisTransform.Value);
-            }
-            else
-            {
-                building.ThisTransform.AddListener(OnTransformUpdated);
-            }
+            return battleUnit;
 
-            return unitConfig;
-
-            void OnTransformUpdated(Transform value)
+            async UniTaskVoid OnTransformUpdated(Transform value)
             {
-                building.ThisTransform.RemoveListener(OnTransformUpdated);
-                unitConfig.ThisTransform.Set(value);
+                battleUnit.ThisTransform.Set(value);
+
+                var uiView = await _viewsProvider.ProvideViewAsync<BattleUnitUIComponent>(_config.BattleUiAssetKey, value);
+                uiView.Init(battleUnit);
             }
         }
-        
+
         private void OnBuildingRemoved(BuildingModel building)
         {
             if (_battleUnitsByBuildingRuntimeId.Remove(building.RuntimeId, out var buildingUnit))

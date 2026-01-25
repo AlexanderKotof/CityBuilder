@@ -1,18 +1,20 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CityBuilder.Grid
 {
     public class GridComponent : MonoBehaviour, IGridComponent
     {
-        public Vector2Int GridSize;
+        [SerializeField]
+        private Vector2Int _gridSize;
         public Transform Transform => transform;
     
-        public Vector2Int Size => GridSize;
+        public Vector2Int Size => _gridSize;
     
         private bool Equals(GridComponent other)
         {
-            return this.GetInstanceID() == other.GetInstanceID();
+            return Equals((IGridComponent)other);  
         }
 
         public bool Equals(IGridComponent other)
@@ -25,12 +27,12 @@ namespace CityBuilder.Grid
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((GridComponent)obj);
+            return Equals((IGridComponent)obj);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), this.GetInstanceID());
+            return GetInstanceID();
         }
 
         public override string ToString()

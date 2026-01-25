@@ -28,7 +28,7 @@ public class WindowsProvider
         var viewModel = new TWindowViewModel();
         var view = await _viewsProvider.ProvideViewWithModel<TWindowViewModel, WindowViewBase<TWindowViewModel>>(assetKey, viewModel, dependencies, _windowsParent);
         
-        viewModel.IsActive.AddListener(OnViewActivityChanged);
+        viewModel.IsActive.Subscribe(OnViewActivityChanged);
         viewModel.Close.AddListener(Close);
         
         _views.Add(viewModel, view);

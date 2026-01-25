@@ -9,17 +9,7 @@ using Views.Implementation.BattleSystem;
 namespace GameSystems.Implementation.BattleSystem
 {
     // ТЗ Боевая система:
-    
-    // BattleUnit - может перемещаться, атаковать, может быть убит, может атаковать здания
-    // Имеет показатели: здоровье, урон, скорость, защита, дальность атаки
-    
-    // Игрок может производить юнитов в специальных зданиях (плюс есть здания где они могут размещаться)
-    
-    // Вражеские юниты могут разрушать здания игрока (их можно отстроить)
-    
-    // Башни - являются юнитом? - да, но особым
-    
-    //TODO: HealthComponent logic
+    // см папку с ГДД
     
     public class BattleFeature : GameSystemBase, IUpdateGamSystem
     {
@@ -37,7 +27,7 @@ namespace GameSystems.Implementation.BattleSystem
             var buildingsModel = container.Resolve<BuildingsModel>();
             BattleManager = new BattleManager(BattleSystemModel, settings);
             _playerBuildingsUnitsController =
-                new PlayerBuildingsUnitsController(BattleSystemModel, settings, buildingsModel);
+                new PlayerBuildingsUnitsController(BattleSystemModel, settings, buildingsModel, container);
             
             var parentGo = new GameObject("--- Battle Units ---").transform;
             
@@ -50,6 +40,8 @@ namespace GameSystems.Implementation.BattleSystem
                 BattleSystemModel.Enemies,
                 container,
                 parentGo);
+            
+
         }
 
         public override Task Init()

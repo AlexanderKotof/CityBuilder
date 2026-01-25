@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -25,7 +26,7 @@ namespace ViewSystem
             _objectsIdsToPools.Clear();
         }
         
-        public async Task<GameObject> ProvideViewAsync(string assetKey, Transform parent = null)
+        public async UniTask<GameObject> ProvideViewAsync(string assetKey, Transform parent = null)
         {
             var pool = GetPool<GameObject>(assetKey);
             if (pool.TryPool(out GameObject gameObject))
@@ -39,7 +40,7 @@ namespace ViewSystem
             return result;
         }
         
-        public async Task<T> ProvideViewAsync<T>(string assetKey, Transform parent = null) where T : Component
+        public async UniTask<T> ProvideViewAsync<T>(string assetKey, Transform parent = null) where T : Component
         {
             var pool = GetPool<T>(assetKey);
             if (pool.TryPool(out T gameObject))

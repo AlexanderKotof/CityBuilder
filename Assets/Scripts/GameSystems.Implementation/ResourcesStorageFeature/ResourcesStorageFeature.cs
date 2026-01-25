@@ -44,7 +44,7 @@ namespace GameSystems.Implementation.ResourcesStorageFeature
             var storageIncreaseUnit = new StorageIncreaseUnit(storageIncrease, building);
             _storageIncreaseUnits.Add(building, storageIncreaseUnit);
             
-            building.Level.AddListener(OnBuildingLevelChanged);
+            building.Level.Subscribe(OnBuildingLevelChanged);
             
             UpdateStorageCapacity();
         }

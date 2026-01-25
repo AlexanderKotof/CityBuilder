@@ -46,12 +46,12 @@ namespace GameSystems.Implementation.BuildingsFeature
                 new WindowCreationData("BuildingWindow", 0),
                 _container);
             
-            _interactionModel.SelectedCell.AddListener(OnSelectedCellUpdated);
+            _interactionModel.SelectedCell.Subscribe(OnSelectedCellUpdated);
         }
 
         public override Task Deinit()
         {
-            _interactionModel.SelectedCell.RemoveListener(OnSelectedCellUpdated);
+            _interactionModel.SelectedCell.Unsubscribe(OnSelectedCellUpdated);
             
             _windowsProvider.Recycle(_buildingWindowViewModel);
             _buildingViewsController.Deinit();

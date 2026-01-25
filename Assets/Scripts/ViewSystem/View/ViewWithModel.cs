@@ -43,8 +43,8 @@ namespace ViewSystem
 
         protected void Subscribe<T>(ReactiveProperty<T> property, Action<T> handler, bool invokeOnSubscribe = true)
         {
-            property.AddListener(handler);
-            _deinitActions.Add(() => property.RemoveListener(handler));
+            property.Subscribe(handler);
+            _deinitActions.Add(() => property.Unsubscribe(handler));
 
             if (invokeOnSubscribe)
             {

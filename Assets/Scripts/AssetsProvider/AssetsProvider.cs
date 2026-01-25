@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -6,15 +7,15 @@ namespace AssetsProvider
 {
     public static class AssetsProvider
     {
-        public static async Task<T> GetAssetAsync<T>(string assetKey)
+        public static UniTask<T> GetAssetAsync<T>(string assetKey)
             where T : UnityEngine.Object
         {
-            return await Addressables.LoadAssetAsync<T>(assetKey).Task;
+            return Addressables.LoadAssetAsync<T>(assetKey).ToUniTask();
         }
         
-        public static async Task<GameObject> InstantiateAsync(string assetKey, Transform parent = null)
+        public static UniTask<GameObject> InstantiateAsync(string assetKey, Transform parent = null)
         {
-            return await Addressables.InstantiateAsync(assetKey, parent).Task;
+            return Addressables.InstantiateAsync(assetKey, parent).ToUniTask();
         }
         
         public static void Release(UnityEngine.Object asset)

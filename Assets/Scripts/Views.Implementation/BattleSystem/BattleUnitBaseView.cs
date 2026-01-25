@@ -14,6 +14,8 @@ namespace Views.Implementation.BattleSystem
         [CanBeNull] public BattleUnitNavigationComponent NavigationComponent;
         public TextMeshProUGUI LevelIndicator;
         public TextMeshProUGUI NameText;
+        
+        public BattleUnitUIComponent UIComponent;
 
         public override void Initialize(BattleUnitBase model, IDependencyContainer container)
         {
@@ -24,6 +26,9 @@ namespace Views.Implementation.BattleSystem
             model.ThisTransform.Set(ThisTransform);
             
             InitView(NavigationComponent, model);
+
+            if (UIComponent != null) 
+                UIComponent.Init(model);
 
             // Subscribe(model.Level, (value) => LevelIndicator.SetText($"Lvl {value}"));
             // Subscribe(model.WorldPosition, SetWorldPosition);

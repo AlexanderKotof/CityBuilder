@@ -87,7 +87,7 @@ namespace GameSystems.Implementation.BattleSystem
 
         private Vector3 GetEncounterPosition()
         {
-            var position = Random.onUnitSphere * 10;
+            var position = Random.onUnitSphere * 5;
             position.y = 0;
             return position;
         }

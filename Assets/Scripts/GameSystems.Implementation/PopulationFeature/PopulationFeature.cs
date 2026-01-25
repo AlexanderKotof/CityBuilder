@@ -70,7 +70,7 @@ namespace GameSystems.Implementation.PopulationFeature
             var increaseUnit = new AvailableHouseholdIncreaseUnit(householdsIncrease, building);
             _increaseHousesUnits.Add(building, increaseUnit);
             
-            building.Level.AddListener(OnBuildingLevelUpdated);
+            building.Level.Subscribe(OnBuildingLevelUpdated);
 
             UpdateAvailableHouseholds();
         }
@@ -84,7 +84,7 @@ namespace GameSystems.Implementation.PopulationFeature
 
             _increaseHousesUnits.Remove(building);
             
-            building.Level.RemoveListener(OnBuildingLevelUpdated);
+            building.Level.Unsubscribe(OnBuildingLevelUpdated);
 
             UpdateAvailableHouseholds();
         }

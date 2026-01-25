@@ -5,8 +5,8 @@ namespace CityBuilder.Reactive
     public interface IReadonlyReactiveProperty<out T>
     {
         T? Value { get; }
-        void AddListener(Action<T?> listener);
-        void RemoveListener(Action<T?> listener);
+        void Subscribe(Action<T?> listener);
+        void Unsubscribe(Action<T?> listener);
     }
 
     public class ReactiveCommand : IDisposable
@@ -92,12 +92,22 @@ namespace CityBuilder.Reactive
         
         public void Notify() => _onValueChanged?.Invoke(_value);
 
-        public void AddListener(Action<T?> listener)
+        public void Subscribe(Action<T?> listener, bool invokeImmediately)
+        {
+            Subscribe(listener);
+
+            if (invokeImmediately)
+            {
+                listener.Invoke(Value);
+            }
+        }
+        
+        public void Subscribe(Action<T?> listener)
         {
             _onValueChanged += listener;
         }
 
-        public void RemoveListener(Action<T?> listener)
+        public void Unsubscribe(Action<T?> listener)
         {
             _onValueChanged -= listener;
         }
