@@ -57,9 +57,9 @@ namespace GameSystems.Implementation.CheatsFeature
             //Encounters
             if (Input.GetKeyDown(KeyCode.E))
             {
-                _battleManager.EncounterBegins(new EncounterData()
+                _battleManager.InvasionBegins(new InvasionData()
                 {
-                    Encounters = new()
+                    Invaders = new()
                     {
                         (_defaultUnitGuid, 1),
                     }

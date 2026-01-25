@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace GameSystems.Implementation.BattleSystem
 {
-    public class EncounterData
+    public class InvasionData
     {
-        public List<(Guid UnitConfigId, int Amount)> Encounters = new ();
+        public List<(Guid UnitConfigId, int Amount)> Invaders = new ();
     }
 }

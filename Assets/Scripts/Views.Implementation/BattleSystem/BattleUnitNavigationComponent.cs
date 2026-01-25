@@ -31,23 +31,14 @@ namespace Views.Implementation.BattleSystem
             _targetTransform = target.ThisTransform.Value;
         }
 
-        private void Update()
+        private void ProcessMove()
         {
-            // if (_targetTransform == null)
-            // {
-            //     return;
-            // }
-            //
-            // var tr = Model.ThisTransform.Value;
-            // var direction = _targetTransform.position - tr.position;
-            // var targetPosition = tr.position + direction - direction.normalized * Model.Config.AttackRange * 0.9f;
-            //
-            // var newPosition = 
-            //     Vector3.Lerp(tr.position, targetPosition, Time.deltaTime * Model.Config.MoveSpeed);
+            if (_targetTransform == null)
+            {
+                return;
+            }
             
-            //tr.position = newPosition;
-            
-            //Model.CurrentPosition.Set(newPosition);
+            //TODO: move unit with navigation?
         }
     }
 }

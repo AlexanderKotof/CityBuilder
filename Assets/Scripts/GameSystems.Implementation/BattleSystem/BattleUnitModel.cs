@@ -62,6 +62,11 @@ namespace GameSystems.Implementation.BattleSystem
             }
         }
         
+        public BattleUnitBase(BattleUnitConfig config, int level, Vector3 startPosition) : this(config)
+        {
+            StartPosition.Set(startPosition);
+        }
+        
         public void TakeDamage(float damage)
         {
             Health.CurrentValue.Value -= Mathf.Min(damage, Health.CurrentValue.Value);
@@ -89,14 +94,6 @@ namespace GameSystems.Implementation.BattleSystem
         public BuildingBattleUnitModel(BattleUnitConfig config, BuildingModel building) : base(config)
         {
             _building = building;
-        }
-    }
-    
-    public class BattleUnitModel : BattleUnitBase
-    {
-        public BattleUnitModel(BattleUnitConfig config, int level, Vector3 startPosition) : base(config)
-        {
-            StartPosition.Set(startPosition);
         }
     }
 }
