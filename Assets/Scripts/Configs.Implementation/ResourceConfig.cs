@@ -9,9 +9,6 @@ namespace ResourcesSystem
     {
         [field: SerializeField]
         public ResourceType Type { get; set; }
-
-        [JsonProperty] 
-        public string ResourceType => Type.ToString();
         
         [field: SerializeField]
         public int Amount { get; set; }

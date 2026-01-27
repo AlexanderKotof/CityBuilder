@@ -40,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71ed445036b7a924a90fed7e14791159
+    m_Address: Enemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 76ba31c80afc489468d52446c620f91b
     m_Address: BuildingWindow
     m_ReadOnly: 0

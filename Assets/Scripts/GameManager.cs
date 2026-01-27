@@ -1,37 +1,19 @@
-﻿using System.Threading.Tasks;
-using CityBuilder.Dependencies;
+﻿using CityBuilder.Dependencies;
 using GameSystems;
 using GameSystems.Implementation.GameTimeSystem;
 using GameSystems.Implementation.PopulationFeature;
+using Installers;
 using JetBrains.Annotations;
-using PlayerInput;
 using ResourcesSystem;
 using UnityEngine;
 using ViewSystem;
 
 
-public class PlayerInputSystem : IGameSystem, IUpdateGamSystem
-{
-    public PlayerInputManager PlayerInputManager { get; } = new();
-    
-    public Task Init()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task Deinit()
-    {
-        return Task.CompletedTask;
-    }
-
-    public void Update()
-    {
-        PlayerInputManager.Update();
-    }
-}
-
 public class GameManager : MonoBehaviour
 {
+    
+    public GameConfigsInstaller GameConfigsInstaller;
+    
     public Camera RaycasterCamera;
     
     private GameSystemsInitialization _gameSystemsInitialization;

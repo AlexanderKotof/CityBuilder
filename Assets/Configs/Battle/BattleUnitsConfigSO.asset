@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbf4dcee8c73446d9d19c530a7183e0f, type: 3}
+  m_Name: BattleUnitsConfigSO
+  m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BattleUnitsConfigSO
+  <PlayerUnitsConfigs>k__BackingField:
+  - {fileID: 11400000, guid: dec0d50ad29c5df449a8e7423674e647, type: 2}
+  <EnemiesConfigs>k__BackingField:
+  - {fileID: 11400000, guid: 1663e2e1065b8594085bf29fad030aa6, type: 2}
+  <BattleUiAssetKey>k__BackingField: BattleUnitUI
+  <DefaultBuildingUnit>k__BackingField: {fileID: 11400000, guid: 1ae460afac06e964d93e1fa303f5de0b, type: 2}
+  <MainBuildingUnit>k__BackingField: {fileID: 11400000, guid: b19308426bf2e414bb55e27232328c39, type: 2}

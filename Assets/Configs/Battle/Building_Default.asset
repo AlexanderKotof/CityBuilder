@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95552c3a5c7d47d8a62de85ee49e2fbd, type: 3}
+  m_Name: Building_Default
+  m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BattleUnitConfigSO
+  Name: Building
+  InternalDescription: Some battle unit
+  Health: 100
+  Damage: 0
+  AttackRange: 0
+  Defense: 5
+  MoveSpeed: 0
+  AttackSpeed: 0
+  AssetKey: 
+  AttackPossibilityAndPriority: 0
