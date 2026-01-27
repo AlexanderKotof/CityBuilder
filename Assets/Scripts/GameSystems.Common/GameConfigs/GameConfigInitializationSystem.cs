@@ -7,6 +7,21 @@ using UnityEngine;
 
 namespace GameSystems.Common.GameConfigs
 {
+    public class ScriptableGameConfigInitializationSystem : IGameSystem
+    {
+        public GameConfigProvider GameConfigProvider { get; } = new();
+        
+        public Task Init()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Deinit()
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
     public class GameConfigInitializationSystem : IGameSystem
     {
         public GameConfigProvider GameConfigProvider { get; } = new();
@@ -32,21 +47,28 @@ namespace GameSystems.Common.GameConfigs
             var configsRaw = await _configLoader.LoadConfigs();
             var configs = new List<IGameConfigScheme>(configsRaw.Count);
 
-            foreach ((Type type, string content) configRaw in configsRaw)
+            try
             {
-                IGameConfigScheme configScheme = _configSerializer.Deserialize(configRaw.content, configRaw.type);
+                foreach ((Type type, string content) configRaw in configsRaw)
+                {
+                    IGameConfigScheme configScheme = _configSerializer.Deserialize(configRaw.content, configRaw.type);
                 
-                configs.Add(configScheme);
+                    configs.Add(configScheme);
                 
-                _configsProcessor.CollectReferences(configScheme);
-            }
+                    _configsProcessor.CollectReferences(configScheme);
+                }
             
-            foreach (var configScheme in configs)
-            {
-                _configsProcessor.ResolveReferences(configScheme);
-                GameConfigProvider.Register(configScheme, configScheme.GetType());
+                foreach (var configScheme in configs)
+                {
+                    _configsProcessor.ResolveReferences(configScheme);
+                    GameConfigProvider.Register(configScheme, configScheme.GetType());
                 
-                Debug.Log($"Registered config {configScheme} by type {configScheme.GetType().Name}");
+                    Debug.Log($"Registered config {configScheme} by type {configScheme.GetType().Name}");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
             }
         }
     }

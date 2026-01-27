@@ -12,6 +12,19 @@
       "AssetKey": "Unit",
       "AttackPossibilityAndPriority": 0,
       "Id": "14e80a78-6faa-416b-949d-ea277530c2d5"
+    },
+    {
+      "Name": "Tower",
+      "InternalDescription": "Tower unit",
+      "Health": 300.0,
+      "Damage": 10.0,
+      "AttackRange": 5.0,
+      "Defense": 0.0,
+      "MoveSpeed": 0.0,
+      "AttackSpeed": 1.0,
+      "AssetKey": "Unit",
+      "AttackPossibilityAndPriority": 0,
+      "Id": "3315ca7e-7251-44b5-8d8a-3a8eddb1fc27"
     }
   ],
   "EnemiesConfigs": [

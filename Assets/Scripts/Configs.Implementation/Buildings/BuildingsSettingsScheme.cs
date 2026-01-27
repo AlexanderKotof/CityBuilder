@@ -53,41 +53,7 @@ namespace Configs.Implementation.Buildings
             
             BuildingFunctions = new BuildingFunction[]
             {
-                new MainBuildingFunction()
-                {
 
-                },
-                new ResourceStorageBuildingFunction()
-                {
-
-                },
-                new ResourceProductionBuildingFunction()
-                {
-                    RequireResourcesForProduction = new ResourceConfig[]
-                    {
-                        new() { Type = ResourceType.Food, Amount = 5 },
-                    },
-                    ProduceResourcesByTick = new ResourceConfig[]
-                    {
-                        new() { Type = ResourceType.Food, Amount = 5 },
-                    }
-                },
-                new HouseHoldsIncreaseBuildingFunction
-                {
-                    AvailableHouseholdsIncrease = 5,
-                    PerBuildingLevelGrow = 5
-                },
-                new MercenaryTrainingBuildingFunction()
-                {
-                    CanPurchase = new ConfigReference<BattleUnitConfig>[]
-                    {
-                        new ConfigReference<BattleUnitConfig>()
-                    },
-                },
-                new MercenaryContainingFunction()
-                {
-                    Amount = 5,
-                }
             };
         }
     }

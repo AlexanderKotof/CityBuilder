@@ -92,6 +92,28 @@
       ],
       "UnitConfig": null,
       "Id": "8199e218-cbdc-4fd5-8f78-70170e358ae0"
+    },
+    {
+      "Name": "TOWER",
+      "AssetKey": "Tower",
+      "Size": {
+        "x": 1,
+        "y": 1,
+        "magnitude": 1.41421354,
+        "sqrMagnitude": 2
+      },
+      "IsMovable": true,
+      "RequiredResources": [
+        {
+          "Type": 3,
+          "Amount": 1
+        }
+      ],
+      "BuildingFunctions": [],
+      "UnitConfig": {
+        "id": "3315ca7e-7251-44b5-8d8a-3a8eddb1fc27"
+      },
+      "Id": "8199e218-cbdc-4fd5-8f78-70170e358ae0"
     }
   ],
   "BuildingFunctions": [

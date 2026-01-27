@@ -6,8 +6,6 @@ namespace Configs.Schemes
     {
         public int X { get; set; } = X;
         public int Y { get; set; } = Y;
-        
-
     }
 
     public static class SizeExtensions

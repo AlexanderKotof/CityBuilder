@@ -82,5 +82,15 @@ namespace Configs.Editor
                 throw;
             }
         }
+
+        public static string GetConfigPath(this IGameConfigScheme config)
+        {
+            return System.IO.Path.Combine(Path, config.GetType().GetConfigFileName());
+        }
+        
+        public static string GetConfigPath(this Type config)
+        {
+            return System.IO.Path.Combine(Path, config.GetConfigFileName());
+        }
     }
 }
