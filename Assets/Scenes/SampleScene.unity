@@ -543,6 +543,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2084401947}
   - component: {fileID: 2084401946}
+  - component: {fileID: 2084401948}
+  - component: {fileID: 2084401949}
+  - component: {fileID: 2084401950}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -562,7 +565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892093c0923ad2f43ad9af82a268fdfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RaycasterCamera: {fileID: 963194227}
 --- !u!4 &2084401947
 Transform:
   m_ObjectHideFlags: 0
@@ -578,6 +580,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2084401948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084401945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22316bbbb7064c99816a286adcadc04f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Installers.GameConfigsInstaller
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects: []
+  CommonGameSettingsSO: {fileID: 11400000, guid: 3f512e873eb52db48856e62f16f06d54, type: 2}
+  BuildingsSettingsSO: {fileID: 11400000, guid: 73d7472ac2ee55e4fa8d2c09fa6d80fe, type: 2}
+  ResourcesDefaultConfigurationSO: {fileID: 11400000, guid: 5f82f44c5f9c2554cba01e92aa63f58c, type: 2}
+  BattleUnitsConfigSO: {fileID: 11400000, guid: c1e01e5b52d8596458f0508694aedb5e, type: 2}
+--- !u!114 &2084401949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084401945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bdc206dde854d40a719d7c83887d8e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Installers.CameraInstaller
+  parentReference:
+    TypeName: Installers.GameConfigsInstaller
+  autoRun: 1
+  autoInjectGameObjects: []
+  RaycasterCamera: {fileID: 963194227}
+--- !u!114 &2084401950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084401945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 636a2fe29fea47bda37e2b25cd5d7dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Installers.GameSystemsInstaller
+  parentReference:
+    TypeName: Installers.CameraInstaller
+  autoRun: 1
+  autoInjectGameObjects: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

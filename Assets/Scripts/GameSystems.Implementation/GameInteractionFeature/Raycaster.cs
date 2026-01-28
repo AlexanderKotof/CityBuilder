@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CityBuilder.Grid;
+using Configs.Scriptable;
 using UnityEngine;
 
 namespace GameSystems.Implementation.GameInteractionFeature
@@ -10,10 +11,10 @@ namespace GameSystems.Implementation.GameInteractionFeature
         private readonly LayerMask _layerMask;
         private readonly GridManager _gridManager;
 
-        public Raycaster(Camera raycastCamera, LayerMask layerMask, GridManager gridManager)
+        public Raycaster(Camera raycastCamera, CommonGameSettingsSO settings, GridManager gridManager)
         {
             _raycastCamera = raycastCamera;
-            _layerMask = layerMask;
+            _layerMask = settings.InteractionRaycastLayerMask;
             _gridManager = gridManager;
         }
 

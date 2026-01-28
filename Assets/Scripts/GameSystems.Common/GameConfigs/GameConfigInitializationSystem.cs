@@ -7,21 +7,7 @@ using UnityEngine;
 
 namespace GameSystems.Common.GameConfigs
 {
-    public class ScriptableGameConfigInitializationSystem : IGameSystem
-    {
-        public GameConfigProvider GameConfigProvider { get; } = new();
-        
-        public Task Init()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Deinit()
-        {
-            throw new NotImplementedException();
-        }
-    }
-    
+    [Obsolete]
     public class GameConfigInitializationSystem : IGameSystem
     {
         public GameConfigProvider GameConfigProvider { get; } = new();

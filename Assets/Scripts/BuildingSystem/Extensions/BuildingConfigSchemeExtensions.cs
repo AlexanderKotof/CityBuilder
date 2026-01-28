@@ -1,32 +1,33 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Configs.Implementation.Buildings;
 using Configs.Implementation.Buildings.Functions;
-using Configs.Schemes;
-using Configs.Scriptable;
 
 namespace CityBuilder.BuildingSystem
 {
-    public static class BuildingConfigExtensions
+    [Obsolete]
+    public static class BuildingConfigSchemeExtensions
     {
-        public static bool TryGetProducingResourcesFunction(this BuildingConfigSO bc,
+        public static bool TryGetProducingResourcesFunction(this BuildingConfigScheme bc,
             [NotNullWhen(true)] out ResourceProductionBuildingFunction production)
         {
             return TryGetBuildingFunction(bc, out production);
         }
 
-        public static bool TryGetHouseholdsCapacityFunction(this BuildingConfigSO bc,
+        public static bool TryGetHouseholdsCapacityFunction(this BuildingConfigScheme bc,
             [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunction production)
         {
             return TryGetBuildingFunction(bc, out production);
         }
 
-        public static bool TryGetResourceStorageCapacityFunction(this BuildingConfigSO bc,
+        public static bool TryGetResourceStorageCapacityFunction(this BuildingConfigScheme bc,
             [NotNullWhen(true)] out ResourceStorageBuildingFunction production)
         {
             return TryGetBuildingFunction(bc, out production);
         }
         
-        public static bool TryGetBuildingFunction<T>(this BuildingConfigSO bc, [NotNullWhen(true)] out T function)
+        public static bool TryGetBuildingFunction<T>(this BuildingConfigScheme bc, [NotNullWhen(true)] out T function)
             where T : class, IBuildingFunction
         {
             if (bc.BuildingFunctions == null)
@@ -35,7 +36,7 @@ namespace CityBuilder.BuildingSystem
                 return false;
             }
 
-            function = bc.BuildingFunctions.FirstOrDefault(value => value is T) as T;
+            function = bc.BuildingFunctions.FirstOrDefault(value => value.Value is T)?.Value as T;
             return function != default(T);
         }
     }

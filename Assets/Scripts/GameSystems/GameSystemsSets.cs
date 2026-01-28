@@ -29,7 +29,7 @@ namespace GameSystems
             typeof(ResourcesFeature),
             typeof(CellGridFeature),
             typeof(GameInteractionFeature),
-            typeof(BuildingFeature),
+            typeof(BuildingsViewFeature),
             typeof(ResourcesProductionFeature),
             typeof(PopulationFeature),
             typeof(ResourcesStorageFeature),

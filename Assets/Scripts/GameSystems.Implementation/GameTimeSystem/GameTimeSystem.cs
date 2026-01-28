@@ -1,31 +1,25 @@
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace GameSystems.Implementation.GameTimeSystem
 {
-    public class GameTimeSystem : IGameSystem, IUpdateGamSystem
+    public class GameTimeSystem : ITickable
     {
-        [SerializeField]
         private int SecondsInDay = 5;
+
+        public GameTimeSystem(DateModel date)
+        {
+            Date = date;
+        }
 
         public int CurrentDay => Date.DayCounter;
 
-        public DateModel Date { get; } = new DateModel(1000, 1, 1);
+        public DateModel Date { get; }
         
         public event Action<int> NewDayStarted;
-
-        public Task Init()
-        {
-            return Task.CompletedTask;
-        }
-
-        public Task Deinit()
-        {
-            return Task.CompletedTask;
-        }
-
-        public void Update()
+        
+        public void Tick()
         {
             float nextDayAt = (CurrentDay + 1) * SecondsInDay;
             Date.UpdateDayProgress((Time.timeSinceLevelLoad - nextDayAt) / SecondsInDay);

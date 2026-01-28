@@ -16,4 +16,6 @@ MonoBehaviour:
   <StartGoldGS>k__BackingField: 10
   <StartGoldGPS>k__BackingField: 101
   <EndGoldG>k__BackingField: 1011
-  <InteractionRaycastLayerMask>k__BackingField: 32
+  <InteractionRaycastLayerMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 32

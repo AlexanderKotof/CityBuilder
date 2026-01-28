@@ -1,10 +1,12 @@
+using System;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Grid;
 using Configs.Schemes;
+using VContainer.Unity;
 
 namespace GameSystems.Implementation.GameInteractionFeature
 {
-    public class CellSelectionController
+    public class CellSelectionController : IInitializable, IDisposable
     {
         private readonly CursorController _cursorController;
         private readonly InteractionModel _interactionModel;
@@ -17,13 +19,13 @@ namespace GameSystems.Implementation.GameInteractionFeature
             _buildingManager = buildingManager;
         }
 
-        public void Init()
+        public void Initialize()
         {
             _interactionModel.SelectedCell.Subscribe(OnCellSelected);
             _interactionModel.DraggedCell.Subscribe(OnDraggingCell);
         }
 
-        public void Deinit()
+        public void Dispose()
         {
             _interactionModel.SelectedCell.Unsubscribe(OnCellSelected);
             _interactionModel.DraggedCell.Unsubscribe(OnDraggingCell);

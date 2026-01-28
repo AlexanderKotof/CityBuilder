@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
@@ -5,74 +7,52 @@ using CityBuilder.Grid;
 using Configs;
 using Configs.Extensions;
 using Configs.Schemes;
+using Configs.Scriptable;
+using Cysharp.Threading.Tasks;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States;
 using UnityEngine;
+using VContainer.Unity;
 using ViewSystem;
 
 namespace GameSystems.Implementation.GameInteractionFeature
 {
-    public class GameInteractionFeature : GameSystemBase, IUpdateGamSystem
+    public class GameInteractionFeature : IAsyncStartable, IDisposable
     {
-        public CursorController CursorController { get; private set; }
-        public Raycaster Raycaster { get; private set; }
-        public DraggingContentController DraggingContentController { get; }
-
-        public InteractionModel InteractionModel { get; } = new InteractionModel();
-    
         private PlayerInteractionStateMachine? _playerInteractionStateMachine;
     
         private readonly IViewsProvider _viewsProvider;
-        private readonly CommonGameSettings _settings;
+        private readonly CommonGameSettingsSO _settings;
         private Transform _cursor;
         private CellSelectionController _cellSelectionController;
 
-        public GameInteractionFeature(IDependencyContainer container) : base(container)
+        public GameInteractionFeature(GameConfigProvider configProvider, Camera camera, GridManager gridManager, IViewsProvider viewsProvider)
         {
-            _settings = container.Resolve<GameConfigProvider>().CommonGameSettings();
-            var raycasterCamera = container.Resolve<Camera>();
-            var gridManager = container.Resolve<GridManager>();
-            _viewsProvider = container.Resolve<IViewsProvider>();
-        
-            LayerMask layerMask = (LayerMask)_settings.InteractionRaycastLayerMask;
-            Raycaster = new Raycaster(raycasterCamera, layerMask, gridManager);
-        
-            DraggingContentController = new DraggingContentController();
         }
-
-        public override async Task Init()
+        
+        public async UniTask StartAsync(CancellationToken cancellation = new CancellationToken())
         {
-            _cursor = await _viewsProvider.ProvideViewAsync<Transform>(_settings.SelectorAssetReferenceKey);
-            CursorController = new CursorController(_cursor);
+            Debug.LogWarning("Game Interaction Feature is now running.");
             
             //TODO: ???
-            Container.Register(CursorController);
+            //Container.Register(CursorController);
 
-            var buildingManager = Container.Resolve<BuildingManager>();
-            _cellSelectionController =
-                new CellSelectionController(CursorController, InteractionModel, buildingManager);
-            _cellSelectionController.Init();
-        
-            _playerInteractionStateMachine = new PlayerInteractionStateMachine(
-                new EmptyInteractionState(Container),
-                new CellSelectedInteractionState(Container),
-                new DraggingInteractionState(Container)
-            );
-        
-            _playerInteractionStateMachine.Start(typeof(EmptyInteractionState));
+            // var buildingManager = Container.Resolve<BuildingManager>();
+            // _cellSelectionController =
+            //     new CellSelectionController(CursorController, InteractionModel, buildingManager);
+            // _cellSelectionController.Init();
+            //
+            // _playerInteractionStateMachine = new PlayerInteractionStateMachine(
+            //     new EmptyInteractionState(Container),
+            //     new CellSelectedInteractionState(Container),
+            //     new DraggingInteractionState(Container)
+            // );
+            //
+            // _playerInteractionStateMachine.Start(typeof(EmptyInteractionState));
         }
 
-        public override Task Deinit()
+        public void Dispose()
         {
-            _cellSelectionController.Deinit();
-            _playerInteractionStateMachine?.Stop();
-            _viewsProvider.ReturnView(_cursor);
-            return base.Deinit();
-        }
-
-        public void Update()
-        {
-            _playerInteractionStateMachine?.Update();
         }
     }
 }

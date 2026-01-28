@@ -1,20 +1,15 @@
-using CityBuilder.Dependencies;
-using Configs;
-using Configs.Schemes;
+using Configs.Scriptable;
 using ResourcesSystem;
 
 namespace GameSystems.Implementation
 {
-    public class ResourcesFeature : GameSystemBase
+    public class ResourcesFeature
     {
         public ResourcesManager ResourcesManager { get; }
-
-        public PlayerResourcesModel PlayerResourcesModel => ResourcesManager.PlayerResourcesStorage;
-    
-        public ResourcesFeature(IDependencyContainer container) : base(container)
+        
+        public ResourcesFeature(ResourcesDefaultConfigurationSO resourcesDefaultConfiguration)
         {
-            var resourcesConfig = Container.Resolve<GameConfigProvider>().GetConfig<ResourcesDefaultConfigurationScheme>();
-            ResourcesManager = new ResourcesManager(resourcesConfig);
+            //ResourcesManager = new ResourcesManager(resourcesDefaultConfiguration);
         }
     }
 }

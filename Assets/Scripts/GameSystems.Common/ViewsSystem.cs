@@ -3,16 +3,16 @@ using ViewSystem;
 
 namespace GameSystems.Implementation
 {
-    public class ViewsSystem : GameSystemBase
+    public class ViewsSystem
     {
         public IViewsProvider ViewsProvider { get; }
         
         public IViewWithModelProvider ViewWithModelProvider { get; }
         
-        public ViewsSystem(IDependencyContainer container) : base(container)
+        public ViewsSystem(IViewsProvider viewsProvider, IViewWithModelProvider viewWithModelProvider)
         {
-            ViewsProvider = new ViewsProvider();
-            ViewWithModelProvider = new ViewWithModelProvider(ViewsProvider);
+            ViewsProvider = viewsProvider;
+            ViewWithModelProvider = viewWithModelProvider;
         }
     }
 }

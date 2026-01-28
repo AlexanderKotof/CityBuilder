@@ -1,37 +1,37 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using Configs.Implementation.Buildings.Functions;
 using ResourcesSystem;
+using VContainer.Unity;
 
 namespace GameSystems.Implementation.ResourcesStorageFeature
 {
-    public class ResourcesStorageFeature : GameSystemBase
+    public class ResourcesStorageFeature : IInitializable, IDisposable
     {
         private readonly PlayerResourcesModel _playerResourcesStorage;
         private readonly BuildingsModel _buildingsModel;
         
         private readonly Dictionary<BuildingModel, StorageIncreaseUnit> _storageIncreaseUnits = new();
 
-        public ResourcesStorageFeature(IDependencyContainer container) : base(container)
+        public ResourcesStorageFeature(PlayerResourcesModel resourcesModel, BuildingsModel buildingsModel)
         {
-            _playerResourcesStorage = container.Resolve<PlayerResourcesModel>();
-            _buildingsModel = container.Resolve<BuildingsModel>();
+            _playerResourcesStorage = resourcesModel;
+            _buildingsModel = buildingsModel;
         }
 
-        public override Task Init()
+        public void Initialize()
         {
             _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
-            return Task.CompletedTask;
         }
-        
-        public override Task Deinit()
+
+        public void Dispose()
         {
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
-            return Task.CompletedTask;
         }
         
         private void OnBuildingAdded(BuildingModel building)
@@ -69,5 +69,6 @@ namespace GameSystems.Implementation.ResourcesStorageFeature
             
             _playerResourcesStorage.UpdateCapacity(capacity);
         }
+
     }
 }

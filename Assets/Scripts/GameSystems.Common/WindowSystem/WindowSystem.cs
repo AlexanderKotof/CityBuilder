@@ -2,14 +2,12 @@ using CityBuilder.Dependencies;
 using GameSystems;
 using ViewSystem;
 
-public class WindowSystem : GameSystemBase
+public class WindowSystem
 {
-    private readonly IViewWithModelProvider _viewWithModelProvider;
-    
     public WindowsProvider WindowsProvider { get; }
 
-    public WindowSystem(IDependencyContainer container) : base(container)
+    public WindowSystem(WindowsProvider provider)
     {
-        WindowsProvider = new WindowsProvider(container.Resolve<IViewWithModelProvider>());
+        WindowsProvider = provider;
     }
 }

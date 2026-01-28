@@ -1,34 +1,35 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CityBuilder.Grid;
-using Configs;
-using Configs.Implementation.Buildings;
-using Configs.Schemes;
-using UnityEditor;
+using Configs.Scriptable;
 using UnityEngine;
-using ViewSystem;
+using VContainer.Unity;
 
 namespace CityBuilder.BuildingSystem
 {
-    public class BuildingManager
+    public class BuildingManager : IInitializable, IDisposable
     {
-        public BuildingFactory BuildingFactory { get; }
-        public BuildingsSettingsScheme Config => _provider.GetConfig<BuildingsSettingsScheme>();
-        public BuildingsModel Model { get; } = new();
-
-        private readonly GameConfigProvider _provider;
+        private readonly BuildingFactory _buildingFactory;
+        private readonly BuildingsModel _model;
+        private readonly BuildingsSettingsSO _config;
         private readonly GridManager _gridManager;
 
-        public BuildingManager(GameConfigProvider provider, GridManager gridManager)
+        public BuildingManager(BuildingsSettingsSO settingsSo, GridManager gridManager, BuildingFactory builderFactory, BuildingsModel model)
         {
-            _provider = provider;
             _gridManager = gridManager;
-
-            BuildingFactory = new();
+            _config = settingsSo;
+            _model = model;
+            _buildingFactory = builderFactory;
         }
 
-        public void Init()
+        public void Initialize()
         {
             CreateStartBuilding();
+        }       
+        
+        public void Dispose()
+        {
+            
         }
 
         private void CreateStartBuilding()
@@ -45,22 +46,22 @@ namespace CityBuilder.BuildingSystem
                 return;
             }
 
-            var config = Config.MainBuildingConfig;
-            var building = BuildingFactory.Create(config, cellModel);
+            var config = _config.MainBuildingConfig;
+            var building = _buildingFactory.Create(config, cellModel);
             SetBuilding(cellModel, building);
             
-            Model.SetMainBuilding(building);
+            _model.SetMainBuilding(building);
         }
         
         public void TryPlaceBuilding(CellModel cellModel, int configIndex)
         {
-            if (Config.BuildingConfigs.Length <= configIndex || configIndex < 0)
+            if (_config.BuildingConfigs.Length <= configIndex || configIndex < 0)
             {
                 return;
             }
             
-            BuildingConfigScheme config = Config.BuildingConfigs[configIndex];
-            var building = BuildingFactory.Create(config, cellModel);
+            BuildingConfigSO config = _config.BuildingConfigs[configIndex];
+            var building = _buildingFactory.Create(config, cellModel);
             
             if (CanPlaceBuilding(config, cellModel))
             {
@@ -98,10 +99,10 @@ namespace CityBuilder.BuildingSystem
         
         public bool TryGetBuilding(CellModel location, out BuildingModel building)
         {
-            return Model.BuildingsMap.TryGetValue(location, out building);
+            return _model.BuildingsMap.TryGetValue(location, out building);
         }
 
-        public bool CanPlaceBuilding(BuildingConfigScheme config, CellModel startCell)
+        public bool CanPlaceBuilding(BuildingConfigSO config, CellModel startCell)
         {
             var gridModel = startCell.GridModel;
             var position = startCell.Position;
@@ -125,20 +126,20 @@ namespace CityBuilder.BuildingSystem
 
         private void SetBuilding(CellModel cellModel, BuildingModel building)
         {
-            Model.AddBuilding(building, cellModel);
+            _model.AddBuilding(building, cellModel);
         }
         
         private void RemoveBuilding(CellModel cell)
         {
-            if (Model.TryGetBuilding(cell, out var building))
+            if (_model.TryGetBuilding(cell, out var building))
             {
-                Model.RemoveBuilding(cell);
+                _model.RemoveBuilding(cell);
             }
         }
 
         public bool CanPlaceBuilding(CellModel location, BuildingModel newBuilding)
         {
-            return !Model.BuildingsMap.TryGetValue(location, out var building) ||
+            return !_model.BuildingsMap.TryGetValue(location, out var building) ||
                    CanBeUpgraded(building, newBuilding);
         }
 
@@ -147,12 +148,14 @@ namespace CityBuilder.BuildingSystem
             return
                 Equals(first.Config, second.Config) &&
                     first.Level.Value == second.Level.Value &&
-                        Model.MainBuilding.Level.Value > first.Level.Value;
+                        _model.MainBuilding.Level.Value > first.Level.Value;
         }
         
         public bool CanMoveBuilding(CellModel location)
         {
-            return Model.BuildingsMap.TryGetValue(location, out var building) && building.CanBeMoved;
+            return _model.BuildingsMap.TryGetValue(location, out var building) && building.CanBeMoved;
         }
+
+
     }
 }

@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace StateMachine
 {
-    public abstract class StateMachineBase<TState> : IStateMachine<TState>
+    public abstract class StateMachineBase<TState> : IStateMachine<TState>, IDisposable
         where TState : IState
     {
         public TState CurrentState { get; private set; }
 
-        protected readonly Dictionary<Type, TState> _statesMap = new Dictionary<Type, TState>();
+        private readonly Dictionary<Type, TState> _statesMap = new Dictionary<Type, TState>();
 
+        protected StateMachineBase(IEnumerable<TState> states)
+        {
+            foreach (var state in states)
+            {
+                _statesMap[state.GetType()] = state;
+            }
+        }
+        
         protected StateMachineBase(params TState[] states)
         {
             foreach (var state in states)
@@ -68,6 +77,11 @@ namespace StateMachine
             {
                 Debug.Log($"State not found of type {state.Name}");
             }
+        }
+
+        public void Dispose()
+        {
+            Stop();
         }
     }
 }

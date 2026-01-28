@@ -1,22 +1,16 @@
-using System.Threading.Tasks;
-using GameSystems;
 using PlayerInput;
+using VContainer.Unity;
 
-public class PlayerInputSystem : IGameSystem, IUpdateGamSystem
+public class PlayerInputSystem : ITickable
 {
-    public PlayerInputManager PlayerInputManager { get; } = new();
+    public PlayerInputSystem(PlayerInputManager playerInputManager)
+    {
+        PlayerInputManager = playerInputManager;
+    }
+
+    public PlayerInputManager PlayerInputManager { get; }
     
-    public Task Init()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task Deinit()
-    {
-        return Task.CompletedTask;
-    }
-
-    public void Update()
+    public void Tick()
     {
         PlayerInputManager.Update();
     }

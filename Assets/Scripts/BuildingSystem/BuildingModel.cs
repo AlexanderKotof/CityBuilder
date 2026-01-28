@@ -5,6 +5,7 @@ using CityBuilder.Grid;
 using CityBuilder.Reactive;
 using Configs.Implementation.Buildings;
 using Configs.Schemes;
+using Configs.Scriptable;
 using GameSystems.Implementation.GameInteractionFeature;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,8 +25,9 @@ namespace CityBuilder.BuildingSystem
         public ReactiveProperty<int> Rotation { get; } = new();
         public ReactiveProperty<Vector3> WorldPosition { get; } = new();
         
-        public BuildingConfigScheme Config { get; }
+        public BuildingConfigSO Config { get; }
 
+        //Трансформ вьюхи в игре
         public ReactiveProperty<Transform?> ThisTransform { get; } = new();
 
         // 0-4 
@@ -36,7 +38,7 @@ namespace CityBuilder.BuildingSystem
         public bool CanBeMoved => Config.IsMovable;
         public bool IsEmpty => false;
         
-        public BuildingModel(int level, BuildingConfigScheme config)
+        public BuildingModel(int level, BuildingConfigSO config)
         {
             Level.Set(level);
             Config = config;

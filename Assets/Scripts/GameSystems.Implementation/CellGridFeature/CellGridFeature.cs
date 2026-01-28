@@ -1,25 +1,23 @@
-using System.Threading.Tasks;
-using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace GameSystems.Implementation
 {
-    public class CellGridFeature : GameSystemBase
+    public class CellGridFeature : IInitializable
     {
         public GridManager GridManager { get; private set; }
 
-        public CellGridFeature(IDependencyContainer container) : base(container)
+        public CellGridFeature(GridManager gridManager)
         {
-            GridManager = new GridManager();
+            GridManager = gridManager;
         }
 
-        public override Task Init()
+        public void Initialize()
         {
             RegisterGrids();
-            return Task.CompletedTask;
         }
-    
+        
         private void RegisterGrids()
         {
             var grids = GameObject.FindObjectsOfType<GridComponent>();
