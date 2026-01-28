@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Configs.Schemes.BattleSystem;
+using Configs.Scriptable;
 using JetBrains.Annotations;
 using UnityEngine;
 

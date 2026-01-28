@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Configs.Implementation.Buildings.Functions;
-using Configs.Schemes;
 using Configs.Scriptable;
 
 namespace CityBuilder.BuildingSystem
@@ -9,19 +8,19 @@ namespace CityBuilder.BuildingSystem
     public static class BuildingConfigExtensions
     {
         public static bool TryGetProducingResourcesFunction(this BuildingConfigSO bc,
-            [NotNullWhen(true)] out ResourceProductionBuildingFunction production)
+            [NotNullWhen(true)] out ResourceProductionBuildingFunctionSO production)
         {
             return TryGetBuildingFunction(bc, out production);
         }
 
         public static bool TryGetHouseholdsCapacityFunction(this BuildingConfigSO bc,
-            [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunction production)
+            [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunctionSO production)
         {
             return TryGetBuildingFunction(bc, out production);
         }
 
         public static bool TryGetResourceStorageCapacityFunction(this BuildingConfigSO bc,
-            [NotNullWhen(true)] out ResourceStorageBuildingFunction production)
+            [NotNullWhen(true)] out ResourceStorageBuildingFunctionSO production)
         {
             return TryGetBuildingFunction(bc, out production);
         }

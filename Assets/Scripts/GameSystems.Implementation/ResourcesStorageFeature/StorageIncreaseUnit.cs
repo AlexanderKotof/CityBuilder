@@ -3,9 +3,9 @@ using Configs.Implementation.Buildings.Functions;
 
 namespace GameSystems.Implementation.ResourcesStorageFeature
 {
-    public record StorageIncreaseUnit(ResourceStorageBuildingFunction Function, BuildingModel Building)
+    public record StorageIncreaseUnit(ResourceStorageBuildingFunctionSO Function, BuildingModel Building)
     {
-        public ResourceStorageBuildingFunction Function { get; } = Function;
+        public ResourceStorageBuildingFunctionSO Function { get; } = Function;
         public BuildingModel Building { get; } = Building;
     }
 }

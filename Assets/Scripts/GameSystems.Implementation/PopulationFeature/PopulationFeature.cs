@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
-using CityBuilder.Dependencies;
 using Configs.Implementation.Buildings.Functions;
 using GameSystems.Implementation.GameTime;
 using VContainer.Unity;
@@ -58,7 +56,7 @@ namespace GameSystems.Implementation.PopulationFeature
                 return;
             }
             
-            if (building.Config.TryGetHouseholdsCapacityFunction(out HouseHoldsIncreaseBuildingFunction householdsIncrease) == false)
+            if (building.Config.TryGetHouseholdsCapacityFunction(out HouseHoldsIncreaseBuildingFunctionSO householdsIncrease) == false)
             {
                 return;
             }

@@ -1,6 +1,5 @@
 using CityBuilder.Dependencies;
 using CityBuilder.Reactive;
-using Configs.Schemes.BattleSystem;
 using GameSystems.Implementation.BattleSystem;
 using UnityEngine;
 using ViewSystem;

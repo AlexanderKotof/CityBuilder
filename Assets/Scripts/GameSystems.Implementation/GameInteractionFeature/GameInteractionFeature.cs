@@ -5,7 +5,6 @@ using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using Configs;
-using Configs.Extensions;
 using Configs.Schemes;
 using Configs.Scriptable;
 using Cysharp.Threading.Tasks;

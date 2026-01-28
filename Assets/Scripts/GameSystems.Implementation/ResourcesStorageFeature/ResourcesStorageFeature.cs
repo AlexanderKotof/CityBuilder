@@ -36,7 +36,7 @@ namespace GameSystems.Implementation.ResourcesStorageFeature
         
         private void OnBuildingAdded(BuildingModel building)
         {
-            if (building.Config.TryGetResourceStorageCapacityFunction(out ResourceStorageBuildingFunction storageIncrease) == false)
+            if (building.Config.TryGetResourceStorageCapacityFunction(out ResourceStorageBuildingFunctionSO storageIncrease) == false)
             {
                 return;
             }

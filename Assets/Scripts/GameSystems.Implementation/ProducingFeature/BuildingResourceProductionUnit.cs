@@ -4,9 +4,9 @@ using ResourcesSystem;
 
 namespace GameSystems.Implementation.ProducingFeature
 {
-    public record BuildingResourceProductionUnit(ResourceProductionBuildingFunction Function) : IResourceProducer
+    public record BuildingResourceProductionUnit(ResourceProductionBuildingFunctionSO Function) : IResourceProducer
     {
-        public ResourceProductionBuildingFunction Function { get; } = Function;
+        public ResourceProductionBuildingFunctionSO Function { get; } = Function;
 
         public bool CanProduce()
         {

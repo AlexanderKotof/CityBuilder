@@ -1,5 +1,3 @@
-using Configs.Schemes;
-using Configs.Schemes.BattleSystem;
 using Configs.Scriptable;
 
 namespace Configs.Implementation.Buildings.Functions

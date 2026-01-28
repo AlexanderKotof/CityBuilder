@@ -1,7 +1,6 @@
-namespace Configs.Implementation.Buildings.Functions
+namespace Configs.Scriptable
 {
     public interface IBuildingFunction
     {
-
     }
 }

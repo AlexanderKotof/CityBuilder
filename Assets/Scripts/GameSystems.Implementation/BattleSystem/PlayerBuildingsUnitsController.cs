@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
-using CityBuilder.Dependencies;
-using Configs.Schemes.BattleSystem;
 using Configs.Scriptable;
 using Cysharp.Threading.Tasks;
 using UnityEngine;

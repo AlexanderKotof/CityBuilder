@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Configs.Schemes;
+using Configs.Scriptable;
 
 namespace Configs
 {
@@ -26,5 +26,9 @@ namespace Configs
         {
             return (T)_configsMap[typeof(T)];
         }
+    }
+
+    public interface IConfigBase
+    {
     }
 }

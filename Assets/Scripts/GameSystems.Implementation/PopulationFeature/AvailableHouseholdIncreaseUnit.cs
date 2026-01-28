@@ -3,9 +3,9 @@ using Configs.Implementation.Buildings.Functions;
 
 namespace GameSystems.Implementation.PopulationFeature
 {
-    public record AvailableHouseholdIncreaseUnit(HouseHoldsIncreaseBuildingFunction Function,  BuildingModel Building)
+    public record AvailableHouseholdIncreaseUnit(HouseHoldsIncreaseBuildingFunctionSO Function,  BuildingModel Building)
     {
-        public HouseHoldsIncreaseBuildingFunction Function { get; } = Function;
+        public HouseHoldsIncreaseBuildingFunctionSO Function { get; } = Function;
         public BuildingModel Building { get; } = Building;
     }
 }

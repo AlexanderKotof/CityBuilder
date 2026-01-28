@@ -1,6 +1,5 @@
 using System;
 using CityBuilder.Reactive;
-using Configs.Schemes.BattleSystem;
 using Configs.Scriptable;
 using UnityEngine;
 
