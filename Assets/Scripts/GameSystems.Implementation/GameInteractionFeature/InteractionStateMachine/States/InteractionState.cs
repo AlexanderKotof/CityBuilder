@@ -4,29 +4,25 @@ using CityBuilder.Grid;
 using PlayerInput;
 using StateMachine;
 using UnityEngine;
+using VContainer;
 
 namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
     public abstract class InteractionState : StateBase, IUpdateState
     {
+        [Inject]
         private readonly PlayerInputManager _playerInput;
+        [Inject]
         private readonly CursorController _cursorController;
+        [Inject]
         private readonly Raycaster _raycastController;
+        [Inject]
         private readonly BuildingManager _buildingManager;
-
-        protected InteractionModel InteractionModel { get; }
+        [Inject]
+        protected InteractionModel InteractionModel { get; private set; }
         protected Raycaster Raycaster => _raycastController;
-
-        protected InteractionState(IDependencyContainer dependencyContainer)
-        {
-            _playerInput = dependencyContainer.Resolve<PlayerInputManager>();
-            _cursorController = dependencyContainer.Resolve<CursorController>();
-            _raycastController = dependencyContainer.Resolve<Raycaster>();
-            _buildingManager = dependencyContainer.Resolve<BuildingManager>();
-
-            InteractionModel = dependencyContainer.Resolve<InteractionModel>();
-        }
-
+        protected BuildingManager BuildingManager => _buildingManager;
+        
         public virtual void Update()
         {
             

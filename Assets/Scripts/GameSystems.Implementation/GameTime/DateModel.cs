@@ -1,6 +1,6 @@
 using System;
 
-namespace GameSystems.Implementation.GameTimeSystem
+namespace GameSystems.Implementation.GameTime
 {
     public class DateModel
     {
@@ -16,8 +16,9 @@ namespace GameSystems.Implementation.GameTimeSystem
         public event Action OnMonthChanged;
         public event Action OnYearChanged;
         public event Action OnWeekChanged;
-        
-        public DateModel(int year, int month, int day)
+
+        public DateModel() : this(100, 1, 1){}
+        private DateModel(int year, int month, int day)
         {
             Year = year;
             Month = month;

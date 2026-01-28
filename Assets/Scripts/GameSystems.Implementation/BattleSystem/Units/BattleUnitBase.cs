@@ -1,6 +1,7 @@
 using System;
 using CityBuilder.Reactive;
 using Configs.Schemes.BattleSystem;
+using Configs.Scriptable;
 using UnityEngine;
 using ViewSystem;
 
@@ -10,7 +11,7 @@ namespace GameSystems.Implementation.BattleSystem
     {
         public Guid RuntimeId { get; } = Guid.NewGuid();
         
-        public BattleUnitConfig Config { get; }
+        public BattleUnitConfigSO Config { get; }
         
         public UnitHealthAttribute Health { get; }
         public bool IsAlive => Health.CurrentValue > 0;
@@ -27,7 +28,7 @@ namespace GameSystems.Implementation.BattleSystem
         public ReactiveProperty<Vector3> StartPosition { get; } = new();
         public ReactiveProperty<Vector3> DesiredPosition { get; } = new();
         
-        public BattleUnitBase(BattleUnitConfig config)
+        public BattleUnitBase(BattleUnitConfigSO config)
         {
             Config = config;
             Health = new UnitHealthAttribute(config.Health);
@@ -38,7 +39,7 @@ namespace GameSystems.Implementation.BattleSystem
             }
         }
         
-        public BattleUnitBase(BattleUnitConfig config, int level, Vector3 startPosition) : this(config)
+        public BattleUnitBase(BattleUnitConfigSO config, int level, Vector3 startPosition) : this(config)
         {
             StartPosition.Set(startPosition);
         }

@@ -17,6 +17,7 @@ using ViewSystem;
 
 namespace GameSystems.Implementation.GameInteractionFeature
 {
+    [Obsolete]
     public class GameInteractionFeature : IAsyncStartable, IDisposable
     {
         private PlayerInteractionStateMachine? _playerInteractionStateMachine;

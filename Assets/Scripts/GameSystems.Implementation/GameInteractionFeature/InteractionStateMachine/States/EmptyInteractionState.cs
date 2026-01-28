@@ -5,10 +5,6 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
 {
     public class EmptyInteractionState : InteractionState
     {
-        public EmptyInteractionState(IDependencyContainer dependencyContainer) : base(dependencyContainer)
-        {
-        }
-
         protected override void OnEnterState()
         {
             base.OnEnterState();

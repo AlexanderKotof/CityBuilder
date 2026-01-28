@@ -565,6 +565,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892093c0923ad2f43ad9af82a268fdfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentReference:
+    TypeName: 
+  autoRun: 1
+  autoInjectGameObjects: []
+  _installer: {fileID: 0}
 --- !u!4 &2084401947
 Transform:
   m_ObjectHideFlags: 0

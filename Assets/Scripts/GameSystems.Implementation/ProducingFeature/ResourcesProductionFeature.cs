@@ -1,32 +1,31 @@
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
-using CityBuilder.Dependencies;
-using ResourcesSystem;
+using GameSystems.Implementation.GameTime;
+using VContainer.Unity;
 
 namespace GameSystems.Implementation.ProducingFeature
 {
     //ToDo: convert to production feature (can produce not only resources)
     // and add support of workers
-    public class ResourcesProductionFeature : GameSystemBase
+    public class ResourcesProductionFeature : IInitializable, IDisposable
     {
         private readonly BuildingsModel _buildingsModel;
-        
-        public ProductionModel ProductionModel { get; } 
+        private readonly ProductionModel _productionModel; 
+        private readonly BuildingManager _buildingsManager;
+        private readonly GameTimeSystem _gameTimeSystem;
         
         private readonly Dictionary<BuildingModel, IResourceProducer> _buildingProducersMap = new();
-        private readonly BuildingManager _buildingsManager;
-        private readonly GameTimeSystem.GameTimeSystem _gameTimeSystem;
 
-        public ResourcesProductionFeature(IDependencyContainer container) : base(container)
+        public ResourcesProductionFeature(BuildingsModel buildingsModel, BuildingManager buildingManager, GameTimeSystem gameTimeSystem, ProductionModel productionModel)
         {
-            _buildingsModel = container.Resolve<BuildingsModel>();
-            _buildingsManager = container.Resolve<BuildingManager>();
-            _gameTimeSystem = container.Resolve<GameTimeSystem.GameTimeSystem>();
+            _buildingsModel = buildingsModel;
+            _buildingsManager = buildingManager;
+            _gameTimeSystem = gameTimeSystem;
+            _productionModel = productionModel;
             
-            ProductionModel = new(container.Resolve<PlayerResourcesModel>());
         }
-        public override Task Init()
+        public void Initialize()
         {
             _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
@@ -37,11 +36,9 @@ namespace GameSystems.Implementation.ProducingFeature
             }
             
             _gameTimeSystem.NewDayStarted += OnNewDayStarted;
-            
-            return Task.CompletedTask;
         }
 
-        public override Task Deinit()
+        public void Dispose()
         {
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
@@ -52,8 +49,6 @@ namespace GameSystems.Implementation.ProducingFeature
             }
             
             _gameTimeSystem.NewDayStarted -= OnNewDayStarted;
-            
-            return Task.CompletedTask;
         }
 
         private void OnBuildingAdded(BuildingModel building)
@@ -69,7 +64,7 @@ namespace GameSystems.Implementation.ProducingFeature
             }
 
             var producer = new BuildingResourceProductionUnit(producingResourcesFunction);
-            ProductionModel.AddResourceProducer(producer);
+            _productionModel.AddResourceProducer(producer);
             _buildingProducersMap.Add(building, producer);
         }
 
@@ -80,12 +75,12 @@ namespace GameSystems.Implementation.ProducingFeature
                 return;
             }
 
-            ProductionModel.RemoveResourceProducer(producer);
+            _productionModel.RemoveResourceProducer(producer);
         }
 
         private void OnNewDayStarted(int _)
         {
-            ProductionModel.Tick();
+            _productionModel.Tick();
         }
     }
 }

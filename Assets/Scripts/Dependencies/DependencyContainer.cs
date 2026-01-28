@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace CityBuilder.Dependencies
 {
+    /// <summary>
+    /// [Obsolete] Устарело - пока еще используется в паре мест
+    /// </summary>
     public class DependencyContainer : IDependencyContainer
     {
         private readonly Dictionary<Type, object> _container = new Dictionary<Type, object>();

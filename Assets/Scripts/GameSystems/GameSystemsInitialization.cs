@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace GameSystems
 {
+    [Obsolete]
     public class GameSystemsInitialization
     {
         private readonly IDependencyContainer _container;

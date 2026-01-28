@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Configs.Schemes.BattleSystem;
+using Configs.Scriptable;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,21 +11,19 @@ namespace GameSystems.Implementation.BattleSystem
 {
     public class BattleManager
     {
-        public BattleSystemModel BattleSystemModel { get; }
-        
-        private readonly BattleUnitsConfigScheme _battleUnitsConfigScheme;
+        private readonly BattleSystemModel _battleSystemModel;
+        private readonly BattleUnitsConfigSO _battleUnitsConfigScheme;
         private readonly BattleUnitsProcessor _battleUnitsProcessor;
 
-        private readonly Dictionary<Guid, BattleUnitConfig> _battleUnitConfigsMap;
+        private readonly Dictionary<string, BattleUnitConfigSO> _battleUnitConfigsMap;
 
-        public BattleManager(BattleSystemModel battleSystemModel, BattleUnitsConfigScheme battleUnitsConfigScheme)
+        public BattleManager(BattleSystemModel battleSystemModel, BattleUnitsConfigSO battleUnitsConfigScheme, BattleUnitsProcessor battleUnitsProcessor)
         {
-            BattleSystemModel = battleSystemModel;
+            _battleSystemModel = battleSystemModel;
             _battleUnitsConfigScheme = battleUnitsConfigScheme;
+            _battleUnitsProcessor = battleUnitsProcessor;
             
-            _battleUnitsProcessor = new BattleUnitsProcessor(battleSystemModel);
-            
-            _battleUnitConfigsMap = battleUnitsConfigScheme.Configs.ToDictionary(config => config.Id);
+            _battleUnitConfigsMap = battleUnitsConfigScheme.PlayerUnitsConfigs.ToDictionary(config => config.Id);
             _battleUnitConfigsMap.AddRange(battleUnitsConfigScheme.EnemiesConfigs.ToDictionary(config => config.Id));
             _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.DefaultBuildingUnit.Id, battleUnitsConfigScheme.DefaultBuildingUnit);
             _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.MainBuildingUnit.Id, battleUnitsConfigScheme.MainBuildingUnit);
@@ -34,26 +33,20 @@ namespace GameSystems.Implementation.BattleSystem
         {
             _battleUnitsProcessor.Update();
             
-            bool isInBattle = BattleSystemModel.Enemies.Count > 0;
-            if (isInBattle != BattleSystemModel.IsInBattle.Value)
+            bool isInBattle = _battleSystemModel.Enemies.Count > 0;
+            if (isInBattle != _battleSystemModel.IsInBattle.Value)
             {
-                BattleSystemModel.IsInBattle.Value = isInBattle;
+                _battleSystemModel.IsInBattle.Value = isInBattle;
             }
         }
         
-        public void PlayerUnitCreate(IEnumerable<Guid> guids)
+        public void PlayerUnitCreate(IEnumerable<BattleUnitConfigSO> configs)
         {
-            foreach (var guid in guids)
+            foreach (var config in configs)
             {
-                if (_battleUnitConfigsMap.TryGetValue(guid, out var battleUnitConfig) == false)
-                {
-                    Debug.LogWarning($"Battle unit config not found {guid}");
-                    continue;
-                }
-
                 Vector3 position = new Vector3(5, 0, 5);
-                var unit = SpawnUnit(battleUnitConfig, position);
-                BattleSystemModel.AddPlayerUnit(unit);
+                var unit = SpawnUnit(config, position);
+                _battleSystemModel.AddPlayerUnit(unit);
             }
         }
 
@@ -63,20 +56,15 @@ namespace GameSystems.Implementation.BattleSystem
             {
                 for (int e = 0; e < invader.Amount; e++)
                 {
-                    if (_battleUnitConfigsMap.TryGetValue(invader.UnitConfigId, out var battleUnitConfig) == false)
-                    {
-                        Debug.LogWarning($"Battle unit config not found {invader.UnitConfigId}");
-                        continue;
-                    }
-
+                    var battleUnitConfig = invader.config;
                     Vector3 position = GetEncounterPosition();
                     var unit = SpawnUnit(battleUnitConfig, position);
-                    BattleSystemModel.AddEnemyUnit(unit);
+                    _battleSystemModel.AddEnemyUnit(unit);
                 }
             }
         }
 
-        private BattleUnitBase SpawnUnit(BattleUnitConfig config, Vector3 position)
+        private BattleUnitBase SpawnUnit(BattleUnitConfigSO config, Vector3 position)
         {
             var unitModel = new BattleUnitBase(config, 1, position);
 

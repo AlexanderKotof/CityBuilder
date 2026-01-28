@@ -6,35 +6,36 @@ using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.BuildingsFeature;
 using GameSystems.Implementation.CheatsFeature;
 using GameSystems.Implementation.GameInteractionFeature;
-using GameSystems.Implementation.GameTimeSystem;
+using GameSystems.Implementation.GameTime;
 using GameSystems.Implementation.PopulationFeature;
 using GameSystems.Implementation.ProducingFeature;
 using GameSystems.Implementation.ResourcesStorageFeature;
 
 namespace GameSystems
 {
+    [Obsolete]
     public static class GameSystemsSets
     {
         public static readonly HashSet<Type> CommonSystems = new()
         {
-            typeof(GameConfigInitializationSystem),
-            typeof(ViewsSystem),
-            typeof(WindowSystem),
-            typeof(PlayerInputSystem),
+            // typeof(GameConfigInitializationSystem),
+            // typeof(ViewsSystem),
+            // typeof(WindowSystem),
+            // typeof(PlayerInputSystem),
         };
         
         public static readonly HashSet<Type> GamePlayFeatures = new()
         {
-            typeof(GameTimeSystem),
-            typeof(ResourcesFeature),
-            typeof(CellGridFeature),
-            typeof(GameInteractionFeature),
-            typeof(BuildingsViewFeature),
-            typeof(ResourcesProductionFeature),
-            typeof(PopulationFeature),
-            typeof(ResourcesStorageFeature),
-            typeof(BattleFeature),
-            typeof(CheatsFeature),
+            // typeof(GameTimeSystem),
+            // typeof(ResourcesFeature),
+            // typeof(CellGridFeature),
+            // typeof(GameInteractionFeature),
+            // typeof(BuildingsViewFeature),
+            // typeof(ResourcesProductionFeature),
+            // typeof(PopulationFeature),
+            // typeof(ResourcesStorageFeature),
+            // typeof(BattleFeature),
+            // typeof(CheatsFeature),
         };
     }
 }

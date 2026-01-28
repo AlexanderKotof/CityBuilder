@@ -1,68 +1,64 @@
-using System.Threading.Tasks;
-using CityBuilder.BuildingSystem;
+using System;
 using CityBuilder.Dependencies;
-using Configs;
-using Configs.Schemes.BattleSystem;
 using UnityEngine;
+using VContainer.Unity;
 using Views.Implementation.BattleSystem;
+using ViewSystem;
 
 namespace GameSystems.Implementation.BattleSystem
 {
     // ТЗ Боевая система:
     // см папку с ГДД
-    
-    public class BattleFeature : GameSystemBase, IUpdateGamSystem
+    public class BattleFeature : IInitializable, IDisposable, ITickable
     {
-        public BattleManager BattleManager { get; }
-        public BattleSystemModel BattleSystemModel { get; } = new();
+        private readonly BattleManager _battleManager;
+        private readonly BattleSystemModel _battleSystemModel;
 
         private readonly BattleUnitsViewsCollection _playerUnitsViewsCollection;
         private readonly BattleUnitsViewsCollection _enemiesUnitsViewsCollection;
         
         private readonly PlayerBuildingsUnitsController _playerBuildingsUnitsController;
 
-        public BattleFeature(IDependencyContainer container) : base(container)
+        public BattleFeature(BattleManager battleManager, PlayerBuildingsUnitsController battleUnitsController, IViewWithModelProvider viewWithModelProvider, BattleSystemModel battleSystemModel)
         {
-            var settings = container.Resolve<GameConfigProvider>().GetConfig<BattleUnitsConfigScheme>();
-            var buildingsModel = container.Resolve<BuildingsModel>();
-            BattleManager = new BattleManager(BattleSystemModel, settings);
-            _playerBuildingsUnitsController =
-                new PlayerBuildingsUnitsController(BattleSystemModel, settings, buildingsModel, container);
-            
+            _battleManager = battleManager;
+            _playerBuildingsUnitsController = battleUnitsController;
+            _battleSystemModel = battleSystemModel;
+
             var parentGo = new GameObject("--- Battle Units ---").transform;
+
+            var container = new DependencyContainer();
+            container.Register(viewWithModelProvider);
             
             //TODO: create inner feature dependencies container
+            //TODO: refactoring pretendent
             _playerUnitsViewsCollection = new BattleUnitsViewsCollection(
-                BattleSystemModel.PlayerUnits,
+                _battleSystemModel.PlayerUnits,
                 container,
                 parentGo);
             _enemiesUnitsViewsCollection = new BattleUnitsViewsCollection(
-                BattleSystemModel.Enemies,
+                _battleSystemModel.Enemies,
                 container,
                 parentGo);
-            
-
         }
 
-        public override Task Init()
+        public void Initialize()
         {
             _playerUnitsViewsCollection.Initialize();
             _enemiesUnitsViewsCollection.Initialize();
             _playerBuildingsUnitsController.Init();
-            return Task.CompletedTask;         
         }
 
-        public override Task Deinit()
+        public void Dispose()
         {
             _playerBuildingsUnitsController.Deinit();
             _playerUnitsViewsCollection.Deinit();
             _enemiesUnitsViewsCollection.Deinit();
-            return Task.CompletedTask;
         }
 
-        public void Update()
+        public void Tick()
         {
-            BattleManager.Update();
+            _battleManager.Update();
         }
     }
 }

@@ -9,7 +9,7 @@ using GameSystems.Implementation.CheatsFeature;
 using GameSystems.Implementation.GameInteractionFeature;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States;
-using GameSystems.Implementation.GameTimeSystem;
+using GameSystems.Implementation.GameTime;
 using GameSystems.Implementation.PopulationFeature;
 using GameSystems.Implementation.ProducingFeature;
 using GameSystems.Implementation.ResourcesStorageFeature;
@@ -24,29 +24,17 @@ namespace Installers
 {
     public class GameSystemsInstaller : LifetimeScope, IInstaller
     {
-        public static readonly HashSet<Type> GamePlayFeatures = new()
-        {
-            typeof(BuildingsViewFeature),
-            typeof(ResourcesProductionFeature),
-            typeof(PopulationFeature),
-            typeof(ResourcesStorageFeature),
-            typeof(BattleFeature),
-            typeof(CheatsFeature),
-        };
-        
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<ViewsProvider>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<ViewWithModelProvider>(Lifetime.Singleton).AsImplementedInterfaces();
-            //builder.Register<ViewsSystem>(Lifetime.Singleton).AsImplementedInterfaces();
             
-            builder.Register<WindowsProvider>(Lifetime.Singleton).AsImplementedInterfaces();
-            //builder.Register<WindowSystem>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<WindowsProvider>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
-            builder.Register<PlayerInputManager>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<PlayerInputManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<PlayerInputSystem>(Lifetime.Singleton).AsImplementedInterfaces();
             
-            builder.RegisterInstance<DateModel>(new DateModel(100,1,1)).AsSelf();
+            builder.RegisterInstance<DateModel>(new DateModel()).AsSelf();
             builder.Register<GameTimeSystem>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             builder.Register<PlayerResourcesModel>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
@@ -55,10 +43,10 @@ namespace Installers
             builder.Register<GridManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<CellGridFeature>(Lifetime.Singleton).AsImplementedInterfaces();
             
+            builder.Register<InteractionModel>(Lifetime.Singleton).AsSelf();
             builder.Register<CursorController>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<Raycaster>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<DraggingContentController>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            builder.Register<InteractionModel>(Lifetime.Singleton).AsSelf();
             builder.Register<CellSelectionController>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             builder.Register<EmptyInteractionState>(Lifetime.Singleton).As<InteractionState>();
@@ -66,32 +54,31 @@ namespace Installers
             builder.Register<DraggingInteractionState>(Lifetime.Singleton).As<InteractionState>();
             builder.Register<PlayerInteractionStateMachine>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
-            builder.RegisterEntryPoint<GameInteractionFeature>().AsImplementedInterfaces();
-
             builder.Register<BuildingFactory>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BuildingsModel>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BuildingManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BuildingsViewFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
+            builder.Register<ProductionModel>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<ResourcesProductionFeature>(Lifetime.Singleton).AsImplementedInterfaces();
+            builder.Register<ResourcesStorageFeature>(Lifetime.Singleton).AsImplementedInterfaces();
             
-            // Debug.Log("Begin common systems registration");
-            // foreach (var system in CommonSystems)
-            // {
-            //     builder.Register(system, Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            // }
-            //
-            // Debug.Log("Begin GamePlayFeatures registration");
-            // foreach (var system in GamePlayFeatures)
-            // {
-            //     builder.Register(system, Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            // }
+            builder.RegisterInstance<PopulationModel>(new PopulationModel()).AsSelf().AsImplementedInterfaces();
+            builder.Register<PopulationFeature>(Lifetime.Singleton).AsImplementedInterfaces();
+            
+            builder.Register<BattleSystemModel>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<BattleManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<BattleUnitsProcessor>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<PlayerBuildingsUnitsController>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<BattleFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            builder.Register<CheatsFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }
         
-        
-
         public void Install(IContainerBuilder builder)
         {
-            throw new NotImplementedException();
+            Debug.Log("Installing Game System...");
+            //builder.Count == this.Container
         }
     }
 }

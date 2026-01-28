@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
+using Configs.Scriptable;
 using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.GameInteractionFeature;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace GameSystems.Implementation.CheatsFeature
 {
-    public class CheatsFeature : GameSystemBase, IUpdateGamSystem
+    public class CheatsFeature : ITickable
     {
         private readonly Raycaster _raycaster;
         private readonly BuildingManager _buildingManager;
@@ -28,22 +31,24 @@ namespace GameSystems.Implementation.CheatsFeature
         };
         
         private readonly BattleManager _battleManager;
+        private readonly BattleUnitsConfigSO _battleUnitsConfigSo;
 
-        private readonly Guid _defaultPlayerUnitGuid;
-        private readonly Guid _defaultEnemyUnitGuid;
+        private readonly BattleUnitConfigSO _defaultPlayerUnitGuid;
+        private readonly BattleUnitConfigSO _defaultEnemyUnitGuid;
 
 
-        public CheatsFeature(IDependencyContainer container) : base(container)
+        public CheatsFeature(Raycaster raycaster, BuildingManager buildingManager, BattleManager battleManager, BattleUnitsConfigSO battleUnitsConfigSO)
         {
-            _raycaster = container.Resolve<Raycaster>();
-            _buildingManager = container.Resolve<BuildingManager>();
-            _battleManager = container.Resolve<BattleManager>();
+            _raycaster = raycaster;
+            _buildingManager = buildingManager;
+            _battleManager = battleManager;
+            _battleUnitsConfigSo = battleUnitsConfigSO;
 
-            _ = Guid.TryParse("14e80a78-6faa-416b-949d-ea277530c2d5", out _defaultPlayerUnitGuid);
-            _ = Guid.TryParse("af712df2-2896-4cd6-8085-1aba3d1d2f31", out _defaultEnemyUnitGuid);
+            _defaultPlayerUnitGuid = battleUnitsConfigSO.PlayerUnitsConfigs.FirstOrDefault();
+            _defaultEnemyUnitGuid = battleUnitsConfigSO.EnemiesConfigs.FirstOrDefault();
         }
 
-        public void Update()
+        public void Tick()
         {
             
             //Buidings
@@ -71,7 +76,7 @@ namespace GameSystems.Implementation.CheatsFeature
             
             if (Input.GetKeyDown(KeyCode.A))
             {
-                _battleManager.PlayerUnitCreate(new List<Guid>() { _defaultPlayerUnitGuid });
+                _battleManager.PlayerUnitCreate(new List<BattleUnitConfigSO>() { _defaultPlayerUnitGuid });
             }
         }
     }

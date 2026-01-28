@@ -1,8 +1,10 @@
+using Configs.Scriptable;
+
 namespace ResourcesSystem
 {
     public class PlayerResourcesModel : ResourcesStorageModel
     {
-        public PlayerResourcesModel(int capacity) : base(capacity)
+        public PlayerResourcesModel(ResourcesDefaultConfigurationSO settings) : base(settings.DefaultCapacity)
         {
         }
     }

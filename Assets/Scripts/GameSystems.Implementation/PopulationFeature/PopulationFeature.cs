@@ -1,58 +1,54 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using Configs.Implementation.Buildings.Functions;
-using GameSystems.Implementation.GameTimeSystem;
+using GameSystems.Implementation.GameTime;
+using VContainer.Unity;
 
 namespace GameSystems.Implementation.PopulationFeature
 {
-    public class PopulationFeature : GameSystemBase
+    public class PopulationFeature : IInitializable, IDisposable
     {
-        private const int StartingPopulation = 100;
-        private const int StartingHouseholds = 100;
-        
         private readonly BuildingsModel _buildingsModel;
-        public PopulationModel PopulationModel { get; }
-        
-        private readonly Dictionary<BuildingModel, AvailableHouseholdIncreaseUnit> _increaseHousesUnits = new();
+        private readonly PopulationModel _populationModel;
         private readonly DateModel _dateModel;
+        private readonly Dictionary<BuildingModel, AvailableHouseholdIncreaseUnit> _increaseHousesUnits = new();
 
-        public PopulationFeature(IDependencyContainer container) : base(container)
+        public PopulationFeature(BuildingsModel buildingsModel, DateModel dateModel, PopulationModel populationModel)
         {
-            PopulationModel = new PopulationModel(StartingPopulation, StartingHouseholds);
-            _buildingsModel = container.Resolve<BuildingsModel>();
-            _dateModel = container.Resolve<DateModel>();
+            _populationModel = populationModel;
+            _buildingsModel = buildingsModel;
+            _dateModel = dateModel;
         }
 
-        public override Task Init()
+        public void Initialize()
         {
             _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
 
             _dateModel.OnDayChanged += OnNewDayStarted;
             _dateModel.OnWeekChanged += OnWeekChanged;
-            return Task.CompletedTask;
         }
 
-        public override Task Deinit()
+        public void Dispose()
         {
             _dateModel.OnDayChanged -= OnNewDayStarted;
             _dateModel.OnWeekChanged -= OnWeekChanged;
             
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
-            return Task.CompletedTask;
         }
         
         private void OnWeekChanged()
         {
-            PopulationModel.OnWeekChanged();
+            _populationModel.OnWeekChanged();
         }
         
         private void OnNewDayStarted()
         {
-            PopulationModel.OnDayChanged();
+            _populationModel.OnDayChanged();
         }
         
         private void OnBuildingAdded(BuildingModel building)
@@ -93,13 +89,13 @@ namespace GameSystems.Implementation.PopulationFeature
         
         private void UpdateAvailableHouseholds()
         {
-            int households = StartingHouseholds;
+            int households = PopulationModel.StartingHouseholds;
             foreach (var unit in _increaseHousesUnits.Values)
             {
                 households += unit.GetHouseholdIncreaseValue();
             }
             
-            PopulationModel.UpdateAvailableHouseholds(households);
+            _populationModel.UpdateAvailableHouseholds(households);
         }
     }
 }

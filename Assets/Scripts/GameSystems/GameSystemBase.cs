@@ -1,8 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 
 namespace GameSystems
 {
+    [Obsolete]
     public abstract class GameSystemBase : IGameSystem
     {
         protected IDependencyContainer Container { get; }

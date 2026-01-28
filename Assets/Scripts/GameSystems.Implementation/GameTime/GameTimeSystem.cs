@@ -2,16 +2,13 @@ using System;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace GameSystems.Implementation.GameTimeSystem
+namespace GameSystems.Implementation.GameTime
 {
     public class GameTimeSystem : ITickable
     {
         private int SecondsInDay = 5;
-
-        public GameTimeSystem(DateModel date)
-        {
-            Date = date;
-        }
+        
+        private float TimeFromStart => Time.timeSinceLevelLoad;
 
         public int CurrentDay => Date.DayCounter;
 
@@ -19,12 +16,17 @@ namespace GameSystems.Implementation.GameTimeSystem
         
         public event Action<int> NewDayStarted;
         
+        public GameTimeSystem(DateModel date)
+        {
+            Date = date;
+        }
+        
         public void Tick()
         {
             float nextDayAt = (CurrentDay + 1) * SecondsInDay;
-            Date.UpdateDayProgress((Time.timeSinceLevelLoad - nextDayAt) / SecondsInDay);
+            Date.UpdateDayProgress((TimeFromStart - nextDayAt) / SecondsInDay);
             
-            if (Time.timeSinceLevelLoad < nextDayAt)
+            if (TimeFromStart < nextDayAt)
             {
                 return;
             }

@@ -1,5 +1,7 @@
+using System;
 using Configs.Schemes;
 using Configs.Schemes.BattleSystem;
+using Unity.Collections;
 using UnityEngine;
 
 namespace Configs.Scriptable
@@ -17,5 +19,8 @@ namespace Configs.Scriptable
         public float AttackSpeed = 1;
         public string AssetKey = "Unit";
         public AttackPossibilityAndPriority AttackPossibilityAndPriority = 0;
+        
+        [field: SerializeField, ReadOnly]
+        public string Id { get; private set; } = Guid.NewGuid().ToString();
     }
 }

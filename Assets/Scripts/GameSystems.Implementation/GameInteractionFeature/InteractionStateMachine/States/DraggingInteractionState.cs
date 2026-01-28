@@ -1,28 +1,22 @@
-using CityBuilder.BuildingSystem;
-using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using UnityEngine;
+using VContainer;
 
 namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
     public class DraggingInteractionState : InteractionState
     {
+        [Inject]
         private readonly DraggingContentController _draggingContentController;
-        private readonly BuildingManager _buildingManager;
+        [Inject]
         private readonly GridManager _gridManager;
-
-        public DraggingInteractionState(IDependencyContainer dependencyContainer) : base(dependencyContainer)
-        {
-            _draggingContentController = dependencyContainer.Resolve<DraggingContentController>();
-            _buildingManager = dependencyContainer.Resolve<BuildingManager>();
-        }
 
         protected override void OnEnterState()
         {
             base.OnEnterState();
             
             //ToDo content manager
-            if (_buildingManager.TryGetBuilding(InteractionModel.DraggedCell.Value, out var building))
+            if (BuildingManager.TryGetBuilding(InteractionModel.DraggedCell.Value, out var building))
             {
                 _draggingContentController.StartDraggingContent(building);
             }
@@ -78,7 +72,7 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
                 return false;
             }
             
-            return _buildingManager.TryDragCellFromTo(InteractionModel.DraggedCell.Value, cellModel);;
+            return BuildingManager.TryDragCellFromTo(InteractionModel.DraggedCell.Value, cellModel);;
         }
     }
 }

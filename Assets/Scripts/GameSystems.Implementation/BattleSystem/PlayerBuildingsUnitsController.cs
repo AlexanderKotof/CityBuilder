@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using Configs.Schemes.BattleSystem;
+using Configs.Scriptable;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Views.Implementation.BattleSystem;
@@ -13,21 +14,19 @@ namespace GameSystems.Implementation.BattleSystem
     public class PlayerBuildingsUnitsController
     {
         private readonly BattleSystemModel _battleSystemModel;
-        private readonly BattleUnitsConfigScheme _config;
+        private readonly BattleUnitsConfigSO _config;
         private readonly BuildingsModel _buildingsModel;
-        private readonly IDependencyContainer _container;
 
         private readonly Dictionary<Guid, BattleUnitBase> _battleUnitsByBuildingRuntimeId = new();
         private readonly BattleUnitsViewsCollection _buildingsUi;
         private readonly IViewsProvider _viewsProvider;
 
-        public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigScheme config, BuildingsModel buildingsModel, IDependencyContainer container)
+        public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigSO config, BuildingsModel buildingsModel, IViewsProvider viewsProvider)
         {
             _battleSystemModel = battleSystemModel;
             _config = config;
             _buildingsModel = buildingsModel;
-            _container = container;
-            _viewsProvider = container.Resolve<IViewsProvider>();
+            _viewsProvider = viewsProvider;
         }
 
         public void Init()
@@ -81,7 +80,7 @@ namespace GameSystems.Implementation.BattleSystem
         
         private BattleUnitBase CreateBattleUnit(BuildingModel building)
         {
-            var config = building.Config.UnitConfig?.Value ?? _config.DefaultBuildingUnit;
+            var config = building.Config.UnitConfig != null ? building.Config.UnitConfig : _config.DefaultBuildingUnit;
             var battleUnit = new BattleUnitBase(config, building.Level, building.WorldPosition);
             
             Action<Transform> handle = (value) => OnTransformUpdated(value).Forget();

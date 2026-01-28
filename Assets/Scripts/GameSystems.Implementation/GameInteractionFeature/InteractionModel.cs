@@ -5,8 +5,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
 {
     public class InteractionModel
     {
-        public ReactiveProperty<CellModel?> SelectedCell { get; } = new();
-
-        public ReactiveProperty<CellModel?> DraggedCell { get; } = new();
+        public readonly ReactiveProperty<CellModel?> SelectedCell = new(null);
+        public readonly ReactiveProperty<CellModel?> DraggedCell = new(null);
     }
 }

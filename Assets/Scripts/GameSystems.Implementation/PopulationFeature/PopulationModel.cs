@@ -19,7 +19,10 @@ namespace GameSystems.Implementation.PopulationFeature
         public ReactiveProperty<int> CurrentPopulation { get; } = new();
         public ReactiveProperty<int> EmployedPopulation { get; } = new(0);
         public ReactiveProperty<int> AvailableHouseholds { get; } = new();
-
+        
+        public readonly List<Person> People = new();
+        
+        //TODO: move to configs
         private readonly float _dayGrowthFactor = 0.1f;
         private readonly float _dayGrowthProbability = 0.1f;
         
@@ -27,8 +30,10 @@ namespace GameSystems.Implementation.PopulationFeature
         private readonly float _dayDeathProbability = 0.1f;
         
         private readonly int _weekGrowthBase = 10;
+        public const int StartingPopulation = 100;
+        public const int StartingHouseholds = 100;
         
-        public readonly List<Person> People = new();
+        public PopulationModel() : this(StartingPopulation, StartingHouseholds) { }
 
         public PopulationModel(int startingPopulation, int startingHouseholds)
         {
@@ -43,7 +48,7 @@ namespace GameSystems.Implementation.PopulationFeature
 
         public void OnWeekChanged()
         {
-            CurrentPopulation.Value =  CurrentPopulation.Value + _weekGrowthBase;
+            CurrentPopulation.Value += _weekGrowthBase;
             for (int i = 0; i < _weekGrowthBase; i++)
             {
                 People.Add(new Person());
@@ -88,7 +93,7 @@ namespace GameSystems.Implementation.PopulationFeature
                 }
             }
             
-            CurrentPopulation.Value = CurrentPopulation.Value + change;
+            CurrentPopulation.Value += change;
             
             Debug.Log($"Population changed today by {change}, current value: {CurrentPopulation.Value}");
         }
