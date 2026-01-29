@@ -10,19 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46b067256d59406aa6dad87ec571281a, type: 3}
-  m_Name: Building_Main
+  m_Name: Building_Tower
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
-  Name: Cityhall
-  AssetKey: Cityhall
+  Name: Tower
+  AssetKey: Tower
   Size:
-    <X>k__BackingField: 2
-    <Y>k__BackingField: 2
-  IsMovable: 0
+    <X>k__BackingField: 1
+    <Y>k__BackingField: 1
+  IsMovable: 1
   RequiredResources:
   - <Type>k__BackingField: 0
     <Amount>k__BackingField: 5
   - <Type>k__BackingField: 1
     <Amount>k__BackingField: 5
-  BuildingFunctions:
-  - {fileID: 11400000, guid: 3fcaa3d3825559b45a9092f56b0445eb, type: 2}
-  UnitConfig: {fileID: 0}
+  BuildingFunctions: []
+  UnitConfig: {fileID: 11400000, guid: 534ef3737ee044341a95e4febcdba351, type: 2}

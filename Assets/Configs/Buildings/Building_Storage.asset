@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
   Name: Storage
   AssetKey: Storage
+  Size:
+    <X>k__BackingField: 1
+    <Y>k__BackingField: 1
   IsMovable: 1
   RequiredResources:
   - <Type>k__BackingField: 0
     <Amount>k__BackingField: 5
   - <Type>k__BackingField: 1
     <Amount>k__BackingField: 5
-  BuildingFunctions: []
+  BuildingFunctions:
+  - {fileID: 11400000, guid: aac7131a435e0544c9758c99f788cd7c, type: 2}
   UnitConfig: {fileID: 0}

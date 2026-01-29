@@ -18,6 +18,7 @@ namespace GameSystems.Implementation.BattleSystem
         private readonly Dictionary<Guid, BattleUnitBase> _battleUnitsByBuildingRuntimeId = new();
         private readonly BattleUnitsViewsCollection _buildingsUi;
         private readonly IViewsProvider _viewsProvider;
+        private BattleUnitUIComponent _uiView;
 
         public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigSO config, BuildingsModel buildingsModel, IViewsProvider viewsProvider)
         {
@@ -42,6 +43,11 @@ namespace GameSystems.Implementation.BattleSystem
         {
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
+            
+            // if (_uiView != null)
+            // {
+            //     _viewsProvider.ReturnView(_uiView);
+            // }
         }
 
         private void OnBuildingAdded(BuildingModel building)
@@ -64,15 +70,12 @@ namespace GameSystems.Implementation.BattleSystem
 
                 buildingUnit.OnUnitDied -= OnBuildingUnitDestroyed;
                 
-                
                 if (_buildingsModel.MainBuilding == building)
                 {
                     Debug.LogError("Destroyed main building battle model... GAME OVER");
                 }
                 
                 _buildingsModel.RemoveBuilding(building);
-
-           
             }
         }
         
@@ -81,18 +84,33 @@ namespace GameSystems.Implementation.BattleSystem
             var config = building.Config.UnitConfig != null ? building.Config.UnitConfig : _config.DefaultBuildingUnit;
             var battleUnit = new BattleUnitBase(config, building.Level, building.WorldPosition);
             
-            Action<Transform> handle = (value) => OnTransformUpdated(value).Forget();
-            handle += _ => building.ThisTransform.Unsubscribe(handle);
+            Action<Transform> handle = null;
+            handle = (value) => OnTransformUpdated(value).Forget();
             building.ThisTransform.Subscribe(handle, true);
 
             return battleUnit;
 
             async UniTaskVoid OnTransformUpdated(Transform value)
             {
+                if (value == null)
+                    return;
+
+                if (battleUnit.ThisTransform.Value == value)
+                {
+                    return;
+                }
+
+                building.ThisTransform.Unsubscribe(handle);
+                
                 battleUnit.ThisTransform.Set(value);
 
-                var uiView = await _viewsProvider.ProvideViewAsync<BattleUnitUIComponent>(_config.BattleUiAssetKey, value);
-                uiView.Init(battleUnit);
+                // if (_uiView != null)
+                // {
+                //     _viewsProvider.ReturnView(_uiView);
+                // }
+
+                _uiView = await _viewsProvider.ProvideViewAsync<BattleUnitUIComponent>(_config.BattleUiAssetKey, value);
+                _uiView.Init(battleUnit);
             }
         }
 
