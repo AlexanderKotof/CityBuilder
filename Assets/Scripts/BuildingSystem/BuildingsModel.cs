@@ -30,7 +30,7 @@ namespace BuildingSystem
                 cell.SetContent(building);
             }
             
-            building.WorldPosition.Set(startLocation.WorldPosition);
+            building.WorldPosition.Value = (startLocation.WorldPosition);
             building.SetOccupiedCells(occupiedCells);
             Buildings.Add(building);
             

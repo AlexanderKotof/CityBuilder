@@ -24,7 +24,7 @@ namespace Views.Implementation.BattleSystem
             
             Debug.LogError("Unit view initialized");
             
-            model.ThisTransform.Set(ThisTransform);
+            model.ThisTransform.Value = (ThisTransform);
             
             InitView(NavigationComponent, model);
 
@@ -43,7 +43,7 @@ namespace Views.Implementation.BattleSystem
 
         public void Initialize(BattleUnitBase model)
         {
-            model.ThisTransform.Set(ThisTransform);
+            model.ThisTransform.Value = (ThisTransform);
             InitView(NavigationComponent, model);
             
             if (UIComponent != null) 

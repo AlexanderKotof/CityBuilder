@@ -54,7 +54,7 @@ namespace GameSystems.Implementation.BattleSystem
             if (unit.CanMove)
             {
                 var desiredPosition = unit.StartPosition.Value;
-                unit.DesiredPosition.Set(desiredPosition);
+                unit.DesiredPosition.Value = (desiredPosition);
                 
                 ProcessMove(unit);
             }
@@ -243,7 +243,7 @@ namespace GameSystems.Implementation.BattleSystem
             {
                 desiredPosition = unit.StartPosition.Value;
             }
-            unit.DesiredPosition.Set(desiredPosition);
+            unit.DesiredPosition.Value = (desiredPosition);
         }
         
         [CanBeNull]

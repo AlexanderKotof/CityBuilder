@@ -1,7 +1,9 @@
 using BuildingSystem;
 using CityBuilder.Dependencies;
+using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.View;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using ViewSystem;
 
@@ -19,9 +21,14 @@ namespace Views.Implementation.BuildingSystem
         public override void Initialize(BuildingModel model, IDependencyContainer container)
         {
             base.Initialize(model, container);
-            
-            Subscribe(model.Level, (value) => LevelIndicator.SetText($"Lvl {value}"));
-            Subscribe(model.WorldPosition, SetWorldPosition);
+
+            Initialize(model);
+        }
+        
+        public void Initialize(BuildingModel model)
+        {
+            model.Level.AsObservable().Subscribe((value) => LevelIndicator.SetText($"Lvl {value}"));
+            model.WorldPosition.AsObservable().Subscribe(SetWorldPosition).AddTo(this);
             NameText.SetText(model.BuildingName);
 
             SetUiActive(false);

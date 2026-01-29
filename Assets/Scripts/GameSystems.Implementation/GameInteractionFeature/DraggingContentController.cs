@@ -1,5 +1,5 @@
-using CityBuilder.Reactive;
 using GameSystems.Common.ViewSystem;
+using UniRx;
 using UnityEngine;
 using ViewSystem;
 
@@ -21,7 +21,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
         public void StartDraggingContent(IDraggableViewModel draggableViewModel)
         {
             _draggable = draggableViewModel;
-            _startDragPosition = draggableViewModel.WorldPosition;
+            _startDragPosition = draggableViewModel.WorldPosition.Value;
         }
 
         public void EndDragging()
@@ -31,7 +31,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
 
         public void UpdatePosition(Vector3 gridPosition)
         {
-            _draggable.WorldPosition.Set(gridPosition + _draggingOffset);
+            _draggable.WorldPosition.Value = (gridPosition + _draggingOffset);
         }
 
         public void CancelDrag()
@@ -40,7 +40,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
             {
                 return;
             }
-            _draggable.WorldPosition.Set(_startDragPosition);
+            _draggable.WorldPosition.Value = (_startDragPosition);
             _draggable = null;
         }
     }

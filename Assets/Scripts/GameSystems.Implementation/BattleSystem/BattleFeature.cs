@@ -74,7 +74,7 @@ namespace GameSystems.Implementation.BattleSystem
                 var view = await _playerUnitsViewsCollection.AddView(unit.Config.AssetKey, unit);
                 view.Initialize(unit);
                 var transform = view.ThisTransform;
-                unit.ThisTransform.Set(transform);
+                unit.ThisTransform.Value = (transform);
                 transform.position = unit.StartPosition.Value;
             }
             void OnRemovePlayerUnit(BattleUnitBase unit)
@@ -93,7 +93,7 @@ namespace GameSystems.Implementation.BattleSystem
                 var view = await _enemiesUnitsViewsCollection.AddView(unit.Config.AssetKey, unit);
                 view.Initialize(unit);
                 var transform = view.ThisTransform;
-                unit.ThisTransform.Set(transform);
+                unit.ThisTransform.Value = (transform);
                 transform.position = unit.StartPosition.Value;
             }
             void OnRemoveEnemyUnit(BattleUnitBase unit)

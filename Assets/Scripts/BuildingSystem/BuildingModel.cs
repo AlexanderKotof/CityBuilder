@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using CityBuilder.Content;
 using CityBuilder.Grid;
-using CityBuilder.Reactive;
 using Configs.Scriptable.Buildings;
 using GameSystems.Common.ViewSystem;
 using GameSystems.Implementation.GameInteractionFeature;
+using UniRx;
 using UnityEngine;
 
 namespace BuildingSystem
@@ -37,7 +37,7 @@ namespace BuildingSystem
         
         public BuildingModel(int level, BuildingConfigSo config)
         {
-            Level.Set(level);
+            Level.Value = (level);
             Config = config;
         }
 
@@ -48,7 +48,7 @@ namespace BuildingSystem
 
         public void IncreaseLevel()
         {
-            Level.Set(Level.Value + 1);
+            Level.Value = (Level.Value + 1);
         }
     }
 }

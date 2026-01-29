@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using BuildingSystem;
-using Configs.Scriptable;
 using Configs.Scriptable.Battle;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using UniRx;
 using UnityEngine;
-using Views.Implementation.BattleSystem;
-using ViewSystem;
 
 namespace GameSystems.Implementation.BattleSystem
 {
@@ -25,6 +21,7 @@ namespace GameSystems.Implementation.BattleSystem
         private readonly IViewsProvider _viewsProvider;
         private BattleUnitUIComponent _uiView;
         private readonly CompositeDisposable _disposables = new();
+        private readonly Dictionary<BattleUnitBase, IDisposable> _disposablesByUnit = new();
 
         public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigSO config, BuildingsModel buildingsModel, IViewsProvider viewsProvider)
         {
@@ -54,39 +51,34 @@ namespace GameSystems.Implementation.BattleSystem
                 .AddTo(_disposables);
             async UniTaskVoid AddPlayerBuildingUnit(BattleUnitBase unit)
             {
-                var view = await _buildingsUi.AddView(unit, unit.ThisTransform.Value);
-                view.Init(unit);
+                var uiView = await _buildingsUi.AddView(unit, unit.ThisTransform.Value);
+                uiView.Init(unit);
                 
-                // view.transform.SetParent();
-                // view.transform.localPosition = Vector3.zero;
-
-                // async UniTaskVoid OnTransformUpdated(Transform value)
-                // {
-                //     if (value == null)
-                //         return;
-                //
-                //     if (battleUnit.ThisTransform.Value == value)
-                //     {
-                //         return;
-                //     }
-                //
-                //     building.ThisTransform.Unsubscribe(handle);
-                //
-                //     battleUnit.ThisTransform.Set(value);
-                //
-                //     // if (_uiView != null)
-                //     // {
-                //     //     _viewsProvider.ReturnView(_uiView);
-                //     // }
-                //
-                //     _uiView = await _viewsProvider.ProvideViewAsync<BattleUnitUIComponent>(_config.BattleUiAssetKey, value);
-                //     _uiView.Init(battleUnit);
-                // }
+                var disposible = unit.ThisTransform.Subscribe(OnTransformUpdated);
+                _disposablesByUnit.Add(unit, disposible);
+                OnTransformUpdated(unit.ThisTransform.Value);
+                return;
+                
+                void OnTransformUpdated(Transform value)
+                {
+                    if (value == null)
+                        return;
+                    
+                    Debug.LogError($"Transform updated for {unit.Config.name}!", value);
+                    
+                    uiView.transform.SetParent(value);
+                    uiView.transform.localPosition = Vector3.zero;
+                }
             }
 
             void RemovePlayerBuildingUnit(BattleUnitBase unit)
             {
                 _buildingsUi.Recycle(unit);
+
+                if (_disposablesByUnit.Remove(unit, out var disposable))
+                {
+                    disposable.Dispose();
+                }
             }
         }
 
@@ -97,10 +89,11 @@ namespace GameSystems.Implementation.BattleSystem
             _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
             _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
             
-            // if (_uiView != null)
-            // {
-            //     _viewsProvider.ReturnView(_uiView);
-            // }
+            foreach (var disposable in _disposablesByUnit.Values)
+            {
+                disposable.Dispose();
+            }
+            _disposablesByUnit.Clear();
         }
 
         private void OnBuildingAdded(BuildingModel building)
@@ -136,7 +129,9 @@ namespace GameSystems.Implementation.BattleSystem
         private BattleUnitBase CreateBattleUnit(BuildingModel building)
         {
             var config = building.Config._unitConfig != null ? building.Config._unitConfig : _config.DefaultBuildingUnit;
-            var battleUnit = new BattleUnitBase(config, building.Level, building.WorldPosition, building.ThisTransform.Value);
+            
+            //TODO: inherit some properties?
+            var battleUnit = new BattleUnitBase(config, building.Level.Value, building.WorldPosition.Value, building.ThisTransform);
             return battleUnit;
         }
 

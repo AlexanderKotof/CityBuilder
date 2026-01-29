@@ -1,8 +1,8 @@
 using System;
-using CityBuilder.Reactive;
 using Configs.Scriptable;
 using Configs.Scriptable.Battle;
 using GameSystems.Common.ViewSystem;
+using UniRx;
 using UnityEngine;
 using ViewSystem;
 
@@ -18,7 +18,7 @@ namespace GameSystems.Implementation.BattleSystem
         public bool IsAlive => Health.CurrentValue > 0;
         public event Action<IBattleUnit>? OnUnitDied;
         
-        public ReactiveProperty<Transform?> ThisTransform { get; } = new();
+        public ReactiveProperty<Transform> ThisTransform { get; } = new();
         public Vector3 CurrentPosition => ThisTransform.Value?.position ?? Vector3.zero;
 
         public UnitAttackModel? AttackModel { get; }
@@ -40,14 +40,14 @@ namespace GameSystems.Implementation.BattleSystem
             }
         }
         
-        public BattleUnitBase(BattleUnitConfigSO config, int level, Vector3 startPosition, Transform transform) : this(config, level, startPosition)
+        public BattleUnitBase(BattleUnitConfigSO config, int level, Vector3 startPosition, ReactiveProperty<Transform> transform) : this(config, level, startPosition)
         {
-            ThisTransform.Set(transform);
+            ThisTransform = transform;
         }
 
         public BattleUnitBase(BattleUnitConfigSO config, int level, Vector3 startPosition) : this(config)
         {
-            StartPosition.Set(startPosition);
+            StartPosition.Value = (startPosition);
         }
 
         public void TakeDamage(float damage)

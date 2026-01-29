@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using BuildingSystem;
 using BuildingSystem.Extensions;
 using Configs.Scriptable.Buildings.Functions;
+using Cysharp.Threading.Tasks;
 using GameSystems.Implementation.GameTime;
+using UniRx;
 using VContainer.Unity;
 
 namespace GameSystems.Implementation.PopulationFeature
@@ -13,6 +15,7 @@ namespace GameSystems.Implementation.PopulationFeature
         private readonly BuildingsModel _buildingsModel;
         private readonly PopulationModel _populationModel;
         private readonly DateModel _dateModel;
+        private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private readonly Dictionary<BuildingModel, AvailableHouseholdIncreaseUnit> _increaseHousesUnits = new();
 
         public PopulationFeature(BuildingsModel buildingsModel, DateModel dateModel, PopulationModel populationModel)
@@ -64,8 +67,8 @@ namespace GameSystems.Implementation.PopulationFeature
             
             var increaseUnit = new AvailableHouseholdIncreaseUnit(householdsIncrease, building);
             _increaseHousesUnits.Add(building, increaseUnit);
-            
-            building.Level.Subscribe(OnBuildingLevelUpdated);
+
+            building.Level.Subscribe(OnBuildingLevelUpdated).AddTo(_subscriptions);
 
             UpdateAvailableHouseholds();
         }
@@ -79,7 +82,8 @@ namespace GameSystems.Implementation.PopulationFeature
 
             _increaseHousesUnits.Remove(building);
             
-            building.Level.Unsubscribe(OnBuildingLevelUpdated);
+            //TODO:
+            //building.Level.Unsubscribe(OnBuildingLevelUpdated);
 
             UpdateAvailableHouseholds();
         }
