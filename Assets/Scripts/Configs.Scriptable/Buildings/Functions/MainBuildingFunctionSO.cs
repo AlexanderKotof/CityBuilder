@@ -1,8 +1,6 @@
-using Configs.Scriptable;
-
-namespace Configs.Implementation.Buildings.Functions
+namespace Configs.Scriptable.Buildings.Functions
 {
-    public class MainBuildingFunctionSO : BuildingFunctionSO
+    public class MainBuildingFunctionSo : BuildingFunctionSo
     {
         
     }

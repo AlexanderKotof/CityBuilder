@@ -1,13 +1,15 @@
-using Configs.Scriptable;
+using Configs.Scriptable.Battle;
+using UnityEngine.Serialization;
 
-namespace Configs.Implementation.Buildings.Functions
+namespace Configs.Scriptable.Buildings.Functions
 {
     /// <summary>
     /// Spawns units during invasion
     /// </summary>
-    public class BarracksBuildingFunctionSO : BuildingFunctionSO
+    public class BarracksBuildingFunctionSo : BuildingFunctionSo
     {
-        public BattleUnitConfigSO[] ProduceUnits;
+        [FormerlySerializedAs("ProduceUnits")]
+        public BattleUnitConfigSO[] _produceUnits;
 
         //TODO: train rate in battle
     }

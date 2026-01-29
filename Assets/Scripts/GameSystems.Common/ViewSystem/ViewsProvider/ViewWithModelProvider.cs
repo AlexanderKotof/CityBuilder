@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CityBuilder.Dependencies;
+using GameSystems.Common.ViewSystem.View;
 using UnityEngine;
 
-namespace ViewSystem
+namespace GameSystems.Common.ViewSystem.ViewsProvider
 {
     public interface IViewWithModelProvider
     {

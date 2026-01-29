@@ -1,12 +1,14 @@
-using Configs.Scriptable;
+using UnityEngine.Serialization;
 
-namespace Configs.Implementation.Buildings.Functions
+namespace Configs.Scriptable.Buildings.Functions
 {
-    public class HouseHoldsIncreaseBuildingFunctionSO : BuildingFunctionSO
+    public class HouseHoldsIncreaseBuildingFunctionSo : BuildingFunctionSo
     {
-        public int AvailableHouseholdsIncrease;
+        [FormerlySerializedAs("AvailableHouseholdsIncrease")]
+        public int _availableHouseholdsIncrease;
 
-        public int PerBuildingLevelGrow;
+        [FormerlySerializedAs("PerBuildingLevelGrow")]
+        public int _perBuildingLevelGrow;
         //ToDo: how to calculate capacity or someth by building level?
     }
 }

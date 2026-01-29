@@ -7,7 +7,7 @@ namespace GameSystems.Implementation
     {
         public ResourcesManager ResourcesManager { get; }
         
-        public ResourcesFeature(ResourcesDefaultConfigurationSO resourcesDefaultConfiguration)
+        public ResourcesFeature(ResourcesDefaultConfigurationSo resourcesDefaultConfiguration)
         {
             //ResourcesManager = new ResourcesManager(resourcesDefaultConfiguration);
         }

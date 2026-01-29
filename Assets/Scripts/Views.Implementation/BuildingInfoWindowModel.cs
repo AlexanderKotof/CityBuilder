@@ -1,4 +1,4 @@
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using CityBuilder.Reactive;
 
 namespace ViewSystem

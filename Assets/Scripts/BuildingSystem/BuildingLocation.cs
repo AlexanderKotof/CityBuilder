@@ -2,7 +2,7 @@ using System;
 using CityBuilder.Grid;
 using UnityEngine;
 
-namespace CityBuilder.BuildingSystem
+namespace BuildingSystem
 {
     public readonly struct BuildingLocation : IEquatable<BuildingLocation>
     {

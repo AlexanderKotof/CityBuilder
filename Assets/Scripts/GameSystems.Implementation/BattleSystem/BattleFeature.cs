@@ -1,5 +1,6 @@
 using System;
 using CityBuilder.Dependencies;
+using GameSystems.Common.ViewSystem.ViewsProvider;
 using UnityEngine;
 using VContainer.Unity;
 using Views.Implementation.BattleSystem;

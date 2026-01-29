@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ViewSystem
+namespace GameSystems.Common.ViewSystem.Pools
 {
     public class ObjectsPoolBase : IObjectPool 
     {

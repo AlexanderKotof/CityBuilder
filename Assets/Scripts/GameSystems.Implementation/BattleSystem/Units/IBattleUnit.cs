@@ -1,6 +1,7 @@
 using System;
 using CityBuilder.Reactive;
 using Configs.Scriptable;
+using Configs.Scriptable.Battle;
 using UnityEngine;
 
 namespace GameSystems.Implementation.BattleSystem

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using CityBuilder.Grid;
+using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation;
 using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.BuildingsFeature;

@@ -2,7 +2,7 @@ using System;
 using Unity.Collections;
 using UnityEngine;
 
-namespace Configs.Scriptable
+namespace Configs.Scriptable.Battle
 {
     [CreateAssetMenu(fileName = nameof(BattleUnitConfigSO), menuName = ConfigsMenuName.BattleMenuName + nameof(BattleUnitConfigSO))]
     public class BattleUnitConfigSO : ScriptableObject, IConfigBase

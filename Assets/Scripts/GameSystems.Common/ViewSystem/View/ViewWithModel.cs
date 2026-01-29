@@ -4,7 +4,7 @@ using CityBuilder.Dependencies;
 using CityBuilder.Reactive;
 using JetBrains.Annotations;
 
-namespace ViewSystem
+namespace GameSystems.Common.ViewSystem.View
 {
     public abstract class ViewWithModel<TModel> : ViewBase
         where TModel : IViewModel

@@ -1,22 +1,13 @@
 using UnityEngine;
 
-namespace Configs.Scriptable
+namespace Configs.Scriptable.Buildings
 {
-    [CreateAssetMenu(fileName = nameof(BuildingsSettingsSO), menuName = ConfigsMenuName.BuildingsMenuName + nameof(BuildingsSettingsSO))]
-    public class BuildingsSettingsSO : ScriptableObject, IGameConfig
+    [CreateAssetMenu(fileName = nameof(BuildingsSettingsSo), menuName = ConfigsMenuName.BuildingsMenuName + nameof(BuildingsSettingsSo))]
+    public class BuildingsSettingsSo : ScriptableObject, IGameConfig
     {
         [field: SerializeField]
-        public BuildingConfigSO MainBuildingConfig { get; private  set; }
+        public BuildingConfigSo MainBuildingConfig { get; private  set; }
         [field: SerializeField]
-        public BuildingConfigSO[] BuildingConfigs { get; private set; }
-        
-        //IS IT REQUIRED NOW?
-        [field: SerializeField]
-        public BuildingFunctionSO[] AllBuildingFunctions { get; private set; }
-    }
-
-    public class BuildingLevelingConfigSO : ScriptableObject, IConfigBase
-    {
-        
+        public BuildingConfigSo[] BuildingConfigs { get; private set; }
     }
 }

@@ -1,11 +1,12 @@
 using Configs.Implementation.Common;
 using ResourcesSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Configs.Scriptable
 {
-    [CreateAssetMenu(fileName = nameof(ResourcesDefaultConfigurationSO), menuName = ConfigsMenuName.MenuName + nameof(ResourcesDefaultConfigurationSO))]
-    public class ResourcesDefaultConfigurationSO : ScriptableObject, IGameConfig
+    [CreateAssetMenu(fileName = nameof(ResourcesDefaultConfigurationSo), menuName = ConfigsMenuName.MenuName + nameof(ResourcesDefaultConfigurationSo))]
+    public class ResourcesDefaultConfigurationSo : ScriptableObject, IGameConfig
     {
         [field: SerializeField]
         public ResourceConfig[] StartResources { get; set; } = new ResourceConfig[]
@@ -37,7 +38,8 @@ namespace Configs.Scriptable
             },
         };
 
+        [FormerlySerializedAs("DefaultCapacity")]
         [SerializeField]
-        public int DefaultCapacity = 1000;
+        public int _defaultCapacity = 1000;
     }
 }

@@ -1,5 +1,6 @@
 using Configs.Scriptable;
 using Cysharp.Threading.Tasks;
+using GameSystems.Common.ViewSystem.ViewsProvider;
 using UnityEngine;
 using VContainer.Unity;
 using ViewSystem;
@@ -9,10 +10,10 @@ namespace GameSystems.Implementation.GameInteractionFeature
     public class CursorController : IInitializable
     {
         private readonly IViewsProvider _provider;
-        private readonly CommonGameSettingsSO _settings;
+        private readonly CommonGameSettingsSo _settings;
         private Transform _cursor;
 
-        public CursorController(IViewsProvider provider, CommonGameSettingsSO settings)
+        public CursorController(IViewsProvider provider, CommonGameSettingsSo settings)
         {
             _provider = provider;
             _settings = settings;

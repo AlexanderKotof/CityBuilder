@@ -1,10 +1,12 @@
-using Configs.Scriptable;
+using UnityEngine.Serialization;
 
-namespace Configs.Implementation.Buildings.Functions
+namespace Configs.Scriptable.Buildings.Functions
 {
-    public class ResourceStorageBuildingFunctionSO : BuildingFunctionSO
+    public class ResourceStorageBuildingFunctionSo : BuildingFunctionSo
     {
-        public int StorageCapacityIncrease;
-        public int PerBuildingLevelGrow;
+        [FormerlySerializedAs("StorageCapacityIncrease")]
+        public int _storageCapacityIncrease;
+        [FormerlySerializedAs("PerBuildingLevelGrow")]
+        public int _perBuildingLevelGrow;
     }
 }

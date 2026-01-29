@@ -11,7 +11,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
         private readonly LayerMask _layerMask;
         private readonly GridManager _gridManager;
 
-        public Raycaster(Camera raycastCamera, CommonGameSettingsSO settings, GridManager gridManager)
+        public Raycaster(Camera raycastCamera, CommonGameSettingsSo settings, GridManager gridManager)
         {
             _raycastCamera = raycastCamera;
             _layerMask = settings.InteractionRaycastLayerMask;

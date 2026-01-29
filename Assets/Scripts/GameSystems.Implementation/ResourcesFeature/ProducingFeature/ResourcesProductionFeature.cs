@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
+using BuildingSystem.Extensions;
 using GameSystems.Implementation.GameTime;
 using VContainer.Unity;
 

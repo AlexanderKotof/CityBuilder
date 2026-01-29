@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using CityBuilder.Content;
 using CityBuilder.Grid;
 using CityBuilder.Reactive;
-using Configs.Implementation.Buildings;
-using Configs.Scriptable;
+using Configs.Scriptable.Buildings;
+using GameSystems.Common.ViewSystem;
 using GameSystems.Implementation.GameInteractionFeature;
-using Unity.VisualScripting;
 using UnityEngine;
-using ViewSystem;
 
-namespace CityBuilder.BuildingSystem
+namespace BuildingSystem
 {
     public interface ICellOccupier
     {
@@ -19,12 +17,12 @@ namespace CityBuilder.BuildingSystem
     
     public class BuildingModel : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel
     {
-        public string BuildingName => Config.Name;
+        public string BuildingName => Config._name;
         public ReactiveProperty<int> Level { get; } = new();
         public ReactiveProperty<int> Rotation { get; } = new();
         public ReactiveProperty<Vector3> WorldPosition { get; } = new();
         
-        public BuildingConfigSO Config { get; }
+        public BuildingConfigSo Config { get; }
 
         //Трансформ вьюхи в игре
         public ReactiveProperty<Transform?> ThisTransform { get; } = new();
@@ -34,10 +32,10 @@ namespace CityBuilder.BuildingSystem
         
         public IReadOnlyCollection<CellModel> OccupiedCells { get; private set; }
 
-        public bool CanBeMoved => Config.IsMovable;
+        public bool CanBeMoved => Config._isMovable;
         public bool IsEmpty => false;
         
-        public BuildingModel(int level, BuildingConfigSO config)
+        public BuildingModel(int level, BuildingConfigSo config)
         {
             Level.Set(level);
             Config = config;

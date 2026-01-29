@@ -1,11 +1,11 @@
-using CityBuilder.BuildingSystem;
-using Configs.Implementation.Buildings.Functions;
+using BuildingSystem;
+using Configs.Scriptable.Buildings.Functions;
 
 namespace GameSystems.Implementation.ResourcesStorageFeature
 {
-    public record StorageIncreaseUnit(ResourceStorageBuildingFunctionSO Function, BuildingModel Building)
+    public record StorageIncreaseUnit(ResourceStorageBuildingFunctionSo Function, BuildingModel Building)
     {
-        public ResourceStorageBuildingFunctionSO Function { get; } = Function;
+        public ResourceStorageBuildingFunctionSo Function { get; } = Function;
         public BuildingModel Building { get; } = Building;
     }
 }

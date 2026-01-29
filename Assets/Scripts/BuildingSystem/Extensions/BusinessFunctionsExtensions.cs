@@ -1,15 +1,14 @@
 using GameSystems.Implementation.PopulationFeature;
 using GameSystems.Implementation.ResourcesStorageFeature;
-using ResourcesSystem;
 
-namespace CityBuilder.BuildingSystem
+namespace BuildingSystem.Extensions
 {
     public static class BusinessFunctionsExtensions
     {
         public static int GetStorageIncreaseValue(this StorageIncreaseUnit storageUnit) => 
-            storageUnit.Function.StorageCapacityIncrease + (storageUnit.Building.Level.Value - 1) * storageUnit.Function.PerBuildingLevelGrow;
+            storageUnit.Function._storageCapacityIncrease + (storageUnit.Building.Level.Value - 1) * storageUnit.Function._perBuildingLevelGrow;
         
         public static int GetHouseholdIncreaseValue(this AvailableHouseholdIncreaseUnit unit) =>
-            unit.Function.AvailableHouseholdsIncrease + (unit.Building.Level.Value - 1) * unit.Function.PerBuildingLevelGrow;
+            unit.Function._availableHouseholdsIncrease + (unit.Building.Level.Value - 1) * unit.Function._perBuildingLevelGrow;
     }
 }

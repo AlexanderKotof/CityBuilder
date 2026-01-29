@@ -6,9 +6,9 @@ namespace ResourcesSystem
     public class ResourcesManager : IInitializable
     {
         private readonly PlayerResourcesModel _model;
-        private readonly ResourcesDefaultConfigurationSO _resourcesConfiguration;
+        private readonly ResourcesDefaultConfigurationSo _resourcesConfiguration;
 
-        public ResourcesManager(PlayerResourcesModel model, ResourcesDefaultConfigurationSO resourcesConfiguration)
+        public ResourcesManager(PlayerResourcesModel model, ResourcesDefaultConfigurationSo resourcesConfiguration)
         {
             _model = model;
             _resourcesConfiguration = resourcesConfiguration;

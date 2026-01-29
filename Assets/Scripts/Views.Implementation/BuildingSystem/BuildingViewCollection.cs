@@ -1,5 +1,6 @@
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using CityBuilder.Dependencies;
+using GameSystems.Common.ViewSystem;
 using UnityEngine;
 using ViewSystem;
 
@@ -21,7 +22,7 @@ namespace Views.Implementation.BuildingSystem
 
         protected override string ProvideAssetKey(BuildingModel viewModel)
         {
-            return viewModel.Config.AssetKey;
+            return viewModel.Config._assetKey;
         }
     }
 }

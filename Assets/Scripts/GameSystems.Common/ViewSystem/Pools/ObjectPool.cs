@@ -1,10 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace ViewSystem
+namespace GameSystems.Common.ViewSystem.Pools
 {
     public class ObjectPool<T> : ObjectsPoolBase
         where T : Object

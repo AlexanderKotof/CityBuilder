@@ -1,9 +1,8 @@
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace ViewSystem
+namespace GameSystems.Common.ViewSystem.ViewsProvider
 {
     public interface IViewsProvider
     {

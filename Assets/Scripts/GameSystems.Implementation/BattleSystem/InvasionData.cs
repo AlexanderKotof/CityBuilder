@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Configs.Scriptable;
+using Configs.Scriptable.Battle;
 
 namespace GameSystems.Implementation.BattleSystem
 {

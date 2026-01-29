@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CityBuilder.BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using Configs;
 using Configs.Scriptable;
 using Cysharp.Threading.Tasks;
+using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States;
 using UnityEngine;
@@ -21,7 +21,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
         private PlayerInteractionStateMachine? _playerInteractionStateMachine;
     
         private readonly IViewsProvider _viewsProvider;
-        private readonly CommonGameSettingsSO _settings;
+        private readonly CommonGameSettingsSo _settings;
         private Transform _cursor;
         private CellSelectionController _cellSelectionController;
 

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
+using BuildingSystem.Extensions;
 using CityBuilder.Dependencies;
-using Configs.Implementation.Buildings.Functions;
+using Configs.Scriptable.Buildings.Functions;
 using ResourcesSystem;
 using VContainer.Unity;
 
@@ -36,7 +37,7 @@ namespace GameSystems.Implementation.ResourcesStorageFeature
         
         private void OnBuildingAdded(BuildingModel building)
         {
-            if (building.Config.TryGetResourceStorageCapacityFunction(out ResourceStorageBuildingFunctionSO storageIncrease) == false)
+            if (building.Config.TryGetResourceStorageCapacityFunction(out ResourceStorageBuildingFunctionSo storageIncrease) == false)
             {
                 return;
             }

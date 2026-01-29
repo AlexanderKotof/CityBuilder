@@ -1,4 +1,4 @@
-namespace Configs.Scriptable
+namespace Configs.Scriptable.Buildings
 {
     public interface IBuildingFunction
     {

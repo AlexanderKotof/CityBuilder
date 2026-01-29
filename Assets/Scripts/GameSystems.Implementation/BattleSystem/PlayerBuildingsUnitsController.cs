@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using Configs.Scriptable;
+using Configs.Scriptable.Battle;
 using Cysharp.Threading.Tasks;
+using GameSystems.Common.ViewSystem.ViewsProvider;
 using UnityEngine;
 using Views.Implementation.BattleSystem;
 using ViewSystem;
@@ -81,7 +83,7 @@ namespace GameSystems.Implementation.BattleSystem
         
         private BattleUnitBase CreateBattleUnit(BuildingModel building)
         {
-            var config = building.Config.UnitConfig != null ? building.Config.UnitConfig : _config.DefaultBuildingUnit;
+            var config = building.Config._unitConfig != null ? building.Config._unitConfig : _config.DefaultBuildingUnit;
             var battleUnit = new BattleUnitBase(config, building.Level, building.WorldPosition);
             
             Action<Transform> handle = null;

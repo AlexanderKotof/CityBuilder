@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-using Configs.Implementation.Buildings.Functions;
 using Configs.Implementation.Common;
+using Configs.Scriptable.Buildings.Functions;
 using ResourcesSystem;
 
 namespace GameSystems.Implementation.ProducingFeature
 {
-    public record BuildingResourceProductionUnit(ResourceProductionBuildingFunctionSO Function) : IResourceProducer
+    public record BuildingResourceProductionUnit(ResourceProductionBuildingFunctionSo Function) : IResourceProducer
     {
-        public ResourceProductionBuildingFunctionSO Function { get; } = Function;
+        public ResourceProductionBuildingFunctionSo Function { get; } = Function;
 
         public bool CanProduce()
         {
@@ -16,12 +16,12 @@ namespace GameSystems.Implementation.ProducingFeature
 
         public IEnumerable<ResourceConfig> GetCosts()
         {
-            return Function.RequireResourcesForProduction;
+            return Function._requireResourcesForProduction;
         }
 
         public IEnumerable<ResourceConfig> GetProduction()
         {
-            return Function.ProduceResourcesByTick;
+            return Function._produceResourcesByTick;
         }
 
     }

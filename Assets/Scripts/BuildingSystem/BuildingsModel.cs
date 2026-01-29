@@ -4,7 +4,7 @@ using CityBuilder.Grid;
 using CityBuilder.Reactive;
 using UnityEngine;
 
-namespace CityBuilder.BuildingSystem
+namespace BuildingSystem
 {
     public class BuildingsModel
     {
@@ -74,9 +74,9 @@ namespace CityBuilder.BuildingSystem
             var position = startCell.Position;
             var config = building.Config;
             
-            for (int i = position.X; i < position.X + config.Size.X; i++)
+            for (int i = position.X; i < position.X + config._size.X; i++)
             {
-                for (int j = position.Y; j < position.Y + config.Size.Y; j++)
+                for (int j = position.Y; j < position.Y + config._size.Y; j++)
                 {
                     list.Add(startCell.GridModel.GetCell(i, j));
                 }

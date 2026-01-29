@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ViewSystem
+namespace GameSystems.Common.ViewSystem.Pools
 {
     public interface IObjectPool
     {

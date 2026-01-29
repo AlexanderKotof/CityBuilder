@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Configs.Scriptable;
+using Configs.Scriptable.Battle;
 using JetBrains.Annotations;
 using UnityEngine;
 

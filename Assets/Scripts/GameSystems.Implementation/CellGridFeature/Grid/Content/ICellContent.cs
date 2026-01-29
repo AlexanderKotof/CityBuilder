@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using CityBuilder.Grid;
 using UnityEngine;
 

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using Configs.Scriptable;
+using Configs.Scriptable.Battle;
 using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.GameInteractionFeature;
 using Installers;

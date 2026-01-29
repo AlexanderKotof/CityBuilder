@@ -1,10 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using Configs;
 using Cysharp.Threading.Tasks;
+using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation.GameInteractionFeature;
 using JetBrains.Annotations;
 using VContainer.Unity;

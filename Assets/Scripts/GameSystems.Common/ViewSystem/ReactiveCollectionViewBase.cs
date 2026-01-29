@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using CityBuilder.Dependencies;
-using JetBrains.Annotations;
 using CityBuilder.Reactive;
+using GameSystems.Common.ViewSystem.View;
+using GameSystems.Common.ViewSystem.ViewsProvider;
+using JetBrains.Annotations;
 using UnityEngine;
 
-namespace ViewSystem
+namespace GameSystems.Common.ViewSystem
 {
     public abstract class ReactiveCollectionViewBase<TViewModel, TView> 
         where TViewModel : IViewModel

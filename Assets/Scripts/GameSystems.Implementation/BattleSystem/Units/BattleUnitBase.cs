@@ -1,6 +1,8 @@
 using System;
 using CityBuilder.Reactive;
 using Configs.Scriptable;
+using Configs.Scriptable.Battle;
+using GameSystems.Common.ViewSystem;
 using UnityEngine;
 using ViewSystem;
 

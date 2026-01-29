@@ -1,11 +1,11 @@
-using CityBuilder.BuildingSystem;
-using Configs.Implementation.Buildings.Functions;
+using BuildingSystem;
+using Configs.Scriptable.Buildings.Functions;
 
 namespace GameSystems.Implementation.PopulationFeature
 {
-    public record AvailableHouseholdIncreaseUnit(HouseHoldsIncreaseBuildingFunctionSO Function,  BuildingModel Building)
+    public record AvailableHouseholdIncreaseUnit(HouseHoldsIncreaseBuildingFunctionSo Function,  BuildingModel Building)
     {
-        public HouseHoldsIncreaseBuildingFunctionSO Function { get; } = Function;
+        public HouseHoldsIncreaseBuildingFunctionSo Function { get; } = Function;
         public BuildingModel Building { get; } = Building;
     }
 }

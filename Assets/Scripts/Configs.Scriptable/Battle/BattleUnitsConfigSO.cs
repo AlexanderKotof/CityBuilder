@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Configs.Scriptable
+namespace Configs.Scriptable.Battle
 {
     [CreateAssetMenu(fileName = nameof(BattleUnitsConfigSO), menuName = ConfigsMenuName.BattleMenuName + nameof(BattleUnitsConfigSO))]
     public class BattleUnitsConfigSO : ScriptableObject, IGameConfig

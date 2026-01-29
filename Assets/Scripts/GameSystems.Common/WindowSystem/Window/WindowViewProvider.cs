@@ -1,4 +1,5 @@
 using CityBuilder.Dependencies;
+using GameSystems.Common.ViewSystem.ViewsProvider;
 
 namespace ViewSystem
 {

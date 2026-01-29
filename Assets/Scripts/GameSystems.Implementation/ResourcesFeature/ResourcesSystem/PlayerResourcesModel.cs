@@ -6,7 +6,7 @@ namespace ResourcesSystem
 {
     public class PlayerResourcesModel : ResourcesStorageModel
     {
-        public PlayerResourcesModel(ResourcesDefaultConfigurationSO settings) : base(settings.DefaultCapacity)
+        public PlayerResourcesModel(ResourcesDefaultConfigurationSo settings) : base(settings._defaultCapacity)
         {
         }
 

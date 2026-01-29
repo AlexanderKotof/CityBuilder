@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CityBuilder.Dependencies;
+using GameSystems.Common.ViewSystem.ViewsProvider;
 using UnityEngine;
 using ViewSystem;
 

@@ -1,4 +1,4 @@
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using CityBuilder.Dependencies;
 using JetBrains.Annotations;
 using TMPro;

@@ -1,5 +1,5 @@
 using System;
-using CityBuilder.BuildingSystem;
+using BuildingSystem;
 using CityBuilder.Grid;
 using Configs.Implementation.Common;
 using VContainer.Unity;
@@ -39,7 +39,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
             if (_buildingManager.TryGetBuilding(cellModel, out var building))
             {
                 _cursorController.SetActive(true);
-                _cursorController.SetPosition(building.WorldPosition.Value, building.Config.Size.ToVector()); 
+                _cursorController.SetPosition(building.WorldPosition.Value, building.Config._size.ToVector()); 
             }
             else
             {

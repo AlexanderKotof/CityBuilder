@@ -1,40 +1,40 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Configs.Implementation.Buildings.Functions;
-using Configs.Scriptable;
+using Configs.Scriptable.Buildings;
+using Configs.Scriptable.Buildings.Functions;
 
-namespace CityBuilder.BuildingSystem
+namespace BuildingSystem.Extensions
 {
     public static class BuildingConfigExtensions
     {
-        public static bool TryGetProducingResourcesFunction(this BuildingConfigSO bc,
-            [NotNullWhen(true)] out ResourceProductionBuildingFunctionSO production)
+        public static bool TryGetProducingResourcesFunction(this BuildingConfigSo bc,
+            [NotNullWhen(true)] out ResourceProductionBuildingFunctionSo production)
         {
             return TryGetBuildingFunction(bc, out production);
         }
 
-        public static bool TryGetHouseholdsCapacityFunction(this BuildingConfigSO bc,
-            [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunctionSO production)
+        public static bool TryGetHouseholdsCapacityFunction(this BuildingConfigSo bc,
+            [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunctionSo production)
         {
             return TryGetBuildingFunction(bc, out production);
         }
 
-        public static bool TryGetResourceStorageCapacityFunction(this BuildingConfigSO bc,
-            [NotNullWhen(true)] out ResourceStorageBuildingFunctionSO production)
+        public static bool TryGetResourceStorageCapacityFunction(this BuildingConfigSo bc,
+            [NotNullWhen(true)] out ResourceStorageBuildingFunctionSo production)
         {
             return TryGetBuildingFunction(bc, out production);
         }
         
-        public static bool TryGetBuildingFunction<T>(this BuildingConfigSO bc, [NotNullWhen(true)] out T function)
+        public static bool TryGetBuildingFunction<T>(this BuildingConfigSo bc, [NotNullWhen(true)] out T function)
             where T : class, IBuildingFunction
         {
-            if (bc.BuildingFunctions == null)
+            if (bc._buildingFunctions == null)
             {
                 function = default(T);
                 return false;
             }
 
-            function = bc.BuildingFunctions.FirstOrDefault(value => value is T) as T;
+            function = bc._buildingFunctions.FirstOrDefault(value => value is T) as T;
             return function != default(T);
         }
     }
