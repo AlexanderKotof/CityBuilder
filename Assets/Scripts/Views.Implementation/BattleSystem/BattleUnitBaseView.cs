@@ -40,5 +40,14 @@ namespace Views.Implementation.BattleSystem
         {
             transform.position = position;
         }
+
+        public void Initialize(BattleUnitBase model)
+        {
+            model.ThisTransform.Set(ThisTransform);
+            InitView(NavigationComponent, model);
+            
+            if (UIComponent != null) 
+                UIComponent.Init(model);
+        }
     }
 }

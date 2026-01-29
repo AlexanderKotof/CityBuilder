@@ -605,6 +605,7 @@ MonoBehaviour:
   BuildingsSettingsSO: {fileID: 11400000, guid: 73d7472ac2ee55e4fa8d2c09fa6d80fe, type: 2}
   ResourcesDefaultConfigurationSO: {fileID: 11400000, guid: 5f82f44c5f9c2554cba01e92aa63f58c, type: 2}
   BattleUnitsConfigSO: {fileID: 11400000, guid: c1e01e5b52d8596458f0508694aedb5e, type: 2}
+  MergeFeatureConfigurationSO: {fileID: 11400000, guid: f41f3a9545980814e96b034a0a1a1359, type: 2}
 --- !u!114 &2084401949
 MonoBehaviour:
   m_ObjectHideFlags: 0

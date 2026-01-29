@@ -1,67 +1,21 @@
-﻿using GameSystems.Implementation.GameTime;
-using GameSystems.Implementation.PopulationFeature;
-using Installers;
-using JetBrains.Annotations;
-using ResourcesSystem;
-using UnityEngine;
+﻿using Installers;
 using VContainer;
 using VContainer.Unity;
 
-public class AppStartup : LifetimeScope
+namespace CityBuilder
 {
-    //TODO: add app level systems, fsm
-    
-    public GameSystemsInstaller _installer;
-
-    protected override void Configure(IContainerBuilder builder)
+    /// <summary>
+    /// This is entry point of all application, but now it's only marker for main game installer (VContainer, see Scripts/Installers folder) 
+    /// </summary>
+    public class AppStartup : LifetimeScope
     {
-        //_installer.Build();
-            //_installer.CreateChild()
-    }
+        //TODO: add app level systems, fsm
+    
+        public GameSystemsInstaller _installer;
 
-    
-    
-    // public GameConfigsInstaller GameConfigsInstaller;
-    //
-    // public Camera RaycasterCamera;
-    //
-    // private GameSystemsInitialization _gameSystemsInitialization;
-    // private DependencyContainer _innerDependencies;
-    //
-    // private void Awake()
-    // {
-    //     Initialized = false;
-    //
-    //     var unityUpdate = new GameObject("UnityUpdate").AddComponent<UnityUpdate>();
-    //     DontDestroyOnLoad(unityUpdate);
-    //
-    //     _innerDependencies = new DependencyContainer();
-    //     _innerDependencies.Register(RaycasterCamera);
-    //     _innerDependencies.Register<IUnityUpdate>(unityUpdate);
-    //     _innerDependencies.Register<IUnityFixedUpdate>(unityUpdate);
-    //     
-    //     InitializeGameSystems(_innerDependencies);
-    // }
-    //
-    // private async void OnDestroy()
-    // {
-    //     await _gameSystemsInitialization.Deinit();
-    // }
-    //
-    // private async void InitializeGameSystems(DependencyContainer dependencies)
-    // {
-    //     _gameSystemsInitialization = new GameSystemsInitialization(dependencies);
-    //     await _gameSystemsInitialization.Init();
-    //
-    //     Initialized = true;
-    // }
-    //
-    // private void Update()
-    // {
-    //     _gameSystemsInitialization.Update();
-    // }
-    //
-    // public bool Initialized { get; set; }
-    //
-  
+        protected override void Configure(IContainerBuilder builder)
+        {
+
+        }
+    }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using CityBuilder.Reactive;
+using UniRx;
 
 namespace GameSystems.Implementation.BattleSystem
 {
