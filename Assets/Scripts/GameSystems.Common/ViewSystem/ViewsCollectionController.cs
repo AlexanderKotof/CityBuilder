@@ -61,12 +61,17 @@ namespace GameSystems.Common.ViewSystem
             _viewsProvider.ReturnView(view);
         }
 
-        public void Recycle(object data)
+        public void Return(object data)
         {
             if (_activeViews.Remove(data, out var view))
             {
                 Recycle(view);
             }
+        }
+
+        public bool TryGetView(object data, out TView view)
+        {
+            return _activeViews.TryGetValue(data, out view);
         }
     }
 }

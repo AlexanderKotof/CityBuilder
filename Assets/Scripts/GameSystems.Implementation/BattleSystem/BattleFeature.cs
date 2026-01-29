@@ -79,7 +79,7 @@ namespace GameSystems.Implementation.BattleSystem
             }
             void OnRemovePlayerUnit(BattleUnitBase unit)
             {
-                _playerUnitsViewsCollection.Recycle(unit);
+                _playerUnitsViewsCollection.Return(unit);
             }
         }
         
@@ -98,7 +98,7 @@ namespace GameSystems.Implementation.BattleSystem
             }
             void OnRemoveEnemyUnit(BattleUnitBase unit)
             {
-                _enemiesUnitsViewsCollection.Recycle(unit);
+                _enemiesUnitsViewsCollection.Return(unit);
             }
         }
     }

@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using BuildingSystem;
 using BuildingSystem.Extensions;
+using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.GameTime;
+using UniRx;
 using VContainer.Unity;
 
 namespace GameSystems.Implementation.ProducingFeature
@@ -15,6 +17,7 @@ namespace GameSystems.Implementation.ProducingFeature
         private readonly ProductionModel _productionModel; 
         private readonly BuildingManager _buildingsManager;
         private readonly GameTimeSystem _gameTimeSystem;
+        private readonly CompositeDisposable _disposable = new CompositeDisposable();
         
         private readonly Dictionary<BuildingModel, IResourceProducer> _buildingProducersMap = new();
 
@@ -28,22 +31,16 @@ namespace GameSystems.Implementation.ProducingFeature
         }
         public void Initialize()
         {
-            _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
-            _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
-
-            foreach (var building in _buildingsModel.Buildings)
-            {
-                OnBuildingAdded(building);
-            }
+            _buildingsModel.Buildings
+                .SubscribeToCollection(OnBuildingAdded, OnBuildingRemoved).AddTo(_disposable);
             
             _gameTimeSystem.NewDayStarted += OnNewDayStarted;
         }
 
         public void Dispose()
         {
-            _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
-            _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
-
+            _disposable.Dispose();
+            
             foreach (var building in _buildingsModel.Buildings)
             {
                 OnBuildingRemoved(building);

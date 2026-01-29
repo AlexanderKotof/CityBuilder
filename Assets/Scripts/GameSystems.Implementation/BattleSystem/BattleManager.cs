@@ -84,7 +84,7 @@ namespace GameSystems.Implementation.BattleSystem
         {
             unit.OnUnitDied -= OnUnitDied;
             
-            Debug.Log($"Unit {unit.RuntimeId} died!");
+            Debug.Log($"Unit {unit.Config.Name} ({unit.RuntimeId.ToString().Substring(0, 4)}..) died!");
         }
     }
 }

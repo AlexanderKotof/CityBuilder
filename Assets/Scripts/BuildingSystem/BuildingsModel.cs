@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using CityBuilder.Grid;
-using CityBuilder.Reactive;
 using GameSystems.Implementation.BattleSystem;
+using UniRx;
 using UnityEngine;
 
 namespace BuildingSystem

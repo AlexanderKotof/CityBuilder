@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using BuildingSystem;
 using BuildingSystem.Extensions;
 using Configs.Scriptable.Buildings.Functions;
+using Cysharp.Threading.Tasks;
+using GameSystems.Implementation.BattleSystem;
 using ResourcesSystem;
 using UniRx;
 using VContainer.Unity;
@@ -13,6 +15,7 @@ namespace GameSystems.Implementation.ResourcesStorageFeature
     {
         private readonly PlayerResourcesModel _playerResourcesStorage;
         private readonly BuildingsModel _buildingsModel;
+        private readonly CompositeDisposable _disposable = new CompositeDisposable();
         
         private readonly Dictionary<BuildingModel, StorageIncreaseUnit> _storageIncreaseUnits = new();
 
@@ -24,14 +27,13 @@ namespace GameSystems.Implementation.ResourcesStorageFeature
 
         public void Initialize()
         {
-            _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
-            _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
+            _buildingsModel.Buildings
+                .SubscribeToCollection(OnBuildingAdded, OnBuildingRemoved).AddTo(_disposable);
         }
 
         public void Dispose()
         {
-            _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
-            _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
+            _disposable.Dispose();
         }
         
         private void OnBuildingAdded(BuildingModel building)
@@ -44,7 +46,7 @@ namespace GameSystems.Implementation.ResourcesStorageFeature
             var storageIncreaseUnit = new StorageIncreaseUnit(storageIncrease, building);
             _storageIncreaseUnits.Add(building, storageIncreaseUnit);
             
-            building.Level.Subscribe(OnBuildingLevelChanged);
+            building.Level.Subscribe(OnBuildingLevelChanged).AddTo(_disposable);
             
             UpdateStorageCapacity();
         }

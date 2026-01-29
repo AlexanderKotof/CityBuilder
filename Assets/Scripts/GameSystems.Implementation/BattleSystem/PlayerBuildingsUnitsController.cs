@@ -33,13 +33,9 @@ namespace GameSystems.Implementation.BattleSystem
 
         public void Init()
         {
-            _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
-            _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
-
-            foreach (var building in _buildingsModel.Buildings)
-            {
-                OnBuildingAdded(building);
-            }
+            _buildingsModel.Buildings
+                .SubscribeToCollection(OnBuildingAdded, OnBuildingRemoved)
+                .AddTo(_disposables);
 
             SubscribePlayerBuildingsUnits();
         }
@@ -73,7 +69,7 @@ namespace GameSystems.Implementation.BattleSystem
 
             void RemovePlayerBuildingUnit(BattleUnitBase unit)
             {
-                _buildingsUi.Recycle(unit);
+                _buildingsUi.Return(unit);
 
                 if (_disposablesByUnit.Remove(unit, out var disposable))
                 {
@@ -85,9 +81,6 @@ namespace GameSystems.Implementation.BattleSystem
         public void Deinit()
         {
             _disposables.Dispose();
-            
-            _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
-            _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
             
             foreach (var disposable in _disposablesByUnit.Values)
             {

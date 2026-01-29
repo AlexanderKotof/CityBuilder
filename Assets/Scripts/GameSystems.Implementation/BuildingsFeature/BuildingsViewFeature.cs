@@ -1,13 +1,18 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using Configs;
 using Cysharp.Threading.Tasks;
+using GameSystems.Common.ViewSystem;
 using GameSystems.Common.ViewSystem.ViewsProvider;
+using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.GameInteractionFeature;
 using JetBrains.Annotations;
+using UniRx;
+using UnityEngine;
 using VContainer.Unity;
 using Views.Implementation.BuildingSystem;
 using ViewSystem;
@@ -16,27 +21,48 @@ namespace GameSystems.Implementation.BuildingsFeature
 {
     public class BuildingsViewFeature : IInitializable, IDisposable
     {
-        private readonly BuildingViewCollection _buildingViewsController;
+        private readonly ViewsCollectionController<BuildingView> _buildingViewsController;
         private readonly WindowsProvider _windowsProvider;
         private readonly IDependencyContainer _container;
         private readonly InteractionModel _interactionModel;
         private readonly BuildingManager _buildingManager;
-        
+        private readonly BuildingsModel _model;
+
         private BuildingInfoWindowModel _buildingWindowViewModel;
-        public BuildingsViewFeature(BuildingManager manager, BuildingsModel model, InteractionModel interactionModel, IViewWithModelProvider viewWithModelProvider, WindowsProvider windowsProvider)
+        private readonly CompositeDisposable _subscriptions = new();
+
+        public BuildingsViewFeature(BuildingManager manager, BuildingsModel model, InteractionModel interactionModel, IViewsProvider viewsProvider, WindowsProvider windowsProvider)
         {
-            _container = new DependencyContainer();
-            _container.Register(viewWithModelProvider);
-            _buildingViewsController = new BuildingViewCollection(model, _container);
-            
             _interactionModel = interactionModel;
             _buildingManager = manager;
+            _model = model;
             _windowsProvider = windowsProvider;
+            var root = new GameObject("---Buildings Root---").transform;
+            _buildingViewsController = new ViewsCollectionController<BuildingView>(viewsProvider, defaultParent: root);
         }
         
         public void Initialize()
         {
-            Init().Forget();
+            SubscribeOnBuildings();
+            InitWindow().Forget();
+        }
+
+        private void SubscribeOnBuildings()
+        {
+            _model.Buildings
+                .SubscribeToCollection(b => OnBuildingAdded(b).Forget(), OnBuildingRemoved)
+                .AddTo(_subscriptions);
+
+            async UniTaskVoid OnBuildingAdded(BuildingModel obj)
+            {
+                var view = await _buildingViewsController.AddView(obj.Config.AssetKey, obj);
+                view.Initialize(obj);
+                obj.ThisTransform.Value = view.transform;
+            }
+            void OnBuildingRemoved(BuildingModel obj)
+            {
+                _buildingViewsController.Return(obj);
+            }
         }
         
         public void Dispose()
@@ -44,13 +70,13 @@ namespace GameSystems.Implementation.BuildingsFeature
             _interactionModel.SelectedCell.Unsubscribe(OnSelectedCellUpdated);
             
             _windowsProvider.Recycle(_buildingWindowViewModel);
-            _buildingViewsController.Deinit();
+            
+            _buildingViewsController.Dispose();
+            _subscriptions.Dispose();
         }
         
-        private async UniTask Init()
+        private async UniTask InitWindow()
         {
-            _buildingViewsController.Initialize();
-
             _buildingWindowViewModel = await _windowsProvider.CreateWindow<BuildingInfoWindowModel>(
                 new WindowCreationData("BuildingWindow", 0),
                 _container);

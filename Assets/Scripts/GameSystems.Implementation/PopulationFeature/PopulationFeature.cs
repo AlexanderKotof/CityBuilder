@@ -4,6 +4,7 @@ using BuildingSystem;
 using BuildingSystem.Extensions;
 using Configs.Scriptable.Buildings.Functions;
 using Cysharp.Threading.Tasks;
+using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.GameTime;
 using UniRx;
 using VContainer.Unity;
@@ -27,20 +28,16 @@ namespace GameSystems.Implementation.PopulationFeature
 
         public void Initialize()
         {
-            _buildingsModel.Buildings.SubscribeAdd(OnBuildingAdded);
-            _buildingsModel.Buildings.SubscribeRemove(OnBuildingRemoved);
-
+            _buildingsModel.Buildings.SubscribeToCollection(OnBuildingAdded, OnBuildingRemoved).AddTo(_subscriptions);
             _dateModel.OnDayChanged += OnNewDayStarted;
             _dateModel.OnWeekChanged += OnWeekChanged;
         }
 
         public void Dispose()
         {
+            _subscriptions.Dispose();
             _dateModel.OnDayChanged -= OnNewDayStarted;
             _dateModel.OnWeekChanged -= OnWeekChanged;
-            
-            _buildingsModel.Buildings.UnsubscribeAdd(OnBuildingAdded);
-            _buildingsModel.Buildings.UnsubscribeRemove(OnBuildingRemoved);
         }
         
         private void OnWeekChanged()

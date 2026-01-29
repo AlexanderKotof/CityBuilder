@@ -1,6 +1,7 @@
 using System;
 using BuildingSystem;
 using CityBuilder.Grid;
+using Configs.Scriptable.Buildings;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -10,11 +11,13 @@ namespace CityBuilder.GameSystems.Implementation
     {
         private readonly BuildingManager _manager;
         private readonly BuildingsModel _model;
+        private readonly MergeFeatureConfigurationSo _configuration;
 
-        public MergeBuildingsFeature(BuildingManager manager, BuildingsModel model)
+        public MergeBuildingsFeature(BuildingManager manager, BuildingsModel model, MergeFeatureConfigurationSo configuration)
         {
             _manager = manager;
             _model = model;
+            _configuration = configuration;
         }
 
         public void Initialize()
