@@ -44,13 +44,17 @@ namespace GameSystems.Common.ViewSystem
         {
             return AddView(assetKey, data, _defaultParent);
         }
-
         
         public UniTask<TView> AddView(object data)
         {
             return AddView(_defaultAssetKey, data, _defaultParent);
         }
-
+        
+        public UniTask<TView> AddView(object data, Transform parent)
+        {
+            return AddView(_defaultAssetKey, data, parent);
+        }
+        
         private void Recycle(TView view)
         {
             _viewsProvider.ReturnView(view);

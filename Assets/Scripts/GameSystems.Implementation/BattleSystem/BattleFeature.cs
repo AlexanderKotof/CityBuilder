@@ -63,6 +63,25 @@ namespace GameSystems.Implementation.BattleSystem
         {
             _battleManager.Update();
         }
+       
+        private void SubscribePlayerUnits()
+        {
+            _battleSystemModel.PlayerUnits
+                .SubscribeToCollection((data) => OnAddPlayerUnit(data).Forget(), OnRemovePlayerUnit)
+                .AddTo(_disposable);
+            async UniTaskVoid OnAddPlayerUnit(BattleUnitBase unit)
+            {
+                var view = await _playerUnitsViewsCollection.AddView(unit.Config.AssetKey, unit);
+                view.Initialize(unit);
+                var transform = view.ThisTransform;
+                unit.ThisTransform.Set(transform);
+                transform.position = unit.StartPosition.Value;
+            }
+            void OnRemovePlayerUnit(BattleUnitBase unit)
+            {
+                _playerUnitsViewsCollection.Recycle(unit);
+            }
+        }
         
         private void SubscribeEnemiesUnits()
         {
@@ -73,26 +92,13 @@ namespace GameSystems.Implementation.BattleSystem
             {
                 var view = await _enemiesUnitsViewsCollection.AddView(unit.Config.AssetKey, unit);
                 view.Initialize(unit);
+                var transform = view.ThisTransform;
+                unit.ThisTransform.Set(transform);
+                transform.position = unit.StartPosition.Value;
             }
             void OnRemoveEnemyUnit(BattleUnitBase unit)
             {
                 _enemiesUnitsViewsCollection.Recycle(unit);
-            }
-        }
-
-        private void SubscribePlayerUnits()
-        {
-            _battleSystemModel.PlayerUnits
-                .SubscribeToCollection((data) => OnAddPlayerUnit(data).Forget(), OnRemovePlayerUnit)
-                .AddTo(_disposable);
-            async UniTaskVoid OnAddPlayerUnit(BattleUnitBase unit)
-            {
-                var view = await _playerUnitsViewsCollection.AddView(unit.Config.AssetKey, unit);
-                view.Initialize(unit);
-            }
-            void OnRemovePlayerUnit(BattleUnitBase unit)
-            {
-                _playerUnitsViewsCollection.Recycle(unit);
             }
         }
     }

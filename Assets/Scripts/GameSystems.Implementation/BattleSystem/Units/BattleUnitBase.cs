@@ -29,7 +29,7 @@ namespace GameSystems.Implementation.BattleSystem
         public ReactiveProperty<Vector3> StartPosition { get; } = new();
         public ReactiveProperty<Vector3> DesiredPosition { get; } = new();
         
-        public BattleUnitBase(BattleUnitConfigSO config)
+        private BattleUnitBase(BattleUnitConfigSO config)
         {
             Config = config;
             Health = new UnitHealthAttribute(config.Health);
@@ -40,11 +40,16 @@ namespace GameSystems.Implementation.BattleSystem
             }
         }
         
+        public BattleUnitBase(BattleUnitConfigSO config, int level, Vector3 startPosition, Transform transform) : this(config, level, startPosition)
+        {
+            ThisTransform.Set(transform);
+        }
+
         public BattleUnitBase(BattleUnitConfigSO config, int level, Vector3 startPosition) : this(config)
         {
             StartPosition.Set(startPosition);
         }
-        
+
         public void TakeDamage(float damage)
         {
             if (IsAlive == false)

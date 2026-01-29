@@ -44,7 +44,7 @@ namespace GameSystems.Implementation.BattleSystem
             }
 
             // Process player buildings
-            foreach (var buildingUnit in _battleSystemModel.PlayerBuildings)
+            foreach (var buildingUnit in _battleSystemModel.PlayerBuildingsUnits)
             {
                 UpdateUnit(buildingUnit, true);
             }
@@ -174,13 +174,13 @@ namespace GameSystems.Implementation.BattleSystem
             IBattleUnit BuildingsOnly()
             {
                 //Debug.LogWarning(nameof(BuildingsOnly));
-                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildings);
+                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildingsUnits);
             }
 
             IBattleUnit DefensiveBuildingsOnly()
             {                
                 //Debug.LogWarning(nameof(DefensiveBuildingsOnly));
-                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildings.Where(building => building.CanAttack));
+                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildingsUnits.Where(building => building.CanAttack));
             }
 
             IBattleUnit MainBuildingOnly()
@@ -199,7 +199,7 @@ namespace GameSystems.Implementation.BattleSystem
                     return SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits);
                 }
 
-                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildings);
+                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildingsUnits);
             }
 
             IBattleUnit UnitsThenMainBuildings()
