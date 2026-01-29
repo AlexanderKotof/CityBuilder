@@ -68,7 +68,9 @@ namespace BuildingSystem
                 SetBuilding(cellModel, building);
             } 
         }
-
+        
+        //TODO: this is responsibility of merge system/service
+        //THIS WORKS NOT REALLY LIKE IT SHOULD
         public bool TryDragCellFromTo(CellModel from, CellModel to)
         {
             if (!TryGetBuilding(from, out var fromBuilding))
@@ -78,12 +80,11 @@ namespace BuildingSystem
 
             if (CanPlaceBuilding(fromBuilding.Config, to))
             {
-                RemoveBuilding(from);
-                SetBuilding(to, fromBuilding);
-                
+                MoveBuilding(fromBuilding, to);
                 return true;
             }
             
+            //TODO: this is responsibility of merge system/service
             if (TryGetBuilding(to, out var toBuilding) && CanBeUpgraded(toBuilding, fromBuilding))
             {
                 RemoveBuilding(from);
@@ -96,6 +97,13 @@ namespace BuildingSystem
 
             return false;
         }
+
+        private void MoveBuilding(BuildingModel building, CellModel to)
+        {
+            _model.MoveBuilding(building, to);
+            // RemoveBuilding(building.);
+            // SetBuilding(to, fromBuilding);
+        }
         
         public bool TryGetBuilding(CellModel location, out BuildingModel building)
         {
@@ -107,14 +115,14 @@ namespace BuildingSystem
             var gridModel = startCell.GridModel;
             var position = startCell.Position;
 
-            for (int i = position.X; i < position.X + config._size.X; i++)
+            for (int i = position.X; i < position.X + config.Size.X; i++)
             {
-                for (int j = position.Y; j < position.Y + config._size.Y; j++)
+                for (int j = position.Y; j < position.Y + config.Size.Y; j++)
                 {
                     var targetCell = gridModel.GetCell(i, j);
                     var targetContent = targetCell.Content.Value;
                      
-                    if (targetCell.Content.HasValue() && targetContent.IsEmpty == false)
+                    if (targetCell.Content.Value != null && targetContent.IsEmpty == false)
                     {
                         return false;
                     }
@@ -133,7 +141,7 @@ namespace BuildingSystem
         {
             if (_model.TryGetBuilding(cell, out var building))
             {
-                _model.RemoveBuilding(cell);
+                _model.RemoveBuildingAt(cell);
             }
         }
 
@@ -150,12 +158,5 @@ namespace BuildingSystem
                     first.Level.Value == second.Level.Value &&
                         _model.MainBuilding.Level.Value > first.Level.Value;
         }
-        
-        public bool CanMoveBuilding(CellModel location)
-        {
-            return _model.BuildingsMap.TryGetValue(location, out var building) && building.CanBeMoved;
-        }
-
-
     }
 }

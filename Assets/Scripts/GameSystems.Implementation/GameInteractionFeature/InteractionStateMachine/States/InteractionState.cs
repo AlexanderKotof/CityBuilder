@@ -179,7 +179,7 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         
         protected virtual bool CanBeDragged(CellModel cellModel)
         {
-            return cellModel.Content.HasValue() && cellModel.Content.Value.CanBeMoved;
+            return cellModel.Content.Value is { CanBeMoved: true };
         }
 
         protected virtual void TryCancel()

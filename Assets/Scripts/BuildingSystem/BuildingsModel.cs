@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CityBuilder.Grid;
 using CityBuilder.Reactive;
+using GameSystems.Implementation.BattleSystem;
 using UnityEngine;
 
 namespace BuildingSystem
@@ -17,13 +18,22 @@ namespace BuildingSystem
         public void AddBuilding(BuildingModel building, CellModel startLocation)
         {
             var occupiedCells = GetBuildingCellsSet(building, startLocation);
+            if (SetBuilding(building, startLocation, occupiedCells) == false) 
+                throw new Exception("Could not set building for this cell set!");
+            
+            Buildings.Add(building);
+            
+            Debug.Log($"Building {building.BuildingName} added, position {startLocation.ToString()}");
+        }
 
+        private bool SetBuilding(BuildingModel building, CellModel startLocation, IReadOnlyCollection<CellModel> occupiedCells)
+        {
             foreach (var cell in occupiedCells)
             {
                 if (!BuildingsMap.TryAdd(cell, building))
                 {
-                    Debug.LogError($"Building at position {startLocation.ToString()} already exists!");
-                    return;
+                    Debug.LogError($"Building at position {startLocation.ToString()} already exists! CHECK THIS!!");
+                    return false;
                 }
                 
                 //Is it really needed?
@@ -32,20 +42,28 @@ namespace BuildingSystem
             
             building.WorldPosition.Value = (startLocation.WorldPosition);
             building.SetOccupiedCells(occupiedCells);
-            Buildings.Add(building);
-            
-            Debug.Log($"Building added, position {startLocation.ToString()}");
+
+            return true;
         }
-    
+
         public bool TryGetBuilding(CellModel location, out BuildingModel building) =>
             BuildingsMap.TryGetValue(location, out building);
         
-        public void RemoveBuilding(CellModel location)
+        public void RemoveBuildingAt(CellModel location)
         {
             RemoveBuilding(BuildingsMap[location]);
         }
 
         public void RemoveBuilding(BuildingModel building)
+        {
+            ClearBuildingCells(building);
+            
+            Buildings.Remove(building);
+            
+            Debug.Log($"Building removed {building.BuildingName} from {building.WorldPosition.ToString()}");
+        }
+
+        private void ClearBuildingCells(BuildingModel building)
         {
             foreach (var cell in building.OccupiedCells)
             {
@@ -56,11 +74,9 @@ namespace BuildingSystem
                 
                 cell.SetContent(null);
             }
-            
+
+            BuildingsMap.RemoveMany(building.OccupiedCells);
             building.SetOccupiedCells(Array.Empty<CellModel>());
-            Buildings.Remove(building);
-            
-            Debug.Log($"Building removed {building.BuildingName} from {building.WorldPosition.ToString()}");
         }
 
         public void SetMainBuilding(BuildingModel building)
@@ -74,15 +90,24 @@ namespace BuildingSystem
             var position = startCell.Position;
             var config = building.Config;
             
-            for (int i = position.X; i < position.X + config._size.X; i++)
+            for (int i = position.X; i < position.X + config.Size.X; i++)
             {
-                for (int j = position.Y; j < position.Y + config._size.Y; j++)
+                for (int j = position.Y; j < position.Y + config.Size.Y; j++)
                 {
                     list.Add(startCell.GridModel.GetCell(i, j));
                 }
             }
 
             return list;
+        }
+        
+        public void MoveBuilding(BuildingModel building, CellModel to)
+        {
+            ClearBuildingCells(building);
+
+            var cells = GetBuildingCellsSet(building, to);
+            SetBuilding(building, to, cells);
+            building.SetOccupiedCells(cells);
         }
     }
 }

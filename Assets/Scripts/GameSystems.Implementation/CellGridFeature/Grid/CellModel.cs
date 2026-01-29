@@ -1,7 +1,7 @@
 using System;
 using CityBuilder.Content;
 using JetBrains.Annotations;
-using CityBuilder.Reactive;
+using UniRx;
 using UnityEngine;
 
 namespace CityBuilder.Grid
@@ -43,7 +43,7 @@ namespace CityBuilder.Grid
 
         public void SetContent([CanBeNull] ICellContent building)
         {
-            Content.Set(building);
+            Content.Value = (building);
         }
     }
 }

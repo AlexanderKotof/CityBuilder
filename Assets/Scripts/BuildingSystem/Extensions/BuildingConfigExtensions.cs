@@ -28,13 +28,13 @@ namespace BuildingSystem.Extensions
         public static bool TryGetBuildingFunction<T>(this BuildingConfigSo bc, [NotNullWhen(true)] out T function)
             where T : class, IBuildingFunction
         {
-            if (bc._buildingFunctions == null)
+            if (bc.BuildingFunctions == null)
             {
                 function = default(T);
                 return false;
             }
 
-            function = bc._buildingFunctions.FirstOrDefault(value => value is T) as T;
+            function = bc.BuildingFunctions.FirstOrDefault(value => value is T) as T;
             return function != default(T);
         }
     }

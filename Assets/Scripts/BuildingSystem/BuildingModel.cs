@@ -17,7 +17,7 @@ namespace BuildingSystem
     
     public class BuildingModel : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel
     {
-        public string BuildingName => Config._name;
+        public string BuildingName => Config.Name;
         public ReactiveProperty<int> Level { get; } = new();
         public ReactiveProperty<int> Rotation { get; } = new();
         public ReactiveProperty<Vector3> WorldPosition { get; } = new();
@@ -32,7 +32,7 @@ namespace BuildingSystem
         
         public IReadOnlyCollection<CellModel> OccupiedCells { get; private set; }
 
-        public bool CanBeMoved => Config._isMovable;
+        public bool CanBeMoved => Config.IsMovable;
         public bool IsEmpty => false;
         
         public BuildingModel(int level, BuildingConfigSo config)

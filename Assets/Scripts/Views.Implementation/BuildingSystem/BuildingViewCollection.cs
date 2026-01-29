@@ -22,7 +22,7 @@ namespace Views.Implementation.BuildingSystem
 
         protected override string ProvideAssetKey(BuildingModel viewModel)
         {
-            return viewModel.Config._assetKey;
+            return viewModel.Config.AssetKey;
         }
     }
 }

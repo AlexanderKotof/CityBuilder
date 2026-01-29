@@ -73,6 +73,8 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
                 return false;
             }
             
+            //TODO: this is responsibility of different service
+            
             return BuildingManager.TryDragCellFromTo(InteractionModel.DraggedCell.Value, cellModel);;
         }
     }

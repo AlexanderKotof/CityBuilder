@@ -67,7 +67,7 @@ namespace GameSystems.Implementation.BattleSystem
                     Debug.LogError($"Transform updated for {unit.Config.name}!", value);
                     
                     uiView.transform.SetParent(value);
-                    uiView.transform.localPosition = Vector3.zero;
+                    uiView.transform.localPosition = Vector3.up;
                 }
             }
 
@@ -128,7 +128,7 @@ namespace GameSystems.Implementation.BattleSystem
         //TODO: to units factory
         private BattleUnitBase CreateBattleUnit(BuildingModel building)
         {
-            var config = building.Config._unitConfig != null ? building.Config._unitConfig : _config.DefaultBuildingUnit;
+            var config = building.Config.UnitConfig != null ? building.Config.UnitConfig : _config.DefaultBuildingUnit;
             
             //TODO: inherit some properties?
             var battleUnit = new BattleUnitBase(config, building.Level.Value, building.WorldPosition.Value, building.ThisTransform);
