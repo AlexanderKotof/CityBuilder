@@ -1,5 +1,4 @@
 using Configs;
-using Configs.Schemes;
 using Configs.Scriptable;
 using VContainer;
 using VContainer.Unity;
@@ -15,10 +14,10 @@ namespace Installers
         
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterInstance(CommonGameSettingsSO).As<CommonGameSettingsSO>().As<IConfigBase>();
-            builder.RegisterInstance(BuildingsSettingsSO).As<BuildingsSettingsSO>().As<IConfigBase>();
-            builder.RegisterInstance(ResourcesDefaultConfigurationSO).As<ResourcesDefaultConfigurationSO>().As<IConfigBase>();
-            builder.RegisterInstance(BattleUnitsConfigSO).As<BattleUnitsConfigSO>().As<IConfigBase>();
+            builder.RegisterInstance(CommonGameSettingsSO).AsSelf().As<IGameConfig>();
+            builder.RegisterInstance(BuildingsSettingsSO).AsSelf().As<IGameConfig>();
+            builder.RegisterInstance(ResourcesDefaultConfigurationSO).AsSelf().As<IGameConfig>();
+            builder.RegisterInstance(BattleUnitsConfigSO).AsSelf().As<IGameConfig>();
 
             builder.Register<GameConfigProvider>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }

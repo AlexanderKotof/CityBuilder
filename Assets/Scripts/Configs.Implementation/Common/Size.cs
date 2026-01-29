@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Configs.Schemes
+namespace Configs.Implementation.Common
 {
     [Serializable]
     public record Size(int X, int Y)

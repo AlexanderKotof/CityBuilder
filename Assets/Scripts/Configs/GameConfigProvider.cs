@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Configs.Scriptable;
 
 namespace Configs
 {
     public class GameConfigProvider
     {
-        private readonly Dictionary<Type, IConfigBase> _configsMap = new();
-
-        public GameConfigProvider() { }
-        public GameConfigProvider(IConfigBase[] configs)
+        private readonly Dictionary<Type, IGameConfig> _configsMap = new();
+        
+        public GameConfigProvider(IEnumerable<IGameConfig> configs)
         {
             foreach (var gameConfigPiece in configs)
             {
@@ -17,18 +15,14 @@ namespace Configs
             }
         }
 
-        public void Register(IConfigBase scheme, Type type)
+        public void Register(IGameConfig scheme, Type type)
         {
             _configsMap.Add(type, scheme);
         }
         
-        public T GetConfig<T>() where T : IConfigBase
+        public T GetConfig<T>() where T : IGameConfig
         {
             return (T)_configsMap[typeof(T)];
         }
-    }
-
-    public interface IConfigBase
-    {
     }
 }

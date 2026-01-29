@@ -1,10 +1,9 @@
-using Configs.Schemes;
 using UnityEngine;
 
 namespace Configs.Scriptable
 {
     [CreateAssetMenu(fileName = nameof(BattleUnitsConfigSO), menuName = ConfigsMenuName.BattleMenuName + nameof(BattleUnitsConfigSO))]
-    public class BattleUnitsConfigSO : ScriptableObject, IConfigBase
+    public class BattleUnitsConfigSO : ScriptableObject, IGameConfig
     {
         [field: SerializeField]
         public BattleUnitConfigSO[] PlayerUnitsConfigs { get; set; }

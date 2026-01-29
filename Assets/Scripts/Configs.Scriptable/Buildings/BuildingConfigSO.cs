@@ -1,4 +1,4 @@
-using Configs.Schemes;
+using Configs.Implementation.Common;
 using ResourcesSystem;
 using UnityEngine;
 

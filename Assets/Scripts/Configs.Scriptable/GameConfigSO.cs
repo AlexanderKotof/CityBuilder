@@ -1,5 +1,4 @@
 using Configs.Implementation.Buildings;
-using Configs.Schemes;
 using UnityEngine;
 
 namespace Configs.Scriptable

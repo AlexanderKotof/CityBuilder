@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Configs.Implementation.Common;
 using ResourcesSystem;
 
 namespace GameSystems.Implementation.ProducingFeature

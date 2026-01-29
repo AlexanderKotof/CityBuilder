@@ -1,11 +1,11 @@
-using Configs.Schemes;
+using Configs.Implementation.Common;
 using ResourcesSystem;
 using UnityEngine;
 
 namespace Configs.Scriptable
 {
     [CreateAssetMenu(fileName = nameof(ResourcesDefaultConfigurationSO), menuName = ConfigsMenuName.MenuName + nameof(ResourcesDefaultConfigurationSO))]
-    public class ResourcesDefaultConfigurationSO : ScriptableObject, IConfigBase
+    public class ResourcesDefaultConfigurationSO : ScriptableObject, IGameConfig
     {
         [field: SerializeField]
         public ResourceConfig[] StartResources { get; set; } = new ResourceConfig[]

@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 4400418680740472685}
   - component: {fileID: 2398201334004360968}
   m_Layer: 5
-  m_Name: BuildingWindow
+  m_Name: BuildingInfoWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

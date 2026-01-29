@@ -1,8 +1,7 @@
 using System;
-using Newtonsoft.Json;
 using UnityEngine;
 
-namespace ResourcesSystem
+namespace Configs.Implementation.Common
 {
     [Serializable]
     public class ResourceConfig
@@ -17,14 +16,5 @@ namespace ResourcesSystem
         {
             return $"{Type.ToString()}x{Amount.ToString()}";
         }
-    }
-
-    public enum ResourceType : int
-    {
-        Food,
-        Wood,
-        Rock,
-        Metal,
-        Gold,
     }
 }

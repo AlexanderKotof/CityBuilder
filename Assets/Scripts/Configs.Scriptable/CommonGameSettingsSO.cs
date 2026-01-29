@@ -1,10 +1,9 @@
-using Configs.Schemes;
 using UnityEngine;
 
 namespace Configs.Scriptable
 {
     [CreateAssetMenu(fileName = nameof(CommonGameSettingsSO), menuName = ConfigsMenuName.MenuName + nameof(CommonGameSettingsSO))]
-    public class CommonGameSettingsSO : ScriptableObject, IConfigBase
+    public class CommonGameSettingsSO : ScriptableObject, IGameConfig
     {
         [field: SerializeField]
         public string SelectorAssetReferenceKey { get; private set; } = "cursor";

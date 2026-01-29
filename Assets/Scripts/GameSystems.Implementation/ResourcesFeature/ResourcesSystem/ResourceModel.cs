@@ -1,5 +1,6 @@
 using System;
 using CityBuilder.Reactive;
+using Configs.Implementation.Common;
 
 namespace ResourcesSystem
 {

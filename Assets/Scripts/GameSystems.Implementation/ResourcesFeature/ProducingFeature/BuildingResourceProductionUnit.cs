@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Configs.Implementation.Buildings.Functions;
+using Configs.Implementation.Common;
 using ResourcesSystem;
 
 namespace GameSystems.Implementation.ProducingFeature
