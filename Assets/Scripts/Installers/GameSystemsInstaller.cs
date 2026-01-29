@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using BuildingSystem;
+using CityBuilder.GameSystems.Implementation;
 using CityBuilder.Grid;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation;
@@ -56,6 +57,8 @@ namespace Installers
             builder.Register<BuildingsModel>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BuildingManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BuildingsViewFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            builder.Register<MergeBuildingsFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             // PRODUCTION SYSTEM
             

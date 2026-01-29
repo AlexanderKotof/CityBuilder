@@ -98,11 +98,9 @@ namespace BuildingSystem
             return false;
         }
 
-        private void MoveBuilding(BuildingModel building, CellModel to)
+        public void MoveBuilding(BuildingModel building, CellModel to)
         {
             _model.MoveBuilding(building, to);
-            // RemoveBuilding(building.);
-            // SetBuilding(to, fromBuilding);
         }
         
         public bool TryGetBuilding(CellModel location, out BuildingModel building)
@@ -136,8 +134,8 @@ namespace BuildingSystem
         {
             _model.AddBuilding(building, cellModel);
         }
-        
-        private void RemoveBuilding(CellModel cell)
+
+        public void RemoveBuilding(CellModel cell)
         {
             if (_model.TryGetBuilding(cell, out var building))
             {
@@ -147,8 +145,16 @@ namespace BuildingSystem
 
         public bool CanPlaceBuilding(CellModel location, BuildingModel newBuilding)
         {
-            return !_model.BuildingsMap.TryGetValue(location, out var building) ||
-                   CanBeUpgraded(building, newBuilding);
+            var cells = newBuilding.GetBuildingCellsSet(location);
+            foreach (var cell in cells)
+            {
+                if (_model.BuildingsMap.TryGetValue(cell, out var building) && building != newBuilding)
+                {
+                    return false;
+                }
+            }
+
+            return true; //CanBeUpgraded(building, newBuilding);
         }
 
         private bool CanBeUpgraded(BuildingModel first, BuildingModel second)

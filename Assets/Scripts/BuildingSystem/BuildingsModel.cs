@@ -17,7 +17,7 @@ namespace BuildingSystem
 
         public void AddBuilding(BuildingModel building, CellModel startLocation)
         {
-            var occupiedCells = GetBuildingCellsSet(building, startLocation);
+            var occupiedCells = building.GetBuildingCellsSet(startLocation);
             if (SetBuilding(building, startLocation, occupiedCells) == false) 
                 throw new Exception("Could not set building for this cell set!");
             
@@ -84,9 +84,31 @@ namespace BuildingSystem
             MainBuilding = building;
         }
         
-        private IReadOnlyCollection<CellModel> GetBuildingCellsSet(BuildingModel building, CellModel startCell)
+
+        
+        public void MoveBuilding(BuildingModel building, CellModel to)
+        {
+            ClearBuildingCells(building);
+
+            var cells = building.GetBuildingCellsSet(to);
+            SetBuilding(building, to, cells);
+            building.SetOccupiedCells(cells);
+        }
+    }
+
+    public static class BuildingModelExtensions
+    {
+        /// <summary>
+        /// TODO: не учитывает поворот
+        /// </summary>
+        /// <param name="building"></param>
+        /// <param name="startCell"></param>
+        /// <returns></returns>
+        public static IReadOnlyCollection<CellModel> GetBuildingCellsSet(this BuildingModel building, CellModel startCell)
         {
             var list = new List<CellModel>();
+            
+            var gridModel = startCell.GridModel;
             var position = startCell.Position;
             var config = building.Config;
             
@@ -94,20 +116,11 @@ namespace BuildingSystem
             {
                 for (int j = position.Y; j < position.Y + config.Size.Y; j++)
                 {
-                    list.Add(startCell.GridModel.GetCell(i, j));
+                    list.Add(gridModel.GetCell(i, j));
                 }
             }
 
             return list;
-        }
-        
-        public void MoveBuilding(BuildingModel building, CellModel to)
-        {
-            ClearBuildingCells(building);
-
-            var cells = GetBuildingCellsSet(building, to);
-            SetBuilding(building, to, cells);
-            building.SetOccupiedCells(cells);
         }
     }
 }
