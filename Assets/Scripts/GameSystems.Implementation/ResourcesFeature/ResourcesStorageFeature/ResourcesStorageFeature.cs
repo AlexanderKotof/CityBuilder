@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using BuildingSystem;
 using BuildingSystem.Extensions;
-using CityBuilder.Dependencies;
 using Configs.Scriptable.Buildings.Functions;
 using ResourcesSystem;
+using UniRx;
 using VContainer.Unity;
 
 namespace GameSystems.Implementation.ResourcesStorageFeature
@@ -52,7 +51,7 @@ namespace GameSystems.Implementation.ResourcesStorageFeature
 
         private void OnBuildingRemoved(BuildingModel building)
         {
-            if (_storageIncreaseUnits.Remove(building, out var storageIncreaseUnit))
+            if (_storageIncreaseUnits.Remove(building, out _))
             {
                 UpdateStorageCapacity();
             }

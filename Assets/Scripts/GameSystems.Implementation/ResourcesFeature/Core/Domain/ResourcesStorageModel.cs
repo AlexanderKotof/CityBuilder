@@ -1,5 +1,4 @@
 using Configs.Implementation.Common;
-using UnityEngine;
 
 namespace ResourcesSystem
 {
