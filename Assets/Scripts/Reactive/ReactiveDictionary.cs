@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace CityBuilder.Reactive
 {
+    //TODO: move to UniRx
     public class ReactiveDictionary<TKey, TValue> : IDisposable, IReadOnlyDictionary<TKey, TValue>
     {
         public int Count => _innerDictionary.Count;

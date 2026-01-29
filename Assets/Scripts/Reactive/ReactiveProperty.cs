@@ -9,6 +9,7 @@ namespace CityBuilder.Reactive
         void Unsubscribe(Action<T?> listener);
     }
 
+    //TODO: move to UniRx
     public class ReactiveCommand : IDisposable
     {
         private Action _innerAction = delegate { };

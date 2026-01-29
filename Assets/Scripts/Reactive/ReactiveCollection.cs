@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace CityBuilder.Reactive
 {
+    //TODO: move to UniRx
     public class ReactiveCollection<T> : IDisposable, IReadOnlyCollection<T>
     {
         public int Count => _innerCollection.Count;
