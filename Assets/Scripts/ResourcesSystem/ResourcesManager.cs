@@ -1,16 +1,24 @@
-using Configs.Schemes;
 using Configs.Scriptable;
 using VContainer.Unity;
 
 namespace ResourcesSystem
 {
-    public class ResourcesManager
+    public class ResourcesManager : IInitializable
     {
+        private readonly PlayerResourcesModel _model;
+        private readonly ResourcesDefaultConfigurationSO _resourcesConfiguration;
+
         public ResourcesManager(PlayerResourcesModel model, ResourcesDefaultConfigurationSO resourcesConfiguration)
         {
-            foreach (var resourceConfig in resourcesConfiguration.StartResources)
+            _model = model;
+            _resourcesConfiguration = resourcesConfiguration;
+        }
+
+        public void Initialize()
+        {
+            foreach (var resourceConfig in _resourcesConfiguration.StartResources)
             {
-                model.AddResource(new ResourceModel(resourceConfig));
+                _model.AddResource(new ResourceModel(resourceConfig));
             }
         }
     }

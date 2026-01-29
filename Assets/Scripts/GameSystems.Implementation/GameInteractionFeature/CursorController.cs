@@ -1,4 +1,5 @@
 using Configs.Scriptable;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer.Unity;
 using ViewSystem;
@@ -17,7 +18,12 @@ namespace GameSystems.Implementation.GameInteractionFeature
             _settings = settings;
         }
 
-        public async void Initialize()
+        public void Initialize()
+        {
+            LoadCursorView().Forget();
+        }
+
+        private async UniTask LoadCursorView()
         {
             _cursor = await _provider.ProvideViewAsync<Transform>(_settings.SelectorAssetReferenceKey);
             SetActive(false);

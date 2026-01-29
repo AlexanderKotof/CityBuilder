@@ -33,6 +33,9 @@ namespace GameSystems.Implementation.GameInteractionFeature
         
         private void OnCellSelected(CellModel cellModel)
         {
+            if (cellModel == null)
+                return;
+            
             if (_buildingManager.TryGetBuilding(cellModel, out var building))
             {
                 _cursorController.SetActive(true);

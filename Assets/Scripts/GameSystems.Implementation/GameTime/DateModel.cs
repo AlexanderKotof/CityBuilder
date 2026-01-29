@@ -40,7 +40,7 @@ namespace GameSystems.Implementation.GameTime
 
             OnDayChanged?.Invoke();
             
-            if (DayCounter % 7 == 1)
+            if (DayCounter % 7 == 0)
             {
                 Week = (DayCounter - 1) / 7;
                 OnWeekChanged?.Invoke();

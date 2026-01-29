@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CityBuilder.BuildingSystem;
-using CityBuilder.Dependencies;
 using Configs.Scriptable;
 using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.GameInteractionFeature;
+using Installers;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -37,7 +36,7 @@ namespace GameSystems.Implementation.CheatsFeature
         private readonly BattleUnitConfigSO _defaultEnemyUnitGuid;
 
 
-        public CheatsFeature(Raycaster raycaster, BuildingManager buildingManager, BattleManager battleManager, BattleUnitsConfigSO battleUnitsConfigSO)
+        public CheatsFeature(Raycaster raycaster, BuildingManager buildingManager, BattleManager battleManager, BattleUnitsConfigSO battleUnitsConfigSO, DebugWindow window)
         {
             _raycaster = raycaster;
             _buildingManager = buildingManager;

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace ResourcesSystem
 {
     public class ResourcesStorageModel : ResourcesAmounts

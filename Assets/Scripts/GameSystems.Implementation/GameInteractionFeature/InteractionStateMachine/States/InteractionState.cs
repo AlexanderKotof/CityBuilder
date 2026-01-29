@@ -28,13 +28,14 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
             
         }
 
-        protected void LightenCellUnderCursor()
+        //TODO: pass content size
+        protected void LightenCellUnderCursor(Vector2Int cursorSize)
         {
             bool showCursor = Raycaster.TryGetCursorPositionFromScreenPoint(Input.mousePosition, out Vector3? cursorPosition);
             _cursorController.SetActive(showCursor);
             if (showCursor)
             {
-                _cursorController.SetPosition(cursorPosition.Value, Vector2Int.one);
+                _cursorController.SetPosition(cursorPosition.Value, cursorSize);
             }
         }
         

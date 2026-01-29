@@ -28,7 +28,8 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
 
         public override void Update()
         {
-            LightenCellUnderCursor();
+            //TODO: pass content size
+            LightenCellUnderCursor(Vector2Int.one);
         }
 
         protected override void OnExitState()

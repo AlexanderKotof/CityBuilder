@@ -1,4 +1,9 @@
-﻿using Installers;
+﻿using GameSystems.Implementation.GameTime;
+using GameSystems.Implementation.PopulationFeature;
+using Installers;
+using JetBrains.Annotations;
+using ResourcesSystem;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -14,6 +19,8 @@ public class AppStartup : LifetimeScope
             //_installer.CreateChild()
     }
 
+    
+    
     // public GameConfigsInstaller GameConfigsInstaller;
     //
     // public Camera RaycasterCamera;
@@ -56,37 +63,5 @@ public class AppStartup : LifetimeScope
     //
     // public bool Initialized { get; set; }
     //
-    // [CanBeNull] private DateModel _dateModel;
-    // [CanBeNull] private PopulationModel _populationModel;
-    // private void OnGUI()
-    // {
-    //     int MaxIndex = 5;
-    //
-    //     if (!Initialized)
-    //     {
-    //         return;
-    //     }
-    //
-    //     var storage = _innerDependencies.Resolve<PlayerResourcesModel>();
-    //     
-    //     for (int i = 0; i < MaxIndex; i++)
-    //     {
-    //         var resourceType = (ResourceType)i;
-    //         var amount = storage.GetResourceAmount(resourceType);
-    //         GUI.Label(new Rect(20 + 50 * i, 20, 50, 50), new GUIContent($"{resourceType.ToString()}:\n{amount}"));
-    //     }
-    //
-    //     _dateModel ??= _innerDependencies.Resolve<DateModel>();
-    //     if (_dateModel != null)
-    //     {
-    //         GUI.Label(new Rect(20, 70, 1000, 50), new GUIContent(_dateModel.ToString()));
-    //     }
-    //     
-    //     _populationModel ??= _innerDependencies.Resolve<PopulationModel>();
-    //     if (_populationModel != null)
-    //     {
-    //         GUI.Label(new Rect(20, 100, 100, 50),
-    //             new GUIContent($"Population: {_populationModel.CurrentPopulation.Value.ToString()} / {_populationModel.AvailableHouseholds.Value.ToString()} houses"));
-    //     }
-    // }
+  
 }
