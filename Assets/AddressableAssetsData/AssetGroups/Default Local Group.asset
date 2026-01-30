@@ -35,11 +35,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 55052c17335292c48bf0349e49a00b15
-    m_Address: Assets/GameConfigs/CommonGameSettings.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 71ed445036b7a924a90fed7e14791159
     m_Address: Enemy
     m_ReadOnly: 0
