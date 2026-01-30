@@ -97,6 +97,8 @@ namespace Installers
             builder.Register<CellSelectedInteractionState>(Lifetime.Singleton).As<InteractionState>();
             builder.Register<DraggingInteractionState>(Lifetime.Singleton).As<InteractionState>();
             builder.Register<PlayerInteractionStateMachine>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            builder.Register<GameInteractionFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }
     }
 }

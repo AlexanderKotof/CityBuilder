@@ -10,6 +10,7 @@ namespace Installers
     public class GameConfigsInstaller : LifetimeScope
     {
         public CommonGameSettingsSo CommonGameSettingsSO;
+        public InteractionSettingsSo InteractionSettingsSO;
         public BuildingsSettingsSo BuildingsSettingsSO;
         public ResourcesDefaultConfigurationSo ResourcesDefaultConfigurationSO;
         public BattleUnitsConfigSO BattleUnitsConfigSO;
@@ -18,6 +19,7 @@ namespace Installers
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(CommonGameSettingsSO).AsSelf().As<IGameConfig>();
+            builder.RegisterInstance(InteractionSettingsSO).AsSelf().As<IGameConfig>();
             builder.RegisterInstance(BuildingsSettingsSO).AsSelf().As<IGameConfig>();
             builder.RegisterInstance(ResourcesDefaultConfigurationSO).AsSelf().As<IGameConfig>();
             builder.RegisterInstance(BattleUnitsConfigSO).AsSelf().As<IGameConfig>();

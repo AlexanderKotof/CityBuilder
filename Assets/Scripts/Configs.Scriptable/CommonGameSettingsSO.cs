@@ -16,8 +16,5 @@ namespace Configs.Scriptable
         
         [field: SerializeField]
         public float EndGoldG { get; private set; } = 1011;
-
-        [field: SerializeField]
-        public LayerMask InteractionRaycastLayerMask { get; private set; } = 32;
     }
 }

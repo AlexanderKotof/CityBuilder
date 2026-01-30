@@ -1,15 +1,24 @@
+using System;
 using CityBuilder.Grid;
 using UnityEngine;
 using VContainer;
 
 namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
+    public struct DragAndDropCellsActionPayload
+    {
+        
+    }
+    
     public class DraggingInteractionState : InteractionState
     {
         [Inject]
         private readonly DraggingContentController _draggingContentController;
         [Inject]
         private readonly GridManager _gridManager;
+
+        [Inject]
+        public readonly GameInteractionFeature _gameInteractionFeature;
 
         protected override void OnEnterState()
         {
@@ -52,30 +61,29 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         {
             base.ProcessDragEnded(cellModel);
             
-            if (TryDropContent(cellModel))
+            if (TryDropContent(InteractionModel.DraggedCell?.Value, cellModel))
             {
                 SelectCell(cellModel);
-                ChangeState<CellSelectedInteractionState>();
             }
             else
             {
                 _draggingContentController.CancelDrag();
-                ChangeState<EmptyInteractionState>();
             }
+            
+            ChangeState<CellSelectedInteractionState>();
         }
 
-        private bool TryDropContent(CellModel cellModel)
+        private bool TryDropContent(CellModel fromCell, CellModel toCellModel)
         {
-            if (InteractionModel.DraggedCell == null ||
-                cellModel == null ||
-                Equals(InteractionModel.DraggedCell.Value, cellModel))
+            if (fromCell == null ||
+                toCellModel == null ||
+                Equals(fromCell, toCellModel))
             {
                 return false;
             }
             
-            //TODO: this is responsibility of different service
-            
-            return BuildingManager.TryDragCellFromTo(InteractionModel.DraggedCell.Value, cellModel);;
+            return _gameInteractionFeature.TryDropContent(fromCell, toCellModel);
+
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using Configs.Scriptable;
 using UnityEngine;
 
 namespace PlayerInput
 {
+    //TODO: rework with new InputSystem
     public class PlayerInputManager
     {
         public event Action<Vector3> OnMouseClick;
@@ -18,9 +20,18 @@ namespace PlayerInput
         public Vector3 MousePosition => Input.mousePosition;
 
         private bool _isDragging = false;
+
+        private readonly float _startDragDelay;
+        private readonly float _dragThresholdSqr;
         
-        private const float _dragThreashold = .1f;
         private float _pressTime;
+        private Vector3 _pressPosition;
+
+        public PlayerInputManager(InteractionSettingsSo settings)
+        {
+            _startDragDelay = settings.StartDragDelay;
+            _dragThresholdSqr = settings.StartDragThreshold * settings.StartDragThreshold;
+        }
 
         public void Update()
         {
@@ -42,17 +53,30 @@ namespace PlayerInput
             {
                 OnMouseClick?.Invoke(MousePosition);
                 _pressTime = Time.realtimeSinceStartup;
+                _pressPosition = Input.mousePosition;
             }
 
-            if (Input.GetMouseButton(0) && Time.realtimeSinceStartup - _pressTime > _dragThreashold)
+            if (Input.GetMouseButton(0) && (CheckDelay() || CheckPosition() || _isDragging))
             {
                 UpdateDragging(true);
                 OnMouseDragging?.Invoke(MousePosition);
+                return;
             }
-            else if (Input.GetMouseButtonUp(0))
+            
+            if (Input.GetMouseButtonUp(0))
             {
                 UpdateDragging(false);
             }
+        }
+
+        private bool CheckDelay()
+        {
+            return Time.realtimeSinceStartup - _pressTime > _startDragDelay;
+        }
+        
+        private bool CheckPosition()
+        {
+            return (Input.mousePosition - _pressPosition).sqrMagnitude > _dragThresholdSqr;
         }
 
         private void UpdateDragging(bool isDragging)

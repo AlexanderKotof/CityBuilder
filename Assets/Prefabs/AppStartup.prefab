@@ -69,6 +69,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   CommonGameSettingsSO: {fileID: 11400000, guid: 3f512e873eb52db48856e62f16f06d54, type: 2}
+  InteractionSettingsSO: {fileID: 11400000, guid: cc52ad5f74f720e4f924a5c1100834f0, type: 2}
   BuildingsSettingsSO: {fileID: 11400000, guid: 73d7472ac2ee55e4fa8d2c09fa6d80fe, type: 2}
   ResourcesDefaultConfigurationSO: {fileID: 11400000, guid: 5f82f44c5f9c2554cba01e92aa63f58c, type: 2}
   BattleUnitsConfigSO: {fileID: 11400000, guid: c1e01e5b52d8596458f0508694aedb5e, type: 2}

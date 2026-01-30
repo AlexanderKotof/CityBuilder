@@ -78,20 +78,17 @@ namespace BuildingSystem
                 return false;
             }
 
+            if (TryMoveBuilding(to, fromBuilding)) 
+                return true;
+            
+            return false;
+        }
+
+        public bool TryMoveBuilding(CellModel to, BuildingModel fromBuilding)
+        {
             if (CanPlaceBuilding(fromBuilding.Config, to))
             {
                 MoveBuilding(fromBuilding, to);
-                return true;
-            }
-            
-            //TODO: this is responsibility of merge system/service
-            if (TryGetBuilding(to, out var toBuilding) && CanBeUpgraded(toBuilding, fromBuilding))
-            {
-                RemoveBuilding(from);
-                toBuilding.IncreaseLevel();
-                
-                Debug.Log($"Building level upgraded to {toBuilding.Level}");
-
                 return true;
             }
 

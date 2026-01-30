@@ -28,23 +28,11 @@ namespace CityBuilder.GameSystems.Implementation
         {
         }
         
-        public bool TryMergeBuildingsFromTo(CellModel from, CellModel to)
+        public bool TryMergeBuildingsFromTo(BuildingModel fromBuilding, BuildingModel toBuilding)
         {
-            if (!_manager.TryDragCellFromTo(from, to))
+            if (CanLevelUpMerge(toBuilding, fromBuilding))
             {
-                return false;
-            }
-            
-            if (!_manager.TryGetBuilding(from, out var fromBuilding) || !_manager.TryGetBuilding(to, out var toBuilding))
-            {
-                return false;
-            }
-
-            //TODO: implement merge mechanics
-            
-            if (CanBeUpgraded(toBuilding, fromBuilding))
-            {
-                _manager.RemoveBuilding(from);
+                _model.RemoveBuilding(fromBuilding);
                 
                 toBuilding.IncreaseLevel();
                 
@@ -53,12 +41,24 @@ namespace CityBuilder.GameSystems.Implementation
                 return true;
             }
 
+            if (CanRecipeMerge(toBuilding, fromBuilding))
+            {           
+                //TODO: implement merge mechanics
+            }
+
             return false;
         }
 
-        private bool CanBeUpgraded(BuildingModel toBuilding, BuildingModel fromBuilding)
+        private bool CanRecipeMerge(BuildingModel toBuilding, BuildingModel fromBuilding)
         {
-            return true;
+            return false;
+        }
+
+        private bool CanLevelUpMerge(BuildingModel second, BuildingModel first)
+        {
+            return
+                Equals(first.Config, second.Config) &&
+                first.Level.Value == second.Level.Value;
         }
     }
 }

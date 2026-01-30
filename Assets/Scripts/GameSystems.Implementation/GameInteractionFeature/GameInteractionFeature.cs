@@ -1,23 +1,19 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using CityBuilder.Dependencies;
+using BuildingSystem;
+using CityBuilder.GameSystems.Implementation;
 using CityBuilder.Grid;
-using Configs;
 using Configs.Scriptable;
-using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine;
-using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States;
 using UnityEngine;
 using VContainer.Unity;
-using ViewSystem;
 
 namespace GameSystems.Implementation.GameInteractionFeature
 {
-    [Obsolete]
-    public class GameInteractionFeature : IAsyncStartable, IDisposable
+    public class GameInteractionFeature : IInitializable, IDisposable
     {
+        private readonly BuildingManager _buildingManager;
+        private readonly MergeBuildingsFeature _mergeBuildingsFeature;
         private PlayerInteractionStateMachine? _playerInteractionStateMachine;
     
         private readonly IViewsProvider _viewsProvider;
@@ -25,33 +21,33 @@ namespace GameSystems.Implementation.GameInteractionFeature
         private Transform _cursor;
         private CellSelectionController _cellSelectionController;
 
-        public GameInteractionFeature(GameConfigProvider configProvider, Camera camera, GridManager gridManager, IViewsProvider viewsProvider)
+        public GameInteractionFeature(BuildingManager buildingManager, MergeBuildingsFeature mergeBuildingsFeature)
         {
-        }
-        
-        public async UniTask StartAsync(CancellationToken cancellation = new CancellationToken())
-        {
-            Debug.LogWarning("Game Interaction Feature is now running.");
-            
-            //TODO: ???
-            //Container.Register(CursorController);
-
-            // var buildingManager = Container.Resolve<BuildingManager>();
-            // _cellSelectionController =
-            //     new CellSelectionController(CursorController, InteractionModel, buildingManager);
-            // _cellSelectionController.Init();
-            //
-            // _playerInteractionStateMachine = new PlayerInteractionStateMachine(
-            //     new EmptyInteractionState(Container),
-            //     new CellSelectedInteractionState(Container),
-            //     new DraggingInteractionState(Container)
-            // );
-            //
-            // _playerInteractionStateMachine.Start(typeof(EmptyInteractionState));
+            _buildingManager = buildingManager;
+            _mergeBuildingsFeature = mergeBuildingsFeature;
         }
 
         public void Dispose()
         {
+        }
+
+        public void Initialize()
+        {
+            
+        }
+
+        public bool TryDropContent(CellModel fromCell, CellModel toCellModel)
+        {
+            if (!_buildingManager.TryGetBuilding(fromCell, out var fromBuilding))
+                return false;
+            
+            if (_buildingManager.TryMoveBuilding(toCellModel, fromBuilding)) 
+                return true;
+            
+            if (!_buildingManager.TryGetBuilding(toCellModel, out var toBuilding))
+                return false;
+
+            return _mergeBuildingsFeature.TryMergeBuildingsFromTo(fromBuilding, toBuilding);
         }
     }
 }
