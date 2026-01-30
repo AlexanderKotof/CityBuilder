@@ -8,7 +8,7 @@ namespace GameSystems.Implementation.BuildingSystem
     {
         public BuildingModel Create(BuildingConfigSo config, CellModel cellModel)
         {
-            var building = new BuildingModel(1, config);
+            var building = new BuildingModel(0, config);
             return building;
         }
     }

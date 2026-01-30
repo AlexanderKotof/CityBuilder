@@ -4,7 +4,6 @@ using CityBuilder.Grid;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem;
 using GameSystems.Common.ViewSystem.ViewsProvider;
-using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.BuildingSystem.Domain;
 using GameSystems.Implementation.GameInteractionFeature;
 using JetBrains.Annotations;
