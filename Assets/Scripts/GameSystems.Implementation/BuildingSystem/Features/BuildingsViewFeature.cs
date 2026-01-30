@@ -28,6 +28,7 @@ namespace GameSystems.Implementation.BuildingSystem.Features
 
         private BuildingInfoWindowModel _buildingWindowViewModel;
         private readonly CompositeDisposable _subscriptions = new();
+        private BuildingView _selectedView;
 
         public BuildingsViewFeature(BuildingManager manager, BuildingsModel model, InteractionModel interactionModel, IViewsProvider viewsProvider, WindowsProvider windowsProvider)
         {
@@ -84,13 +85,30 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         
         private void OnSelectedCellUpdated([CanBeNull] CellModel cellModel)
         {
+            if (_selectedView != null)
+            {
+                _selectedView.SetUiActive(false);
+            }
+            
             if (cellModel != null && _buildingManager.TryGetBuilding(cellModel, out var building))
             {
-                _buildingWindowViewModel.SelectedBuilding.Set(building);
+                SelectBuilding(building);
                 return;
             }
             
             _buildingWindowViewModel.SelectedBuilding.Set(null);
+        }
+
+        private void SelectBuilding(BuildingModel building)
+        {
+            // Building window selection update
+            _buildingWindowViewModel.SelectedBuilding.Set(building);
+            
+            if (_buildingViewsController.TryGetView(building, out var view))
+            {
+                _selectedView = view;
+                _selectedView.SetUiActive(true);
+            }
         }
     }
 }

@@ -1,29 +1,17 @@
-using CityBuilder.Dependencies;
-using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.View;
 using GameSystems.Implementation.BuildingSystem.Domain;
 using TMPro;
 using UniRx;
 using UnityEngine;
-using ViewSystem;
 
 namespace Views.Implementation.BuildingSystem
 {
     public class BuildingView : ViewWithModel<BuildingModel>
     {
-        //TODO: add additional functionality
-
         public Canvas UICanvas;
         
         public TextMeshProUGUI LevelIndicator;
         public TextMeshProUGUI NameText;
-
-        public override void Initialize(BuildingModel model, IDependencyContainer container)
-        {
-            base.Initialize(model, container);
-
-            Initialize(model);
-        }
         
         public void Initialize(BuildingModel model)
         {
