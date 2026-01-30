@@ -23,6 +23,7 @@ MonoBehaviour:
     <Amount>k__BackingField: 5
   - <Type>k__BackingField: 1
     <Amount>k__BackingField: 5
-  BuildingFunctions: []
-  UnitConfig: {fileID: 11400000, guid: 534ef3737ee044341a95e4febcdba351, type: 2}
+  BuildingFunctions:
+  - {fileID: 11400000, guid: be7a5ad636aa00c48962ba0f5cba9e66, type: 2}
+  UnitConfig: {fileID: 0}
   BuildingLevelingConfig: {fileID: 11400000, guid: 8fb8009f533d12741977c27d28af892a, type: 2}

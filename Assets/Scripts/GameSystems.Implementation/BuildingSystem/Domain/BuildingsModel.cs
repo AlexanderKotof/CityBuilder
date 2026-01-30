@@ -46,14 +46,6 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
             return true;
         }
 
-        public bool TryGetBuilding(CellModel location, out BuildingModel building) =>
-            BuildingsMap.TryGetValue(location, out building);
-        
-        public void RemoveBuildingAt(CellModel location)
-        {
-            RemoveBuilding(BuildingsMap[location]);
-        }
-
         public void RemoveBuilding(BuildingModel building)
         {
             ClearBuildingCells(building);
@@ -84,8 +76,6 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
             MainBuilding = building;
         }
         
-
-        
         public void MoveBuilding(BuildingModel building, CellModel to)
         {
             ClearBuildingCells(building);
@@ -94,33 +84,21 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
             SetBuilding(building, to, cells);
             building.SetOccupiedCells(cells);
         }
-    }
-
-    public static class BuildingModelExtensions
-    {
-        /// <summary>
-        /// TODO: не учитывает поворот
-        /// </summary>
-        /// <param name="building"></param>
-        /// <param name="startCell"></param>
-        /// <returns></returns>
-        public static IReadOnlyCollection<CellModel> GetBuildingCellsSet(this BuildingModel building, CellModel startCell)
-        {
-            var list = new List<CellModel>();
-            
-            var gridModel = startCell.GridModel;
-            var position = startCell.Position;
-            var config = building.Config;
-            
-            for (int i = position.X; i < position.X + config.Size.X; i++)
-            {
-                for (int j = position.Y; j < position.Y + config.Size.Y; j++)
-                {
-                    list.Add(gridModel.GetCell(i, j));
-                }
-            }
-
-            return list;
-        }
+        
+        // public void RemoveBuilding(CellModel cell)
+        // {
+        //     if (_model.TryGetBuilding(cell, out var building))
+        //     {
+        //         _model.RemoveBuildingAt(cell);
+        //     }
+        // }
+        
+        // public bool TryGetBuilding(CellModel location, out BuildingModel building) =>
+        //     BuildingsMap.TryGetValue(location, out building);
+        
+        // public void RemoveBuildingAt(CellModel location)
+        // {
+        //     RemoveBuilding(BuildingsMap[location]);
+        // }
     }
 }

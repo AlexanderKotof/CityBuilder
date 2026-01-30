@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Configs.Scriptable.Buildings
 {
+    /// <summary>
+    /// Рецепты для кастом мерджа зданий
+    /// </summary>
     public class MergeBuildingsRecipeSo : ScriptableObject, IConfigBase
     {
         [field: SerializeField]

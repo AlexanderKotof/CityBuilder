@@ -1,7 +1,7 @@
 using System;
 using UniRx;
 
-namespace GameSystems.Implementation.BattleSystem
+namespace Utilities.Extensions
 {
     public static class ReactiveCollectionExtensions
     {

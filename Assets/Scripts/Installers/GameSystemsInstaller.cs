@@ -73,6 +73,7 @@ namespace Installers
             
             // BATTLE SYSTEM
             
+            builder.Register<BattleUnitsFactory>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BattleSystemModel>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BattleManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BattleUnitsProcessor>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();

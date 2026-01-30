@@ -1,13 +1,12 @@
 using System;
-using CityBuilder.Dependencies;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using UniRx;
 using UnityEngine;
+using Utilities.Extensions;
 using VContainer.Unity;
 using Views.Implementation.BattleSystem;
-using ViewSystem;
 
 namespace GameSystems.Implementation.BattleSystem
 {
@@ -25,7 +24,7 @@ namespace GameSystems.Implementation.BattleSystem
         
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-        public BattleFeature(BattleManager battleManager, PlayerBuildingsUnitsController battleUnitsController, IViewsProvider viewsProvider, IViewWithModelProvider viewWithModelProvider, BattleSystemModel battleSystemModel)
+        public BattleFeature(BattleManager battleManager, PlayerBuildingsUnitsController battleUnitsController, IViewsProvider viewsProvider, BattleSystemModel battleSystemModel)
         {
             _battleManager = battleManager;
             _playerBuildingsUnitsController = battleUnitsController;
@@ -48,14 +47,10 @@ namespace GameSystems.Implementation.BattleSystem
             SubscribePlayerUnits();
 
             SubscribeEnemiesUnits();
-            
-            _playerBuildingsUnitsController.Init();
         }
 
         public void Dispose()
         {
-            _playerBuildingsUnitsController.Deinit();
-            
             _disposable.Dispose();
         }
 

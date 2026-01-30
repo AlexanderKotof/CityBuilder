@@ -93,15 +93,7 @@ namespace GameSystems.Implementation.BuildingSystem
             _model.AddBuilding(building, cellModel);
         }
 
-        public void RemoveBuilding(CellModel cell)
-        {
-            if (_model.TryGetBuilding(cell, out var building))
-            {
-                _model.RemoveBuildingAt(cell);
-            }
-        }
-
-        public bool CanPlaceBuilding(CellModel location, BuildingModel newBuilding)
+        private bool CanPlaceBuilding(CellModel location, BuildingModel newBuilding)
         {
             var cells = newBuilding.GetBuildingCellsSet(location);
             foreach (var cell in cells)

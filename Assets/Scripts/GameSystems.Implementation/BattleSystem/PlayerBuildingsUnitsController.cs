@@ -8,134 +8,68 @@ using GameSystems.Implementation.BuildingSystem;
 using GameSystems.Implementation.BuildingSystem.Domain;
 using UniRx;
 using UnityEngine;
+using Utilities.Extensions;
+using VContainer.Unity;
 
 namespace GameSystems.Implementation.BattleSystem
 {
-    public class PlayerBuildingsUnitsController
+    /// <summary>
+    /// Контроллирует сущьность боевого юнита, приатаченного к зданию (для всей коллекции зданий игрока)
+    /// </summary>
+    public class PlayerBuildingsUnitsController : IInitializable, IDisposable
     {
         private readonly BattleSystemModel _battleSystemModel;
         private readonly BattleUnitsConfigSO _config;
         private readonly BuildingsModel _buildingsModel;
 
-        private readonly Dictionary<Guid, BattleUnitBase> _battleUnitsByBuildingRuntimeId = new();
+        private readonly Dictionary<Guid, BuildingBattleUnitController> _controllersByBuildingRuntimeId = new();
         private readonly ViewsCollectionController<BattleUnitUIComponent> _buildingsUi;
         private readonly IViewsProvider _viewsProvider;
         private BattleUnitUIComponent _uiView;
         private readonly CompositeDisposable _disposables = new();
-        private readonly Dictionary<BattleUnitBase, IDisposable> _disposablesByUnit = new();
+        private readonly BattleUnitsFactory _battleUnitsFactory;
 
-        public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigSO config, BuildingsModel buildingsModel, IViewsProvider viewsProvider)
+        public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigSO config, BuildingsModel buildingsModel, IViewsProvider viewsProvider, BattleUnitsFactory battleUnitsFactory)
         {
             _battleSystemModel = battleSystemModel;
             _config = config;
             _buildingsModel = buildingsModel;
+            _battleUnitsFactory = battleUnitsFactory;
             _buildingsUi = new ViewsCollectionController<BattleUnitUIComponent>(viewsProvider, defaultAssetKey: config.BattleUiAssetKey);
         }
 
-        public void Init()
+        public void Initialize()
         {
             _buildingsModel.Buildings
                 .SubscribeToCollection(OnBuildingAdded, OnBuildingRemoved)
                 .AddTo(_disposables);
-
-            SubscribePlayerBuildingsUnits();
         }
 
-        private void SubscribePlayerBuildingsUnits()
+        public void Dispose()
         {
-            _battleSystemModel.PlayerBuildingsUnits
-                .SubscribeToCollection(data => AddPlayerBuildingUnit(data).Forget(), RemovePlayerBuildingUnit)
-                .AddTo(_disposables);
-            async UniTaskVoid AddPlayerBuildingUnit(BattleUnitBase unit)
+            foreach (var controller in _controllersByBuildingRuntimeId.Values)
             {
-                var uiView = await _buildingsUi.AddView(unit, unit.ThisTransform.Value);
-                uiView.Init(unit);
-                
-                var disposible = unit.ThisTransform.Subscribe(OnTransformUpdated);
-                _disposablesByUnit.Add(unit, disposible);
-                OnTransformUpdated(unit.ThisTransform.Value);
-                return;
-                
-                void OnTransformUpdated(Transform value)
-                {
-                    if (value == null)
-                        return;
-                    
-                    Debug.LogError($"Transform updated for {unit.Config.name}!", value);
-                    
-                    uiView.transform.SetParent(value);
-                    uiView.transform.localPosition = Vector3.up;
-                }
+                controller.Dispose();
             }
-
-            void RemovePlayerBuildingUnit(BattleUnitBase unit)
-            {
-                _buildingsUi.Return(unit);
-
-                if (_disposablesByUnit.Remove(unit, out var disposable))
-                {
-                    disposable.Dispose();
-                }
-            }
-        }
-
-        public void Deinit()
-        {
-            _disposables.Dispose();
+            _controllersByBuildingRuntimeId.Clear();
             
-            foreach (var disposable in _disposablesByUnit.Values)
-            {
-                disposable.Dispose();
-            }
-            _disposablesByUnit.Clear();
+            _buildingsUi?.Dispose();
+            _disposables?.Dispose();
         }
 
         private void OnBuildingAdded(BuildingModel building)
         {
-            var buildingUnit = CreateBattleUnit(building);
-            buildingUnit.OnUnitDied += OnBuildingUnitDestroyed;
-            _battleUnitsByBuildingRuntimeId.Add(building.RuntimeId, buildingUnit);
-            _battleSystemModel.AddPlayerBuilding(buildingUnit);
-
-            if (_buildingsModel.MainBuilding == building)
-            {
-                Debug.LogError("Created main building battle model...");
-                _battleSystemModel.SetMainBuilding(buildingUnit);
-            }
-            return;
-
-            void OnBuildingUnitDestroyed(IBattleUnit _)
-            {
-                Debug.LogError($"Building {building.BuildingName} destroyed!");
-
-                buildingUnit.OnUnitDied -= OnBuildingUnitDestroyed;
-                
-                if (_buildingsModel.MainBuilding == building)
-                {
-                    Debug.LogError("Destroyed main building battle model... GAME OVER");
-                }
-                
-                _buildingsModel.RemoveBuilding(building);
-            }
+            var controller = new BuildingBattleUnitController(_buildingsUi, building, _battleUnitsFactory, _battleSystemModel, _buildingsModel);
+            controller.Initialize();
+            _controllersByBuildingRuntimeId.Add(building.RuntimeId, controller);
         }
         
-        //TODO: to units factory
-        private BattleUnitBase CreateBattleUnit(BuildingModel building)
-        {
-            var config = building.Config.UnitConfig != null ? building.Config.UnitConfig : _config.DefaultBuildingUnit;
-            
-            //TODO: inherit some properties?
-            var battleUnit = new BattleUnitBase(config, building.Level.Value, building.WorldPosition.Value, building.ThisTransform);
-            return battleUnit;
-        }
-
+        // After building removed we remove the controller
         private void OnBuildingRemoved(BuildingModel building)
         {
-            if (_battleUnitsByBuildingRuntimeId.Remove(building.RuntimeId, out var buildingUnit))
+            if (_controllersByBuildingRuntimeId.Remove(building.RuntimeId, out var controller))
             {
-                Debug.LogError("Removed building battle unit");
-                
-                _battleSystemModel.RemoveUnit(buildingUnit);
+                controller.Dispose();
             }
         }
     }
