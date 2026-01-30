@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using BuildingSystem;
-using BuildingSystem.Extensions;
 using GameSystems.Implementation.BattleSystem;
+using GameSystems.Implementation.BuildingSystem;
+using GameSystems.Implementation.BuildingSystem.Domain;
+using GameSystems.Implementation.BuildingSystem.Extensions;
 using GameSystems.Implementation.GameTime;
 using UniRx;
 using VContainer.Unity;

@@ -1,5 +1,5 @@
-using BuildingSystem;
 using CityBuilder.Dependencies;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;

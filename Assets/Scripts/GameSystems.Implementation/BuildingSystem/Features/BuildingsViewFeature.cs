@@ -1,14 +1,11 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
-using Configs;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation.BattleSystem;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using GameSystems.Implementation.GameInteractionFeature;
 using JetBrains.Annotations;
 using UniRx;
@@ -17,7 +14,7 @@ using VContainer.Unity;
 using Views.Implementation.BuildingSystem;
 using ViewSystem;
 
-namespace GameSystems.Implementation.BuildingsFeature
+namespace GameSystems.Implementation.BuildingSystem.Features
 {
     public class BuildingsViewFeature : IInitializable, IDisposable
     {

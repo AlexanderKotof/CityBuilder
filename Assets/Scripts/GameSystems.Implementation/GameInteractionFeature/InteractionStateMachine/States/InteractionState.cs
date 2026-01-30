@@ -1,6 +1,6 @@
-using BuildingSystem;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
+using GameSystems.Implementation.BuildingSystem;
 using PlayerInput;
 using StateMachine;
 using UnityEngine;

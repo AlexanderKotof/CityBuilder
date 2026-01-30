@@ -2,7 +2,7 @@ using GameSystems.Implementation.PopulationFeature;
 using GameSystems.Implementation.ResourcesStorageFeature;
 using UnityEngine;
 
-namespace BuildingSystem.Extensions
+namespace GameSystems.Implementation.BuildingSystem.Extensions
 {
     public static class BusinessFunctionsExtensions
     {

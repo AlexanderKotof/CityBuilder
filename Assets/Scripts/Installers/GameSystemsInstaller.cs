@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using BuildingSystem;
-using CityBuilder.GameSystems.Implementation;
 using CityBuilder.Grid;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation;
 using GameSystems.Implementation.BattleSystem;
-using GameSystems.Implementation.BuildingsFeature;
+using GameSystems.Implementation.BuildingSystem;
+using GameSystems.Implementation.BuildingSystem.Domain;
+using GameSystems.Implementation.BuildingSystem.Features;
 using GameSystems.Implementation.CheatsFeature;
 using GameSystems.Implementation.GameInteractionFeature;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine;

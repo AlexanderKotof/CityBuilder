@@ -1,9 +1,9 @@
 using System;
 using CityBuilder.Grid;
-using UnityEngine;
 
-namespace BuildingSystem
+namespace GameSystems.Implementation.BuildingSystem.Domain
 {
+    [Obsolete]
     public readonly struct BuildingLocation : IEquatable<BuildingLocation>
     {
         public readonly GridPosition Position;
@@ -34,19 +34,6 @@ namespace BuildingSystem
         public override string ToString()
         {
             return $"Location: {Grid} : {Position.ToString()}";
-        }
-    }
-
-    public static class BuildingLocationExtension
-    {
-        public static Vector3 GetWorldPosition(this BuildingLocation location)
-        {
-            return location.Grid.GridPositionToCellWorldPosition(location.Position);
-        }
-
-        public static CellModel GetCell(this BuildingLocation location)
-        {
-            return location.Grid.GetCell(location.Position);
         }
     }
 }

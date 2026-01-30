@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using BuildingSystem;
 using CityBuilder.Grid;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using UnityEngine;
 
 namespace CityBuilder.Content

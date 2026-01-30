@@ -1,7 +1,7 @@
 using System;
-using BuildingSystem;
 using CityBuilder.Grid;
 using Configs.Implementation.Common;
+using GameSystems.Implementation.BuildingSystem;
 using VContainer.Unity;
 
 namespace GameSystems.Implementation.GameInteractionFeature

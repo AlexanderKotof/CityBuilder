@@ -2,10 +2,11 @@
 using System.Linq;
 using CityBuilder.Grid;
 using Configs.Scriptable.Buildings;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace BuildingSystem
+namespace GameSystems.Implementation.BuildingSystem
 {
     public class BuildingManager : IInitializable, IDisposable
     {
@@ -63,30 +64,15 @@ namespace BuildingSystem
             BuildingConfigSo config = _config.BuildingConfigs[configIndex];
             var building = _buildingFactory.Create(config, cellModel);
             
-            if (CanPlaceBuilding(config, cellModel))
+            if (CanPlaceBuilding(cellModel, building))
             {
                 SetBuilding(cellModel, building);
             } 
         }
-        
-        //TODO: this is responsibility of merge system/service
-        //THIS WORKS NOT REALLY LIKE IT SHOULD
-        public bool TryDragCellFromTo(CellModel from, CellModel to)
-        {
-            if (!TryGetBuilding(from, out var fromBuilding))
-            {
-                return false;
-            }
-
-            if (TryMoveBuilding(to, fromBuilding)) 
-                return true;
-            
-            return false;
-        }
 
         public bool TryMoveBuilding(CellModel to, BuildingModel fromBuilding)
         {
-            if (CanPlaceBuilding(fromBuilding.Config, to))
+            if (CanPlaceBuilding(to, fromBuilding))
             {
                 MoveBuilding(fromBuilding, to);
                 return true;
@@ -95,36 +81,11 @@ namespace BuildingSystem
             return false;
         }
 
-        public void MoveBuilding(BuildingModel building, CellModel to)
-        {
-            _model.MoveBuilding(building, to);
-        }
+        private void MoveBuilding(BuildingModel building, CellModel to) => _model.MoveBuilding(building, to);
         
         public bool TryGetBuilding(CellModel location, out BuildingModel building)
         {
             return _model.BuildingsMap.TryGetValue(location, out building);
-        }
-
-        public bool CanPlaceBuilding(BuildingConfigSo config, CellModel startCell)
-        {
-            var gridModel = startCell.GridModel;
-            var position = startCell.Position;
-
-            for (int i = position.X; i < position.X + config.Size.X; i++)
-            {
-                for (int j = position.Y; j < position.Y + config.Size.Y; j++)
-                {
-                    var targetCell = gridModel.GetCell(i, j);
-                    var targetContent = targetCell.Content.Value;
-                     
-                    if (targetCell.Content.Value != null && targetContent.IsEmpty == false)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         private void SetBuilding(CellModel cellModel, BuildingModel building)
@@ -151,15 +112,7 @@ namespace BuildingSystem
                 }
             }
 
-            return true; //CanBeUpgraded(building, newBuilding);
-        }
-
-        private bool CanBeUpgraded(BuildingModel first, BuildingModel second)
-        {
-            return
-                Equals(first.Config, second.Config) &&
-                    first.Level.Value == second.Level.Value &&
-                        _model.MainBuilding.Level.Value > first.Level.Value;
+            return true;
         }
     }
 }

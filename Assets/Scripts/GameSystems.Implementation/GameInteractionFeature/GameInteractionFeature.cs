@@ -1,9 +1,9 @@
 using System;
-using BuildingSystem;
-using CityBuilder.GameSystems.Implementation;
 using CityBuilder.Grid;
 using Configs.Scriptable;
 using GameSystems.Common.ViewSystem.ViewsProvider;
+using GameSystems.Implementation.BuildingSystem;
+using GameSystems.Implementation.BuildingSystem.Features;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine;
 using UnityEngine;
 using VContainer.Unity;

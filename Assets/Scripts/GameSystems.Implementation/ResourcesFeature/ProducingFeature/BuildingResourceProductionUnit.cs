@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using BuildingSystem;
 using Configs.Implementation.Common;
 using Configs.Scriptable.Buildings.Functions;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using UnityEngine;
 
 namespace GameSystems.Implementation.ProducingFeature

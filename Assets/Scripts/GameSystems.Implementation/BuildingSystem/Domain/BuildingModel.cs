@@ -8,7 +8,7 @@ using GameSystems.Implementation.GameInteractionFeature;
 using UniRx;
 using UnityEngine;
 
-namespace BuildingSystem
+namespace GameSystems.Implementation.BuildingSystem.Domain
 {
     public interface ICellOccupier
     {

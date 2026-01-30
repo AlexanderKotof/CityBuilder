@@ -3,7 +3,7 @@ using System.Linq;
 using Configs.Scriptable.Buildings;
 using Configs.Scriptable.Buildings.Functions;
 
-namespace BuildingSystem.Extensions
+namespace GameSystems.Implementation.BuildingSystem.Extensions
 {
     public static class BuildingConfigExtensions
     {

@@ -1,7 +1,8 @@
 ﻿using CityBuilder.Grid;
 using Configs.Scriptable.Buildings;
+using GameSystems.Implementation.BuildingSystem.Domain;
 
-namespace BuildingSystem
+namespace GameSystems.Implementation.BuildingSystem
 {
     public class BuildingFactory
     {

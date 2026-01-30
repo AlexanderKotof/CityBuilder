@@ -1,7 +1,7 @@
-using BuildingSystem;
 using CityBuilder.Dependencies;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.View;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using TMPro;
 using UniRx;
 using UnityEngine;

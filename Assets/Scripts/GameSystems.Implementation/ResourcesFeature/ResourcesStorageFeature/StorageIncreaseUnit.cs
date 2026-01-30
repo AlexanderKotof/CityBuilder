@@ -1,5 +1,5 @@
-using BuildingSystem;
 using Configs.Scriptable.Buildings.Functions;
+using GameSystems.Implementation.BuildingSystem.Domain;
 
 namespace GameSystems.Implementation.ResourcesStorageFeature
 {

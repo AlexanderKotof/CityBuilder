@@ -1,11 +1,10 @@
 using System;
-using BuildingSystem;
-using CityBuilder.Grid;
 using Configs.Scriptable.Buildings;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace CityBuilder.GameSystems.Implementation
+namespace GameSystems.Implementation.BuildingSystem.Features
 {
     public class MergeBuildingsFeature : IInitializable, IDisposable
     {

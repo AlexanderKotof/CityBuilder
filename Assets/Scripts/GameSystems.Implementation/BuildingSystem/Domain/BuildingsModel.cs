@@ -5,7 +5,7 @@ using GameSystems.Implementation.BattleSystem;
 using UniRx;
 using UnityEngine;
 
-namespace BuildingSystem
+namespace GameSystems.Implementation.BuildingSystem.Domain
 {
     public class BuildingsModel
     {

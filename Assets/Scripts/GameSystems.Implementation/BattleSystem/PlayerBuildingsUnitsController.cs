@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using BuildingSystem;
 using Configs.Scriptable.Battle;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem;
 using GameSystems.Common.ViewSystem.ViewsProvider;
+using GameSystems.Implementation.BuildingSystem;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using UniRx;
 using UnityEngine;
 
