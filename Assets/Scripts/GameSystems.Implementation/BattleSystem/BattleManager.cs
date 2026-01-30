@@ -15,7 +15,7 @@ namespace GameSystems.Implementation.BattleSystem
         private readonly BattleUnitsConfigSO _battleUnitsConfigScheme;
         private readonly BattleUnitsProcessor _battleUnitsProcessor;
 
-        private readonly Dictionary<string, BattleUnitConfigSO> _battleUnitConfigsMap;
+        //private readonly Dictionary<string, BattleUnitConfigSO> _battleUnitConfigsMap;
 
         public BattleManager(BattleSystemModel battleSystemModel, BattleUnitsConfigSO battleUnitsConfigScheme, BattleUnitsProcessor battleUnitsProcessor)
         {
@@ -23,10 +23,10 @@ namespace GameSystems.Implementation.BattleSystem
             _battleUnitsConfigScheme = battleUnitsConfigScheme;
             _battleUnitsProcessor = battleUnitsProcessor;
             
-            _battleUnitConfigsMap = battleUnitsConfigScheme.PlayerUnitsConfigs.ToDictionary(config => config.Id);
-            _battleUnitConfigsMap.AddRange(battleUnitsConfigScheme.EnemiesConfigs.ToDictionary(config => config.Id));
-            _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.DefaultBuildingUnit.Id, battleUnitsConfigScheme.DefaultBuildingUnit);
-            _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.MainBuildingUnit.Id, battleUnitsConfigScheme.MainBuildingUnit);
+            // _battleUnitConfigsMap = battleUnitsConfigScheme.PlayerUnitsConfigs.ToDictionary(config => config.Id);
+            // _battleUnitConfigsMap.AddRange(battleUnitsConfigScheme.EnemiesConfigs.ToDictionary(config => config.Id));
+            // _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.DefaultBuildingUnit.Id, battleUnitsConfigScheme.DefaultBuildingUnit);
+            // _battleUnitConfigsMap.TryAdd(battleUnitsConfigScheme.MainBuildingUnit.Id, battleUnitsConfigScheme.MainBuildingUnit);
         }
         
         public void Update()
