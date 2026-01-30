@@ -16,7 +16,7 @@ namespace GameSystems.Implementation.BattleSystem
     /// <summary>
     /// Контроллирует сущьность боевого юнита, приатаченного к зданию (для всей коллекции зданий игрока)
     /// </summary>
-    public class PlayerBuildingsUnitsController : IInitializable, IDisposable
+    public class PlayerBuildingsUnitsFeature : IInitializable, IDisposable
     {
         private readonly BattleSystemModel _battleSystemModel;
         private readonly BattleUnitsConfigSO _config;
@@ -29,7 +29,7 @@ namespace GameSystems.Implementation.BattleSystem
         private readonly CompositeDisposable _disposables = new();
         private readonly BattleUnitsFactory _battleUnitsFactory;
 
-        public PlayerBuildingsUnitsController(BattleSystemModel battleSystemModel, BattleUnitsConfigSO config, BuildingsModel buildingsModel, IViewsProvider viewsProvider, BattleUnitsFactory battleUnitsFactory)
+        public PlayerBuildingsUnitsFeature(BattleSystemModel battleSystemModel, BattleUnitsConfigSO config, BuildingsModel buildingsModel, IViewsProvider viewsProvider, BattleUnitsFactory battleUnitsFactory)
         {
             _battleSystemModel = battleSystemModel;
             _config = config;

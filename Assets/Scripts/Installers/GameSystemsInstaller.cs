@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using CityBuilder.Grid;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation;
@@ -17,10 +15,8 @@ using GameSystems.Implementation.ProducingFeature;
 using GameSystems.Implementation.ResourcesStorageFeature;
 using PlayerInput;
 using ResourcesSystem;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using ViewSystem;
 
 namespace Installers
 {
@@ -28,7 +24,7 @@ namespace Installers
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            // VIEW SYSTEM
+            // COMMON SYSTEMS
             
             builder.Register<ViewsProvider>(Lifetime.Singleton).AsImplementedInterfaces();
             builder.Register<ViewWithModelProvider>(Lifetime.Singleton).AsImplementedInterfaces();
@@ -77,8 +73,10 @@ namespace Installers
             builder.Register<BattleSystemModel>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BattleManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BattleUnitsProcessor>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            builder.Register<PlayerBuildingsUnitsController>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            builder.Register<BattleFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            builder.Register<BattleUnitsViewFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            builder.Register<PlayerBuildingsUnitsFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             // DEBUG
             

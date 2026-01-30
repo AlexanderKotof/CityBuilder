@@ -10,9 +10,10 @@ using Views.Implementation.BattleSystem;
 
 namespace GameSystems.Implementation.BattleSystem
 {
-    // ТЗ Боевая система:
-    // см папку с ГДД
-    public class BattleFeature : IInitializable, IDisposable, ITickable
+    /// <summary>
+    /// Фича для управления вью юнитов для боевки
+    /// </summary>
+    public class BattleUnitsViewFeature : IInitializable, IDisposable
     {
         private readonly BattleManager _battleManager;
         private readonly BattleSystemModel _battleSystemModel;
@@ -20,21 +21,14 @@ namespace GameSystems.Implementation.BattleSystem
         private readonly ViewsCollectionController<BattleUnitBaseView> _playerUnitsViewsCollection;
         private readonly ViewsCollectionController<BattleUnitBaseView> _enemiesUnitsViewsCollection;
         
-        private readonly PlayerBuildingsUnitsController _playerBuildingsUnitsController;
-        
         private readonly CompositeDisposable _disposable = new CompositeDisposable();
 
-        public BattleFeature(BattleManager battleManager, PlayerBuildingsUnitsController battleUnitsController, IViewsProvider viewsProvider, BattleSystemModel battleSystemModel)
+        public BattleUnitsViewFeature(BattleManager battleManager, IViewsProvider viewsProvider, BattleSystemModel battleSystemModel)
         {
             _battleManager = battleManager;
-            _playerBuildingsUnitsController = battleUnitsController;
             _battleSystemModel = battleSystemModel;
 
             var parentGo = new GameObject("--- Battle Units ---").transform;
-
-            // var container = new DependencyContainer();
-            // container.Register(viewWithModelProvider);
-            
             _playerUnitsViewsCollection = new ViewsCollectionController<BattleUnitBaseView>(viewsProvider, defaultParent: parentGo.transform);
             _enemiesUnitsViewsCollection = new ViewsCollectionController<BattleUnitBaseView>(viewsProvider, defaultParent: parentGo.transform);
 
@@ -52,11 +46,6 @@ namespace GameSystems.Implementation.BattleSystem
         public void Dispose()
         {
             _disposable.Dispose();
-        }
-
-        public void Tick()
-        {
-            _battleManager.Update();
         }
        
         private void SubscribePlayerUnits()

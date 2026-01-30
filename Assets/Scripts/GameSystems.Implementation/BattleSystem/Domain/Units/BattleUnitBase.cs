@@ -1,10 +1,8 @@
 using System;
-using Configs.Scriptable;
 using Configs.Scriptable.Battle;
 using GameSystems.Common.ViewSystem;
 using UniRx;
 using UnityEngine;
-using ViewSystem;
 
 namespace GameSystems.Implementation.BattleSystem
 {
