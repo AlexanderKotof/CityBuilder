@@ -8,21 +8,27 @@ namespace BuildingSystem.Extensions
     public static class BuildingConfigExtensions
     {
         public static bool TryGetProducingResourcesFunction(this BuildingConfigSo bc,
-            [NotNullWhen(true)] out ResourceProductionBuildingFunctionSo production)
+            [NotNullWhen(true)] out ResourceProductionBuildingFunctionSo function)
         {
-            return TryGetBuildingFunction(bc, out production);
+            return TryGetBuildingFunction(bc, out function);
         }
 
         public static bool TryGetHouseholdsCapacityFunction(this BuildingConfigSo bc,
-            [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunctionSo production)
+            [NotNullWhen(true)] out HouseHoldsIncreaseBuildingFunctionSo function)
         {
-            return TryGetBuildingFunction(bc, out production);
+            return TryGetBuildingFunction(bc, out function);
         }
 
         public static bool TryGetResourceStorageCapacityFunction(this BuildingConfigSo bc,
-            [NotNullWhen(true)] out ResourceStorageBuildingFunctionSo production)
+            [NotNullWhen(true)] out ResourceStorageBuildingFunctionSo function)
         {
-            return TryGetBuildingFunction(bc, out production);
+            return TryGetBuildingFunction(bc, out function);
+        }
+        
+        public static bool TryGetAttackFunction(this BuildingConfigSo bc,
+            [NotNullWhen(true)] out AttackBuildingFunctionSo function)
+        {
+            return TryGetBuildingFunction(bc, out function);
         }
         
         public static bool TryGetBuildingFunction<T>(this BuildingConfigSo bc, [NotNullWhen(true)] out T function)

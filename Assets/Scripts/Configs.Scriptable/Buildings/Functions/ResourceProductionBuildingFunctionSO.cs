@@ -1,14 +1,17 @@
+using System;
 using Configs.Implementation.Common;
-using UnityEngine.Serialization;
 
 namespace Configs.Scriptable.Buildings.Functions
 {
     public class ResourceProductionBuildingFunctionSo : BuildingFunctionSo
     {
-        [FormerlySerializedAs("RequireResourcesForProduction")]
-        public ResourceConfig[] _requireResourcesForProduction;
+        public BuildingProductionByLevel[] ProductionsByBuildingLevel;
+    }
 
-        [FormerlySerializedAs("ProduceResourcesByTick")]
-        public ResourceConfig[] _produceResourcesByTick;
+    [Serializable]
+    public class BuildingProductionByLevel
+    {
+        public ResourceConfig[] RequireResourcesForProduction;
+        public ResourceConfig[] ProduceResourcesByTick;
     }
 }

@@ -6,6 +6,7 @@ namespace GameSystems.Implementation.ProducingFeature
 {
     public interface IResourceProducer
     {
+        //SHOULD CHECK EMPLOYEES, RESOURCES etc
         bool CanProduce();
         IEnumerable<ResourceConfig> GetCosts();
         IEnumerable<ResourceConfig> GetProduction();

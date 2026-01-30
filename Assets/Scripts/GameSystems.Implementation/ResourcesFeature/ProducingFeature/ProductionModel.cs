@@ -91,16 +91,7 @@ namespace GameSystems.Implementation.ProducingFeature
         private IEnumerable<ResourceConfig> GetDailyCostsRaw()
         {
             IEnumerable<ResourceConfig> dailyCostsRaw = 
-                _resourceProducers.Where(producer =>
-                    {
-                        if (producer.CanProduce())
-                        {
-                            return true;
-                        }
-                        
-                        // Debug.Log("Cannot produce");
-                        return false;
-                    }).
+                _resourceProducers.Where(producer => producer.CanProduce()).
                     Select(producer =>
                     {
                         // Debug.Log("return costs " + producer.GetCosts().Count());

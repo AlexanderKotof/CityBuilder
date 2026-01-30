@@ -1,13 +1,19 @@
 using System.Collections.Generic;
+using BuildingSystem;
 using Configs.Implementation.Common;
 using Configs.Scriptable.Buildings.Functions;
-using ResourcesSystem;
+using UnityEngine;
 
 namespace GameSystems.Implementation.ProducingFeature
 {
-    public record BuildingResourceProductionUnit(ResourceProductionBuildingFunctionSo Function) : IResourceProducer
+    public record BuildingResourceProductionUnit(BuildingModel Building, ResourceProductionBuildingFunctionSo Function) : IResourceProducer
     {
-        public ResourceProductionBuildingFunctionSo Function { get; } = Function;
+        private ResourceProductionBuildingFunctionSo Function { get; } = Function;
+        private BuildingModel Building { get; } = Building;
+
+        private BuildingProductionByLevel CurrentLevelProduction =>
+            Function.ProductionsByBuildingLevel[
+                Mathf.Min(Building.Level.Value, Function.ProductionsByBuildingLevel.Length - 1)];
 
         public bool CanProduce()
         {
@@ -16,13 +22,12 @@ namespace GameSystems.Implementation.ProducingFeature
 
         public IEnumerable<ResourceConfig> GetCosts()
         {
-            return Function._requireResourcesForProduction;
+            return CurrentLevelProduction.RequireResourcesForProduction;
         }
 
         public IEnumerable<ResourceConfig> GetProduction()
         {
-            return Function._produceResourcesByTick;
+            return CurrentLevelProduction.ProduceResourcesByTick;
         }
-
     }
 }

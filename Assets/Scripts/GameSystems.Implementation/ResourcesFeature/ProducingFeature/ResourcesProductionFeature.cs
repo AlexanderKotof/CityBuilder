@@ -61,7 +61,7 @@ namespace GameSystems.Implementation.ProducingFeature
                 return;
             }
 
-            var producer = new BuildingResourceProductionUnit(producingResourcesFunction);
+            var producer = new BuildingResourceProductionUnit(building, producingResourcesFunction);
             _productionModel.AddResourceProducer(producer);
             _buildingProducersMap.Add(building, producer);
         }
