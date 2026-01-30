@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: House_Function_01
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
   Note: some note
-  AvailableHouseholdsIncrease: 5
-  PerBuildingLevelGrow: 5
+  AvailableHouseholdsIncreaseBase: 0
+  PerBuildingLevel: 02000000060000000c000000

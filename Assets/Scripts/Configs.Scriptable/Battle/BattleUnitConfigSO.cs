@@ -1,6 +1,6 @@
 using System;
-using Unity.Collections;
 using UnityEngine;
+using Utilities;
 
 namespace Configs.Scriptable.Battle
 {
@@ -19,6 +19,14 @@ namespace Configs.Scriptable.Battle
         public AttackPossibilityAndPriority AttackPossibilityAndPriority = 0;
         
         [field: SerializeField, ReadOnly]
-        public string Id { get; private set; } = Guid.NewGuid().ToString();
+        public string Id { get; private set; }
+
+        private void OnValidate()
+        {
+            if (string.IsNullOrEmpty(Id))
+            {
+                Id = Guid.NewGuid().ToString();
+            }
+        }
     }
 }

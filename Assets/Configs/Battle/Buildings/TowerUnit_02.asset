@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95552c3a5c7d47d8a62de85ee49e2fbd, type: 3}
-  m_Name: TowerUnit_01
+  m_Name: TowerUnit_02
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BattleUnitConfigSO
-  Name: Tower1
+  Name: Tower2
   InternalDescription: Tower battle unit
-  Health: 200
-  Damage: 1
+  Health: 300
+  Damage: 2
   AttackRange: 5
   Defense: 2
   MoveSpeed: 0
-  AttackSpeed: 1
+  AttackSpeed: 1.2
   AssetKey: Unit
   AttackPossibilityAndPriority: 0
-  <Id>k__BackingField: e9ad7100-0b16-4c89-b618-d532ad98373c
+  <Id>k__BackingField: 1b2e1bca-6e4b-49c2-9999-5183fd8637bf

@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ff4ce0077542cf8ef676ca95c4b493, type: 3}
-  m_Name: Storage_Function_01
+  m_Script: {fileID: 11500000, guid: d06876af5a9144e0beeb998e9ef41557, type: 3}
+  m_Name: Tower_Attack_Function_01
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
   Note: some note
-  StorageCapacityIncreaseBase: 100
-  PerBuildingLevel: 0000000064000000c8000000
+  BattleUnitPerLevel:
+  - {fileID: 11400000, guid: 534ef3737ee044341a95e4febcdba351, type: 2}
+  - {fileID: 11400000, guid: 71a3dfac6ec255442a7dfd7488a9d2fd, type: 2}
+  - {fileID: 11400000, guid: 7fcb0dc351073e744881d58038079a3b, type: 2}
