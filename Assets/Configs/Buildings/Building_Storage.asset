@@ -26,3 +26,4 @@ MonoBehaviour:
   BuildingFunctions:
   - {fileID: 11400000, guid: aac7131a435e0544c9758c99f788cd7c, type: 2}
   UnitConfig: {fileID: 0}
+  BuildingLevelingConfig: {fileID: 11400000, guid: 8fb8009f533d12741977c27d28af892a, type: 2}

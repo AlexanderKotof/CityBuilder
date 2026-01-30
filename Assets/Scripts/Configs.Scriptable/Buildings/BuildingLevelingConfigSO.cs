@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Configs.Scriptable.Buildings
 {
+    /// <summary>
+    /// Используется для мерджа зданий
+    /// </summary>
     public class BuildingLevelingConfigSo : ScriptableObject, IConfigBase
     {
         [field: SerializeField]
@@ -9,8 +12,5 @@ namespace Configs.Scriptable.Buildings
         
         [field: SerializeField]
         public int MaxLevel { get; private set; } = 3;
-        
-        [field: SerializeField]
-        public bool LevelUpOnStack { get; private set; } = true;
     }
 }

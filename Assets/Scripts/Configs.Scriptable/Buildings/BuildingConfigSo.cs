@@ -15,5 +15,6 @@ namespace Configs.Scriptable.Buildings
         public ResourceConfig[] RequiredResources;
         public BuildingFunctionSo[] BuildingFunctions;
         public BattleUnitConfigSO? UnitConfig;
+        public BuildingLevelingConfigSo BuildingLevelingConfig;
     }
 }

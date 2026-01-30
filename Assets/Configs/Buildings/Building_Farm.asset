@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
   Name: Farm
   AssetKey: Farm
+  Size:
+    <X>k__BackingField: 1
+    <Y>k__BackingField: 1
   IsMovable: 1
   RequiredResources:
   - <Type>k__BackingField: 0
@@ -22,3 +25,4 @@ MonoBehaviour:
     <Amount>k__BackingField: 5
   BuildingFunctions: []
   UnitConfig: {fileID: 0}
+  BuildingLevelingConfig: {fileID: 11400000, guid: 8fb8009f533d12741977c27d28af892a, type: 2}
