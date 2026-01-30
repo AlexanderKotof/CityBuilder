@@ -15,7 +15,7 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
         IReadOnlyCollection<CellModel> OccupiedCells { get; }
     }
     
-    public class BuildingModel : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel
+    public class BuildingModel : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel, IDisposable
     {
         public string BuildingName => Config.Name;
         public ReactiveProperty<int> Level { get; } = new();
@@ -51,6 +51,14 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
         public void IncreaseLevel()
         {
             Level.Value = (Level.Value + 1);
+        }
+
+        public void Dispose()
+        {
+            Level.Dispose();
+            WorldPosition.Dispose();
+            ThisTransform.Dispose();
+            OccupiedCells = null;
         }
     }
 }

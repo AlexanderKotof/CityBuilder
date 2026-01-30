@@ -106,5 +106,10 @@ namespace GameSystems.Implementation.BuildingSystem
 
             return true;
         }
+
+        public void IncreaseBuildingLevel(BuildingModel toBuilding)
+        {
+            toBuilding.IncreaseLevel();
+        }
     }
 }

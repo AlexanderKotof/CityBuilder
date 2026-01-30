@@ -10,23 +10,24 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
     public class BuildingsModel
     {
         public readonly Dictionary<CellModel, BuildingModel> BuildingsMap = new();
-        
+
         public readonly ReactiveCollection<BuildingModel> Buildings = new();
-        
+
         public BuildingModel MainBuilding { get; private set; }
 
         public void AddBuilding(BuildingModel building, CellModel startLocation)
         {
             var occupiedCells = building.GetBuildingCellsSet(startLocation);
-            if (SetBuilding(building, startLocation, occupiedCells) == false) 
+            if (SetBuilding(building, startLocation, occupiedCells) == false)
                 throw new Exception("Could not set building for this cell set!");
-            
+
             Buildings.Add(building);
-            
+
             Debug.Log($"Building {building.BuildingName} added, position {startLocation.ToString()}");
         }
 
-        private bool SetBuilding(BuildingModel building, CellModel startLocation, IReadOnlyCollection<CellModel> occupiedCells)
+        private bool SetBuilding(BuildingModel building, CellModel startLocation,
+            IReadOnlyCollection<CellModel> occupiedCells)
         {
             foreach (var cell in occupiedCells)
             {
@@ -35,11 +36,11 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
                     Debug.LogError($"Building at position {startLocation.ToString()} already exists! CHECK THIS!!");
                     return false;
                 }
-                
+
                 //Is it really needed?
                 cell.SetContent(building);
             }
-            
+
             building.WorldPosition.Value = (startLocation.WorldPosition);
             building.SetOccupiedCells(occupiedCells);
 
@@ -49,10 +50,9 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
         public void RemoveBuilding(BuildingModel building)
         {
             ClearBuildingCells(building);
-            
             Buildings.Remove(building);
-            
-            Debug.Log($"Building removed {building.BuildingName} from {building.WorldPosition.ToString()}");
+            building.Dispose();
+            Debug.Log($"Building removed {building.BuildingName}");
         }
 
         private void ClearBuildingCells(BuildingModel building)
@@ -63,7 +63,7 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
                 {
                     Debug.LogError($"No Building found at position {cell.ToString()}! CHECK THIS!");
                 }
-                
+
                 cell.SetContent(null);
             }
 
@@ -75,7 +75,7 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
         {
             MainBuilding = building;
         }
-        
+
         public void MoveBuilding(BuildingModel building, CellModel to)
         {
             ClearBuildingCells(building);
@@ -84,21 +84,8 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
             SetBuilding(building, to, cells);
             building.SetOccupiedCells(cells);
         }
-        
-        // public void RemoveBuilding(CellModel cell)
-        // {
-        //     if (_model.TryGetBuilding(cell, out var building))
-        //     {
-        //         _model.RemoveBuildingAt(cell);
-        //     }
-        // }
-        
-        // public bool TryGetBuilding(CellModel location, out BuildingModel building) =>
-        //     BuildingsMap.TryGetValue(location, out building);
-        
-        // public void RemoveBuildingAt(CellModel location)
-        // {
-        //     RemoveBuilding(BuildingsMap[location]);
-        // }
+
+        public bool TryGetBuilding(CellModel location, out BuildingModel building) =>
+            BuildingsMap.TryGetValue(location, out building);
     }
 }
