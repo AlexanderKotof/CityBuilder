@@ -72,6 +72,11 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             _buildingViewsController.Dispose();
             _subscriptions.Dispose();
         }
+
+        public BuildingView GetBuildingView(BuildingModel buildingModel)
+        {
+            return _buildingViewsController.GetView(buildingModel);
+        }
         
         private async UniTask InitWindow()
         {

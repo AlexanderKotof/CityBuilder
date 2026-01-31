@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using GameSystems.Common.ViewSystem.View;
 using GameSystems.Implementation.BuildingSystem.Domain;
 using TMPro;
@@ -46,6 +47,11 @@ namespace Views.Implementation.BuildingSystem
         public void SetUiActive(bool value)
         {
             UICanvas.enabled = value;
+        }
+
+        public async UniTask MergeTo(Vector3 toPosition)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

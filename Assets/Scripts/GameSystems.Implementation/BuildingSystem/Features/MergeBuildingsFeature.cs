@@ -16,14 +16,16 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         private readonly BuildingManager _buildingsManager;
         private readonly BuildingsModel _buildingsModel;
         private readonly MergeFeatureConfigurationSo _configuration;
-        
+        private readonly BuildingsViewFeature _viewFeature;
+
         private IEnumerable<MergeBuildingsRecipeSo> MergeRecipes => _configuration.MergeRecipes;
 
-        public MergeBuildingsFeature(BuildingManager buildingsManager, BuildingsModel buildingsModel, MergeFeatureConfigurationSo configuration)
+        public MergeBuildingsFeature(BuildingManager buildingsManager, BuildingsModel buildingsModel, MergeFeatureConfigurationSo configuration, BuildingsViewFeature viewFeature)
         {
             _buildingsManager = buildingsManager;
             _buildingsModel = buildingsModel;
             _configuration = configuration;
+            _viewFeature = viewFeature;
         }
 
         public void Initialize()
@@ -36,9 +38,13 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         
         public bool TryMergeBuildingsFromTo(BuildingModel fromBuilding, BuildingModel toBuilding)
         {
-            if (CanLevelUpMerge(toBuilding, fromBuilding))
+            if (CanLevelUpMerge(toBuilding, fromBuilding, out var buildingModels))
             {
-                _buildingsModel.RemoveBuilding(fromBuilding);
+                foreach (var building in buildingModels)
+                {
+                    MergeBuildingsTo(building, toBuilding);
+                }
+                
                 _buildingsManager.IncreaseBuildingLevel(toBuilding);
                 
                 Debug.Log($"Building level upgraded to {toBuilding.Level}");
@@ -56,6 +62,16 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             }
 
             return false;
+        }
+
+        private async UniTask MergeBuildingsTo(BuildingModel buildingModel, BuildingModel toBuilding)
+        {
+            //TODO: play animation
+            var view = _viewFeature.GetBuildingView(buildingModel);
+
+            await view.MergeTo(toBuilding.WorldPosition.Value);
+            
+            _buildingsModel.RemoveBuilding(buildingModel);
         }
 
         private bool CanRecipeMerge(BuildingModel toBuilding, BuildingModel fromBuilding, [CanBeNull] out MergeBuildingsRecipeSo recipeSo, [CanBeNull] out IEnumerable<BuildingModel> buildingsInvolved)
@@ -131,11 +147,31 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             return null;
         }
 
-        private bool CanLevelUpMerge(BuildingModel second, BuildingModel first)
+        private bool CanLevelUpMerge(BuildingModel toBuilding, BuildingModel fromBuilding, out IEnumerable<BuildingModel> buildingsInvolved)
         {
-            return
-                Equals(first.Config, second.Config) &&
-                first.Level.Value == second.Level.Value;
+            buildingsInvolved = null;
+            
+            if (Equals(fromBuilding.Config, toBuilding.Config) == false ||
+                fromBuilding.Level.Value != toBuilding.Level.Value)
+                return false;
+            
+            var level = fromBuilding.Level.Value;
+            var config = fromBuilding.Config;
+            
+            // Берем все клетки вокруг таргет здания
+            var nearCells = toBuilding.GetAllNearCellsExceptOwn();
+            // Собираем все аналогичные здания в округе
+            var allBuildingsNear = nearCells.Select(BuildingsSelector)
+                .Where(b => b != null && b.Level.Value == level && b.Config == config).ToList();
+
+            if (allBuildingsNear.Count == 0)
+            {
+                return false;
+            }
+
+            // TODO: count buildings and make multi merge ?
+            buildingsInvolved = allBuildingsNear.Take(1).Append(fromBuilding);
+            return true;
         }
     }
 }

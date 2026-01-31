@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.ViewsProvider;
+using GameSystems.Implementation.BuildingSystem.Domain;
 using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
+using Views.Implementation.BuildingSystem;
 
 namespace GameSystems.Common.ViewSystem
 {
@@ -72,6 +74,11 @@ namespace GameSystems.Common.ViewSystem
         public bool TryGetView(object data, out TView view)
         {
             return _activeViews.TryGetValue(data, out view);
+        }
+
+        public TView GetView(object data)
+        {
+            return _activeViews[data];
         }
     }
 }
