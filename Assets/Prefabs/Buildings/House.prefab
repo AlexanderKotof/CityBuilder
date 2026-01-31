@@ -767,6 +767,7 @@ MonoBehaviour:
   UICanvas: {fileID: 3753149973203497517}
   LevelIndicator: {fileID: 9033644394396385515}
   NameText: {fileID: 8033702309543062927}
+  MergeConfig: {fileID: 11400000, guid: 982162e3b2de71c4ab9cd4464a57188a, type: 2}
 --- !u!1 &4719681099926895699
 GameObject:
   m_ObjectHideFlags: 0

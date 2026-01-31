@@ -5,20 +5,13 @@ using VContainer;
 
 namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
-    public struct DragAndDropCellsActionPayload
-    {
-        
-    }
-    
     public class DraggingInteractionState : InteractionState
     {
         [Inject]
         private readonly DraggingContentController _draggingContentController;
-        [Inject]
-        private readonly GridManager _gridManager;
 
         [Inject]
-        public readonly GameInteractionFeature _gameInteractionFeature;
+        private readonly GameInteractionFeature _gameInteractionFeature;
 
         protected override void OnEnterState()
         {

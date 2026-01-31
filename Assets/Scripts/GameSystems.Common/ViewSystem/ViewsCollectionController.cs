@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.ViewsProvider;
-using GameSystems.Implementation.BuildingSystem.Domain;
 using JetBrains.Annotations;
-using UniRx;
 using UnityEngine;
-using Views.Implementation.BuildingSystem;
 
 namespace GameSystems.Common.ViewSystem
 {
@@ -19,6 +17,7 @@ namespace GameSystems.Common.ViewSystem
         private readonly Transform _defaultParent;
         
         private readonly Dictionary<object, TView> _activeViews = new();
+        private readonly Dictionary<object, CancellationTokenSource> _cancellationTokenSources = new();
 
         public ViewsCollectionController(IViewsProvider viewsProvider, string defaultAssetKey = null, Transform defaultParent = null)
         {
@@ -29,6 +28,12 @@ namespace GameSystems.Common.ViewSystem
 
         public void Dispose()
         {
+            foreach (var cts in _cancellationTokenSources.Values)
+            {
+                cts.Cancel();
+            }
+            _cancellationTokenSources.Clear();
+            
             foreach (var view in _activeViews.Values)
             {
                 Recycle(view);
@@ -38,9 +43,21 @@ namespace GameSystems.Common.ViewSystem
         
         public async UniTask<TView> AddView(string assetKey, object data, Transform parent)
         {
-            var view = await _viewsProvider.ProvideViewAsync<TView>(assetKey, parent);
-            _activeViews.Add(data, view);
-            return view;
+            var cts = new CancellationTokenSource();
+            try
+            {
+                _cancellationTokenSources.Add(data, cts);
+                var view = await _viewsProvider
+                    .ProvideViewAsync<TView>(assetKey, parent)
+                    .AttachExternalCancellation(cts.Token);
+                _activeViews.Add(data, view);
+                return view;
+            }
+            finally
+            {
+                cts.Dispose();
+                _cancellationTokenSources.Remove(data);
+            }
         }
         
         public UniTask<TView> AddView(string assetKey, object data)
@@ -65,6 +82,11 @@ namespace GameSystems.Common.ViewSystem
 
         public void Return(object data)
         {
+            if (_cancellationTokenSources.TryGetValue(data, out var cts))
+            {
+                cts.Cancel();
+            }
+            
             if (_activeViews.Remove(data, out var view))
             {
                 Recycle(view);

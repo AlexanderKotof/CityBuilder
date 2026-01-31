@@ -394,9 +394,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddaa47427aee4f908c36c872c706359c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _visualsByLevel:
+  - {fileID: 5670039611476277826}
   UICanvas: {fileID: 3753149973203497517}
   LevelIndicator: {fileID: 9033644394396385515}
   NameText: {fileID: 8033702309543062927}
+  MergeConfig: {fileID: 11400000, guid: 982162e3b2de71c4ab9cd4464a57188a, type: 2}
 --- !u!1 &4719681099926895699
 GameObject:
   m_ObjectHideFlags: 0

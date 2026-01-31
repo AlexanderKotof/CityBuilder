@@ -17,15 +17,17 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         private readonly BuildingsModel _buildingsModel;
         private readonly MergeFeatureConfigurationSo _configuration;
         private readonly BuildingsViewFeature _viewFeature;
+        private readonly BuildingFactory _buildingFactory;
 
         private IEnumerable<MergeBuildingsRecipeSo> MergeRecipes => _configuration.MergeRecipes;
 
-        public MergeBuildingsFeature(BuildingManager buildingsManager, BuildingsModel buildingsModel, MergeFeatureConfigurationSo configuration, BuildingsViewFeature viewFeature)
+        public MergeBuildingsFeature(BuildingManager buildingsManager, BuildingsModel buildingsModel, MergeFeatureConfigurationSo configuration, BuildingsViewFeature viewFeature, BuildingFactory buildingFactory)
         {
             _buildingsManager = buildingsManager;
             _buildingsModel = buildingsModel;
             _configuration = configuration;
             _viewFeature = viewFeature;
+            _buildingFactory = buildingFactory;
         }
 
         public void Initialize()
@@ -40,37 +42,48 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         {
             if (CanLevelUpMerge(toBuilding, fromBuilding, out var buildingModels))
             {
-                foreach (var building in buildingModels)
-                {
-                    MergeBuildingsTo(building, toBuilding);
-                }
-                
-                _buildingsManager.IncreaseBuildingLevel(toBuilding);
-                
-                Debug.Log($"Building level upgraded to {toBuilding.Level}");
-
+                ProcessMergeUpgrade(toBuilding, buildingModels).Forget();
                 return true;
             }
 
             if (CanRecipeMerge(toBuilding, fromBuilding, out var recipe, out var involvedBuildings))
             {           
-                //TODO: implement merge mechanics
-                
-                Debug.LogError("Found recipe for merge", recipe);
-                
-                
+                ProcessMergeWithRecipe(toBuilding, involvedBuildings, recipe).Forget();
+                return true;
             }
 
             return false;
         }
 
+        private async UniTaskVoid ProcessMergeUpgrade(BuildingModel toBuilding, IEnumerable<BuildingModel> buildingModels)
+        {
+            await UniTask.WhenAll(buildingModels.Select(building => MergeBuildingsTo(building, toBuilding)));
+                
+            _buildingsManager.IncreaseBuildingLevel(toBuilding);
+                
+            Debug.Log($"Building level upgraded to {toBuilding.Level}");
+        }
+        
+        private async UniTaskVoid ProcessMergeWithRecipe(BuildingModel toBuilding,
+            IEnumerable<BuildingModel> buildingModels,
+            MergeBuildingsRecipeSo recipe)
+        {
+            await UniTask.WhenAll(buildingModels.Select(building => MergeBuildingsTo(building, toBuilding)));
+
+            var position = toBuilding.OccupiedCells.First();
+            _buildingsModel.RemoveBuilding(toBuilding);
+
+            var newBuilding = _buildingFactory.Create(recipe, position);
+            _buildingsModel.AddBuilding(newBuilding, position);
+                
+            Debug.LogError("Buildings merge with recipe", recipe);
+        }
+
         private async UniTask MergeBuildingsTo(BuildingModel buildingModel, BuildingModel toBuilding)
         {
-            //TODO: play animation
             var view = _viewFeature.GetBuildingView(buildingModel);
-
             await view.MergeTo(toBuilding.WorldPosition.Value);
-            
+            await UniTask.Yield();
             _buildingsModel.RemoveBuilding(buildingModel);
         }
 

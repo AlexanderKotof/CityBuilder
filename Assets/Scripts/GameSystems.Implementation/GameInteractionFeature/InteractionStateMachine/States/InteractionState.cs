@@ -1,3 +1,4 @@
+using System.Linq;
 using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using GameSystems.Implementation.BuildingSystem;
@@ -8,6 +9,13 @@ using VContainer;
 
 namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
+    public enum CursorStateEnum
+    {
+        Accepted,
+        Rejected,
+        Merge,
+    }
+    
     public abstract class InteractionState : StateBase, IUpdateState
     {
         [Inject]
@@ -19,6 +27,11 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         [Inject]
         private readonly BuildingManager _buildingManager;
         [Inject]
+        private readonly GridManager _gridManager;
+
+        private CellModel[] _lightenedCells;
+
+        [Inject]
         protected InteractionModel InteractionModel { get; private set; }
         protected Raycaster Raycaster => _raycastController;
         protected BuildingManager BuildingManager => _buildingManager;
@@ -28,7 +41,6 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
             
         }
 
-        //TODO: pass content size
         protected void LightenCellUnderCursor(Vector2Int cursorSize)
         {
             bool showCursor = Raycaster.TryGetCursorPositionFromScreenPoint(Input.mousePosition, out Vector3? cursorPosition);
@@ -39,17 +51,11 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
             }
         }
         
-        protected void LightenCell(CellModel cellModel)
+        protected void LightenCells(CellModel[] lightenCells, CursorStateEnum cursorState)
         {
-            if (cellModel != null)
-            {
-                _cursorController.SetActive(true);
-                _cursorController.SetPosition(cellModel.WorldPosition, Vector2Int.one);
-            }
-            else
-            {
-                _cursorController.SetActive(false);
-            }
+            
+            _cursorController.SetActive(true);
+            _cursorController.SetPositions(lightenCells, cursorState);
         }
 
         protected override void OnEnterState()

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0a86825833445b908a9c1fcd560d3f, type: 3}
+  m_Name: MergeBuildings_AnimationConfig
+  m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.ResourcesDefaultConfigurationSo
+  <ScalingDelay>k__BackingField: 0.2
+  <ScalingDuration>k__BackingField: 0.5
+  <ScalingEase>k__BackingField: 29
+  <MovingDelay>k__BackingField: 0.5
+  <MovingDuration>k__BackingField: 0.5
+  <MovingEase>k__BackingField: 23

@@ -1,6 +1,8 @@
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.View;
 using GameSystems.Implementation.BuildingSystem.Domain;
+using LitMotion;
+using LitMotion.Extensions;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -15,9 +17,16 @@ namespace Views.Implementation.BuildingSystem
         
         public TextMeshProUGUI LevelIndicator;
         public TextMeshProUGUI NameText;
+       
+        public MergeAnimationConfig MergeConfig;
+
+        private BuildingModel _model;
+        
+        private GameObject CurrentVisual => _visualsByLevel[Mathf.Min(_model.Level.Value, _visualsByLevel.Length - 1)];
         
         public void Initialize(BuildingModel model)
         {
+            _model = model;
             model.Level.Subscribe(OnLevelUpdated).AddTo(this);
             model.WorldPosition.Subscribe(SetWorldPosition).AddTo(this);
             
@@ -51,7 +60,32 @@ namespace Views.Implementation.BuildingSystem
 
         public async UniTask MergeTo(Vector3 toPosition)
         {
-            throw new System.NotImplementedException();
+            SetUiActive(false);
+            
+            var visualTransform = CurrentVisual.transform;
+            
+            var localPosition = visualTransform.localPosition;
+            var startPosition = visualTransform.position;
+            var startScale = visualTransform.localScale;
+
+            await UniTask.WhenAll(
+                LMotion.Create(startScale, Vector3.zero, MergeConfig.ScalingDuration)
+                    .WithDelay(MergeConfig.ScalingDelay)
+                    .WithEase(MergeConfig.ScalingEase)
+                    .BindToLocalScale(visualTransform)
+                    .ToUniTask(),
+                
+                LMotion.Create(startPosition, toPosition, MergeConfig.MovingDuration)
+                    .WithDelay(MergeConfig.MovingDelay)
+                    .WithEase(MergeConfig.MovingEase)
+                    .BindToPosition(visualTransform)
+                    .ToUniTask()
+                );
+            
+            CurrentVisual.SetActive(false);
+
+            visualTransform.localPosition = localPosition;
+            visualTransform.localScale = startScale;
         }
     }
 }

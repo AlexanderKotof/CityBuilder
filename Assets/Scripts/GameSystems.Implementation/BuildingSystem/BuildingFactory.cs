@@ -11,5 +11,10 @@ namespace GameSystems.Implementation.BuildingSystem
             var building = new BuildingModel(0, config);
             return building;
         }
+
+        public BuildingModel Create(MergeBuildingsRecipeSo recipe, CellModel cellModel)
+        {
+            return new BuildingModel(0, recipe.Product);
+        }
     }
 }

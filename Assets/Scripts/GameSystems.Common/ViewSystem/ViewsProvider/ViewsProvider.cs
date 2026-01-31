@@ -74,8 +74,7 @@ namespace GameSystems.Common.ViewSystem.ViewsProvider
                 Debug.LogError($"Cannot release object of type {component.GetType().Name}");
                 return;
             }
-            
-            //var pool = GetPool<T>(poolId);
+
             if (_viewPools.TryGetValue(poolId, out IObjectPool pool) == false)
             {
                 Debug.LogError($"No pool found for {component.GetType().Name}");
