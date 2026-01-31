@@ -165,7 +165,8 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             buildingsInvolved = null;
             
             if (Equals(fromBuilding.Config, toBuilding.Config) == false ||
-                fromBuilding.Level.Value != toBuilding.Level.Value)
+                fromBuilding.Level.Value != toBuilding.Level.Value ||
+                fromBuilding.IsMaxLevel)
                 return false;
             
             var level = fromBuilding.Level.Value;
@@ -175,7 +176,7 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             var nearCells = toBuilding.GetAllNearCellsExceptOwn();
             // Собираем все аналогичные здания в округе
             var allBuildingsNear = nearCells.Select(BuildingsSelector)
-                .Where(b => b != null && b.Level.Value == level && b.Config == config).ToList();
+                .Where(b => b != null && b.Level.Value == level && b.Config == config && b != fromBuilding).ToList();
 
             if (allBuildingsNear.Count == 0)
             {

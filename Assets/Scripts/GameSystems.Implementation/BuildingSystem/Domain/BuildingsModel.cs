@@ -49,26 +49,22 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
 
         public void RemoveBuilding(BuildingModel building)
         {
-            ClearBuildingCells(building);
-            Buildings.Remove(building);
-            building.Dispose();
-            Debug.Log($"Building removed {building.BuildingName}");
+            if (Buildings.Remove(building))
+            {
+                ClearBuildingCells(building);
+                building.Dispose();
+                Debug.Log($"Building removed {building.BuildingName}");
+            }
         }
 
         private void ClearBuildingCells(BuildingModel building)
         {
             foreach (var cell in building.OccupiedCells)
             {
-                if (!BuildingsMap.Remove(cell))
-                {
-                    Debug.LogError($"No Building found at position {cell.ToString()}! CHECK THIS!");
-                }
-
                 cell.SetContent(null);
             }
 
             BuildingsMap.RemoveMany(building.OccupiedCells);
-            building.SetOccupiedCells(Array.Empty<CellModel>());
         }
 
         public void SetMainBuilding(BuildingModel building)

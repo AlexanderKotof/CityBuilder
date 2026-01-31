@@ -44,8 +44,10 @@ namespace Views.Implementation.BuildingSystem
             
             for (var index = 0; index < _visualsByLevel.Length; index++)
             {
-                _visualsByLevel[index].SetActive(index == value);
+                _visualsByLevel[index].SetActive(false);
             }
+            
+            CurrentVisual.SetActive(true);
         }
 
         private void SetWorldPosition(Vector3 position)
