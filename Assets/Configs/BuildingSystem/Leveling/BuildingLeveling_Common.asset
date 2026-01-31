@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: BuildingLeveling_Common
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
   <StartLevel>k__BackingField: 0
-  <MaxLevel>k__BackingField: 3
-  <LevelUpOnStack>k__BackingField: 1
+  <MaxLevel>k__BackingField: 2

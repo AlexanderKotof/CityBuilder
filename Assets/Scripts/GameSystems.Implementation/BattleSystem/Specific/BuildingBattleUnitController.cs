@@ -106,7 +106,7 @@ namespace GameSystems.Implementation.BattleSystem
                 if (value == null)
                     return;
                     
-                Debug.LogError($"Transform updated for {unit.Config.name}!", value);
+                //Debug.LogError($"Transform updated for {unit.Config.name}!", value);
                     
                 _uiView.transform.SetParent(value);
                 _uiView.transform.localPosition = Vector3.up;

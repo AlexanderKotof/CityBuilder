@@ -31,13 +31,18 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
         {
             foreach (var cell in occupiedCells)
             {
+                if (cell.Content.Value != null)
+                {
+                    Debug.LogError($"Cell at position {startLocation.ToString()} is n't empty");
+                    return false;
+                }
+                
                 if (!BuildingsMap.TryAdd(cell, building))
                 {
                     Debug.LogError($"Building at position {startLocation.ToString()} already exists! CHECK THIS!!");
                     return false;
                 }
-
-                //Is it really needed?
+                
                 cell.SetContent(building);
             }
 

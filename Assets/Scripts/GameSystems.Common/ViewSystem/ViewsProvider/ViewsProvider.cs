@@ -102,10 +102,12 @@ namespace GameSystems.Common.ViewSystem.ViewsProvider
             switch (view)
             {
                 case GameObject gameObject:
-                    gameObject.SetActive(isActive);
+                    if (gameObject != null)
+                        gameObject.SetActive(isActive);
                     break;
                 case Component component:
-                    component.gameObject.SetActive(isActive);
+                    if (component != null && component.gameObject != null)
+                        component.gameObject.SetActive(isActive);
                     break;
                 
                 default:

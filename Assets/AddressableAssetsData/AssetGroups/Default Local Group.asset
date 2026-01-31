@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45fce82fab5aaba419c9dd7105c154f1
+    m_Address: Farm
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 71ed445036b7a924a90fed7e14791159
     m_Address: Enemy
     m_ReadOnly: 0
@@ -61,7 +66,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: febbcbd5bff1a884892231aba0c37c8f
-    m_Address: Farm
+    m_Address: HouseAndFarm
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
