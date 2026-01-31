@@ -52,9 +52,8 @@ namespace GameSystems.Implementation.GameInteractionFeature
             {
                 return;
             }
-            
-            _singleCursor.transform.position = position;
-            _singleCursor.transform.localScale = new Vector3(selectionSize.x, 1, selectionSize.y);
+
+            _singleCursor.SetCursor(position, new Vector3(selectionSize.x, 1, selectionSize.y));
         }
         
         public void SetPositions(CellModel[] lightenCells, CursorStateEnum cursorState)
@@ -65,9 +64,12 @@ namespace GameSystems.Implementation.GameInteractionFeature
             }
             
             _lightenedCells = lightenCells;
+            
             foreach (var cell in _lightenedCells)
             {
+                AddView(cell).Forget();
             }
+            return;
 
             async UniTaskVoid AddView(CellModel cellModel)
             {
@@ -86,5 +88,10 @@ namespace GameSystems.Implementation.GameInteractionFeature
             _singleCursor.gameObject.SetActive(active);
         }
 
+        public void Clear()
+        {
+            _cursorsController.Dispose();
+            _lightenedCells = null;
+        }
     }
 }

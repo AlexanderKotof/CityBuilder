@@ -53,9 +53,12 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         
         protected void LightenCells(CellModel[] lightenCells, CursorStateEnum cursorState)
         {
-            
-            _cursorController.SetActive(true);
             _cursorController.SetPositions(lightenCells, cursorState);
+        }
+
+        protected void ClearLightenCells()
+        {
+            _cursorController.Clear();
         }
 
         protected override void OnEnterState()

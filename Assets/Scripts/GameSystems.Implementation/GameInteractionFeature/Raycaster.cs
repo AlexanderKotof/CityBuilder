@@ -18,7 +18,6 @@ namespace GameSystems.Implementation.GameInteractionFeature
             _gridManager = gridManager;
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         public bool TryGetCellFromScreenPoint(Vector2 screenPoint, [NotNullWhen(true)] out CellModel? cell)
         {
             var ray = _raycastCamera.ScreenPointToRay(screenPoint);
