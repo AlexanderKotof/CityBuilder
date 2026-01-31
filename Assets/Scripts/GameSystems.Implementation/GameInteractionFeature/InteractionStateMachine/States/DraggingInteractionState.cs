@@ -44,7 +44,7 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
 
         protected override void ProcessDragging(Vector3 mousePosition)
         {
-            if (Raycaster.TryGetCursorPositionFromScreenPoint(mousePosition, out var cursorPosition))
+            if (Raycaster.TryGetFreePositionFromScreenPoint(mousePosition, out var cursorPosition))
             {
                 _draggingContentController.UpdatePosition(cursorPosition.Value);
             }

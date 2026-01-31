@@ -21,6 +21,7 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
         public ReactiveProperty<int> Level { get; } = new();
         public ReactiveProperty<int> Rotation { get; } = new();
         public ReactiveProperty<Vector3> WorldPosition { get; } = new();
+        public ReactiveProperty<bool> IsDragging { get; } = new();
 
         public bool IsMaxLevel => Level.Value >= Config.BuildingLevelingConfig.MaxLevel;
         

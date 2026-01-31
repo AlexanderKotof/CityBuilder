@@ -19,7 +19,8 @@ namespace GameSystems.Common.ViewSystem.ViewsProvider
             {
                 while (pool.TryPool(out Object poolObject))
                 {
-                    AssetsProvider.AssetsProvider.Release(poolObject);
+                    if (poolObject != null)
+                        AssetsProvider.AssetsProvider.Release(poolObject);
                 }
             }
             

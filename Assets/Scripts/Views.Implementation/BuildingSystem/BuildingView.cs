@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.View;
 using GameSystems.Implementation.BuildingSystem.Domain;
@@ -21,7 +22,9 @@ namespace Views.Implementation.BuildingSystem
         public MergeAnimationConfig MergeConfig;
 
         private BuildingModel _model;
-        
+        private bool _isDragging;
+        private MotionHandle? _tween;
+
         private GameObject CurrentVisual => _visualsByLevel[Mathf.Min(_model.Level.Value, _visualsByLevel.Length - 1)];
         
         public void Initialize(BuildingModel model)
@@ -29,10 +32,23 @@ namespace Views.Implementation.BuildingSystem
             _model = model;
             model.Level.Subscribe(OnLevelUpdated).AddTo(this);
             model.WorldPosition.Subscribe(SetWorldPosition).AddTo(this);
+            model.IsDragging.Subscribe(OnIsDraggingChanged).AddTo(this);
             
             NameText.SetText(model.BuildingName);
 
             SetUiActive(false);
+        }
+
+        private void OnIsDraggingChanged(bool value)
+        {
+            if (_isDragging == value)
+                return;
+            
+            _isDragging = value;
+            
+            _tween = LMotion.Create(Vector3.one, Vector3.one, 0.3f)
+                .WithEase(Ease.InBounce)
+                .BindToLocalScale(CurrentVisual.transform);
         }
 
         private void OnLevelUpdated(int value)

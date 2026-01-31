@@ -49,6 +49,18 @@ namespace GameSystems.Implementation.GameInteractionFeature
             cursorPosition = null;
             return false;
         }
+        
+        public bool TryGetFreePositionFromScreenPoint(Vector2 screenPoint, [NotNullWhen(true)] out Vector3? cursorPosition)
+        {
+            var ray = _raycastCamera.ScreenPointToRay(screenPoint);
+            if (Physics.Raycast(ray, out var hit, _layerMask))
+            {
+                cursorPosition = hit.point;
+                return true;
+            }
+            cursorPosition = null;
+            return false;
+        }
     
         private bool TryGetCellFromHitPoint(Vector3 hitPoint, IGridComponent component, [NotNullWhen(true)] out CellModel? cell)
         {
