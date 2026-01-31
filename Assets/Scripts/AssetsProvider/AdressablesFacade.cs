@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 
 namespace AssetsProvider
 {
-    public static class AssetsProvider
+    public static class AdressablesFacade
     {
         public static UniTask<T> GetAssetAsync<T>(string assetKey)
             where T : UnityEngine.Object

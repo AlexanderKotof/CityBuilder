@@ -1,6 +1,6 @@
 using System;
 
-namespace ViewSystem
+namespace GameSystems.Common.WindowSystem.Window
 {
     public interface IWindowView
     {

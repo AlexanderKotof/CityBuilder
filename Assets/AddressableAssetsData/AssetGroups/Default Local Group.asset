@@ -60,6 +60,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dfbaec8a838f6ae44b749fd70f8f9763
+    m_Address: HudWindow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e5d3699324571ff4694c28dacb3d7771
     m_Address: BattleUnitUI
     m_ReadOnly: 0

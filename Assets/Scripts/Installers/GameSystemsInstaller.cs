@@ -1,5 +1,7 @@
+using CityBuilder.GameSystems.Implementation.HudWindow;
 using CityBuilder.Grid;
 using GameSystems.Common.ViewSystem.ViewsProvider;
+using GameSystems.Common.WindowSystem;
 using GameSystems.Implementation;
 using GameSystems.Implementation.BattleSystem;
 using GameSystems.Implementation.BuildingSystem;
@@ -77,6 +79,10 @@ namespace Installers
             builder.Register<BattleUnitsViewFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             builder.Register<PlayerBuildingsUnitsFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            // WINDOWS
+            
+            builder.Register<HudWindowFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             // DEBUG
             

@@ -2,70 +2,84 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using GameSystems.Common.ViewSystem.ViewsProvider;
+using GameSystems.Common.WindowSystem.Window;
 using UnityEngine;
-using ViewSystem;
 
-public class WindowsProvider
+namespace GameSystems.Common.WindowSystem
 {
-    private readonly IViewWithModelProvider _viewsProvider;
-    
-    private readonly Dictionary<IWindowViewModel, IWindowView> _views = new ();
-    
-    private readonly List<IWindowViewModel> _activeViews = new();
-
-    private Transform _windowsParent;
-    
-    public WindowsProvider(IViewWithModelProvider viewsProvider)
+    public interface IWindowsProvider
     {
-        _viewsProvider = viewsProvider;
+        Task<TWindowViewModel> CreateWindow<TWindowViewModel>(
+            WindowCreationData creationData,
+            IDependencyContainer dependencies)
+            where TWindowViewModel : IWindowViewModel, new();
+
+        void Recycle<TWindowViewModel>(TWindowViewModel viewModel) where TWindowViewModel : IWindowViewModel;
     }
 
-    public async Task<TWindowViewModel> CreateWindow<TWindowViewModel>(
-        WindowCreationData creationData,
-        IDependencyContainer dependencies)
-        where TWindowViewModel : IWindowViewModel, new()
+    public class WindowsProvider : IWindowsProvider
     {
-        var assetKey = creationData.AssetKey;
-        var viewModel = new TWindowViewModel();
-        var view = await _viewsProvider.ProvideViewWithModel<TWindowViewModel, WindowViewBase<TWindowViewModel>>(assetKey, viewModel, dependencies, _windowsParent);
-        
-        viewModel.IsActive.Subscribe(OnViewActivityChanged);
-        viewModel.Close.AddListener(Close);
-        
-        _views.Add(viewModel, view);
-        
-        return viewModel;
-        
-        void OnViewActivityChanged(bool isActive)
+        private readonly IViewWithModelProvider _viewsProvider;
+    
+        private readonly Dictionary<IWindowViewModel, IWindowView> _windowViews = new ();
+    
+        private readonly List<IWindowViewModel> _activeViews = new();
+
+        private readonly Transform _windowsParent;
+    
+        public WindowsProvider(IViewWithModelProvider viewsProvider)
         {
-            switch (_activeViews.Contains(viewModel))
-            {
-                case true when isActive == false:
-                    _activeViews.Remove(viewModel);
-                    break;
-                case false when isActive:
-                    _activeViews.Add(viewModel);
-                    break;
-            }
-            
-            PostProcessWindowsActivity();
+            _viewsProvider = viewsProvider;
+            _windowsParent = new GameObject("Windows").transform;
         }
-        
-        void Close() => viewModel.IsActive.Set(false);
-    }
-    
-    private void PostProcessWindowsActivity()
-    {
-        //TODO: postprocess windows
-    }
 
-    public void Recycle<TWindowViewModel>(TWindowViewModel viewModel) where TWindowViewModel : IWindowViewModel
-    {
-        if (_views.Remove(viewModel))
+        public async Task<TWindowViewModel> CreateWindow<TWindowViewModel>(
+            WindowCreationData creationData,
+            IDependencyContainer dependencies)
+            where TWindowViewModel : IWindowViewModel, new()
         {
-            viewModel.IsActive.Dispose();
-            viewModel.Close.Dispose();
-            _viewsProvider.Recycle(viewModel);
+            var assetKey = creationData.AssetKey;
+            var viewModel = new TWindowViewModel();
+            var view = await _viewsProvider.ProvideViewWithModel<TWindowViewModel, WindowViewBase<TWindowViewModel>>(assetKey, viewModel, dependencies, _windowsParent);
+        
+            viewModel.IsActive.Subscribe(OnViewActivityChanged);
+            viewModel.Close.AddListener(Close);
+        
+            _windowViews.Add(viewModel, view);
+        
+            return viewModel;
+        
+            void OnViewActivityChanged(bool isActive)
+            {
+                switch (_activeViews.Contains(viewModel))
+                {
+                    case true when isActive == false:
+                        _activeViews.Remove(viewModel);
+                        break;
+                    case false when isActive:
+                        _activeViews.Add(viewModel);
+                        break;
+                }
+            
+                PostProcessWindowsActivity();
+            }
+        
+            void Close() => viewModel.IsActive.Set(false);
+        }
+    
+        private void PostProcessWindowsActivity()
+        {
+            //TODO: postprocess windows
+        }
+
+        public void Recycle<TWindowViewModel>(TWindowViewModel viewModel) where TWindowViewModel : IWindowViewModel
+        {
+            if (_windowViews.Remove(viewModel))
+            {
+                viewModel.IsActive.Dispose();
+                viewModel.Close.Dispose();
+                _viewsProvider.Recycle(viewModel);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using AssetsProvider;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem.Pools;
 using UnityEngine;
@@ -19,8 +19,7 @@ namespace GameSystems.Common.ViewSystem.ViewsProvider
             {
                 while (pool.TryPool(out Object poolObject))
                 {
-                    if (poolObject != null)
-                        AssetsProvider.AssetsProvider.Release(poolObject);
+                    AdressablesFacade.Release(poolObject);
                 }
             }
             
@@ -86,15 +85,15 @@ namespace GameSystems.Common.ViewSystem.ViewsProvider
             pool.Return(component);
         }
 
-        private async Task<T> CreateView<T>(string assetKey, Transform parent = null)
+        private async UniTask<T> CreateView<T>(string assetKey, Transform parent = null)
         {
             var gameObject = await CreateView(assetKey, parent);
             return gameObject.GetComponent<T>();
         }
         
-        private async Task<GameObject> CreateView(string assetKey, Transform parent = null)
+        private async UniTask<GameObject> CreateView(string assetKey, Transform parent = null)
         {
-            var gameObject = await AssetsProvider.AssetsProvider.InstantiateAsync(assetKey, parent);
+            var gameObject = await AdressablesFacade.InstantiateAsync(assetKey, parent);
             return gameObject;
         }
 

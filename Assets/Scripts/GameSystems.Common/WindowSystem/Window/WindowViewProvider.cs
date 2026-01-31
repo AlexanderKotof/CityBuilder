@@ -1,7 +1,6 @@
-using CityBuilder.Dependencies;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 
-namespace ViewSystem
+namespace GameSystems.Common.WindowSystem.Window
 {
     public class WindowViewProvider : ViewWithModelProvider
     {

@@ -1,4 +1,5 @@
 using CityBuilder.Reactive;
+using GameSystems.Common.WindowSystem;
 using GameSystems.Implementation.BuildingSystem.Domain;
 
 namespace ViewSystem

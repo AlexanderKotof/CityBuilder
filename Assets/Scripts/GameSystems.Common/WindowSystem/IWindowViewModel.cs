@@ -1,10 +1,12 @@
 using CityBuilder.Reactive;
 using GameSystems.Common.ViewSystem;
-using ViewSystem;
 
-public interface IWindowViewModel : IViewModel
+namespace GameSystems.Common.WindowSystem
 {
-    ReactiveProperty<bool> IsActive { get; }
+    public interface IWindowViewModel : IViewModel
+    {
+        ReactiveProperty<bool> IsActive { get; }
 
-    ReactiveCommand Close { get; }
+        ReactiveCommand Close { get; }
+    }
 }

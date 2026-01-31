@@ -1,11 +1,14 @@
-public struct WindowCreationData
+namespace GameSystems.Common.WindowSystem
 {
-    public WindowCreationData(string assetKey, int layer)
+    public struct WindowCreationData
     {
-        AssetKey = assetKey;
-        Layer = layer;
-    }
+        public WindowCreationData(string assetKey, int layer)
+        {
+            AssetKey = assetKey;
+            Layer = layer;
+        }
 
-    public int Layer { get; set; }
-    public string AssetKey { get; set; }
+        public int Layer { get; set; }
+        public string AssetKey { get; set; }
+    }
 }

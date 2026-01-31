@@ -4,6 +4,7 @@ using CityBuilder.Grid;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem;
 using GameSystems.Common.ViewSystem.ViewsProvider;
+using GameSystems.Common.WindowSystem;
 using GameSystems.Implementation.BuildingSystem.Domain;
 using GameSystems.Implementation.GameInteractionFeature;
 using JetBrains.Annotations;
@@ -19,7 +20,7 @@ namespace GameSystems.Implementation.BuildingSystem.Features
     public class BuildingsViewFeature : IInitializable, IDisposable
     {
         private readonly ViewsCollectionController<BuildingView> _buildingViewsController;
-        private readonly WindowsProvider _windowsProvider;
+        private readonly IWindowsProvider _windowsProvider;
         private readonly IDependencyContainer _container;
         private readonly InteractionModel _interactionModel;
         private readonly BuildingManager _buildingManager;
@@ -29,7 +30,7 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         private readonly CompositeDisposable _subscriptions = new();
         private BuildingView _selectedView;
 
-        public BuildingsViewFeature(BuildingManager manager, BuildingsModel model, InteractionModel interactionModel, IViewsProvider viewsProvider, WindowsProvider windowsProvider)
+        public BuildingsViewFeature(BuildingManager manager, BuildingsModel model, InteractionModel interactionModel, IViewsProvider viewsProvider, IWindowsProvider windowsProvider)
         {
             _interactionModel = interactionModel;
             _buildingManager = manager;

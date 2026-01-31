@@ -23,6 +23,9 @@ namespace GameSystems.Common.ViewSystem.Pools
 
         public void Return(Object obj)
         {
+            if (_pool.Contains(obj))
+                return;
+            
             _pool.Enqueue(obj);
             OnReturn(obj);
         }
