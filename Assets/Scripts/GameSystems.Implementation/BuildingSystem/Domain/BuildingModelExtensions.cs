@@ -51,9 +51,9 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
                 toX = Mathf.Clamp(position.X + 1, 0, gridModel.Size.x);
                 toY = Mathf.Clamp(position.Y + 1, 0, gridModel.Size.y);
                 
-                for (int i = fromX; i < toX; i++)
+                for (int i = fromX; i <= toX; i++)
                 {
-                    for (int j = fromY; j < toY; j++)
+                    for (int j = fromY; j <= toY; j++)
                     {
                         if (position.X == i && position.Y == j)
                             continue;
@@ -72,9 +72,9 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
             toX = Mathf.Clamp(Mathf.Max(xPositions), 0, gridModel.Size.x); 
             toY = Mathf.Clamp(Mathf.Max(yPositions), 0, gridModel.Size.y); 
                 
-            for (int i = fromX; i < toX; i++)
+            for (int i = fromX; i <= toX; i++)
             {
-                for (int j = fromY; j < toY; j++)
+                for (int j = fromY; j <= toY; j++)
                 {
                     if (buildingCells.Any(cell => cell.Position.Value == new Vector2Int(i, j)))
                         continue;
