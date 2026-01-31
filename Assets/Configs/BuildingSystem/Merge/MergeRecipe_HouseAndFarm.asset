@@ -15,7 +15,5 @@ MonoBehaviour:
   <RequiredBuildings>k__BackingField:
   - {fileID: 11400000, guid: 7488b9ac3fae1404d912a84e2c909f6a, type: 2}
   - {fileID: 11400000, guid: 9f3c60dff20fc04478d129f5221877a8, type: 2}
-  - {fileID: 11400000, guid: 9f3c60dff20fc04478d129f5221877a8, type: 2}
-  - {fileID: 11400000, guid: 7488b9ac3fae1404d912a84e2c909f6a, type: 2}
   <AdditionalCosts>k__BackingField: []
   <Product>k__BackingField: {fileID: 11400000, guid: eeed12f763480c145bbad994ddd124e8, type: 2}

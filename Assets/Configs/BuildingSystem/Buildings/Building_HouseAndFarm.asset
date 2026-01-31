@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Villa
   AssetKey: HouseAndFarm
   Size:
-    <X>k__BackingField: 2
+    <X>k__BackingField: 1
     <Y>k__BackingField: 1
   IsMovable: 1
   RequiredResources:
