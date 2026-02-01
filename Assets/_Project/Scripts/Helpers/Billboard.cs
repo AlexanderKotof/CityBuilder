@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CityBuilder.Helpers
 {
+    //TODO: injecting to random components on views
     public class Billboard : MonoBehaviour
     {
         private Camera _camera;
