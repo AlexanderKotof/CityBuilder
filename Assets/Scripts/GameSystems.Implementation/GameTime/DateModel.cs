@@ -1,4 +1,5 @@
 using System;
+using UniRx;
 
 namespace GameSystems.Implementation.GameTime
 {
@@ -9,8 +10,8 @@ namespace GameSystems.Implementation.GameTime
         public int Day { get; private set; }
         public int Week { get; private set; } = 0;
         public int DayCounter { get; private set; } = 0;
-        
-        public float DayProgress { get; private set; }
+
+        public ReactiveProperty<float> DayProgress { get; } = new(); 
         
         public event Action OnDayChanged;
         public event Action OnMonthChanged;
@@ -25,7 +26,7 @@ namespace GameSystems.Implementation.GameTime
             Day = day;
         }
 
-        public float UpdateDayProgress(float progress) => DayProgress = progress;
+        public float UpdateDayProgress(float progress) => DayProgress.Value = progress;
         
         public void IncrementDay()
         {

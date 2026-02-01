@@ -1,8 +1,8 @@
-using CityBuilder.Reactive;
 using GameSystems.Common.ViewSystem;
 using JetBrains.Annotations;
 using UnityEngine;
 using ViewSystem;
+using UniRx;
 
 namespace GameSystems.Implementation.BattleSystem
 {

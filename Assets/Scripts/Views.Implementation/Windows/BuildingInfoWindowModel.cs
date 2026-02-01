@@ -1,6 +1,6 @@
-using CityBuilder.Reactive;
 using GameSystems.Common.WindowSystem;
 using GameSystems.Implementation.BuildingSystem.Domain;
+using UniRx;
 
 namespace ViewSystem
 {
@@ -11,5 +11,9 @@ namespace ViewSystem
         
         
         public readonly ReactiveProperty<BuildingModel?> SelectedBuilding = new();
+        
+        public void Dispose()
+        {
+        }
     }
 }

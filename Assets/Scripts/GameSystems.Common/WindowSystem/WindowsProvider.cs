@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Common.WindowSystem.Window;
+using UniRx;
 using UnityEngine;
+using Utilities.Extensions;
 
 namespace GameSystems.Common.WindowSystem
 {
@@ -43,7 +45,7 @@ namespace GameSystems.Common.WindowSystem
             var view = await _viewsProvider.ProvideViewWithModel<TWindowViewModel, WindowViewBase<TWindowViewModel>>(assetKey, viewModel, dependencies, _windowsParent);
         
             viewModel.IsActive.Subscribe(OnViewActivityChanged);
-            viewModel.Close.AddListener(Close);
+            viewModel.Close.Subscribe(Close);
         
             _windowViews.Add(viewModel, view);
         
@@ -64,7 +66,7 @@ namespace GameSystems.Common.WindowSystem
                 PostProcessWindowsActivity();
             }
         
-            void Close() => viewModel.IsActive.Set(false);
+            void Close(Unit _) => viewModel.IsActive.Set(false);
         }
     
         private void PostProcessWindowsActivity()
@@ -76,8 +78,7 @@ namespace GameSystems.Common.WindowSystem
         {
             if (_windowViews.Remove(viewModel))
             {
-                viewModel.IsActive.Dispose();
-                viewModel.Close.Dispose();
+                viewModel.Dispose();
                 _viewsProvider.Recycle(viewModel);
             }
         }

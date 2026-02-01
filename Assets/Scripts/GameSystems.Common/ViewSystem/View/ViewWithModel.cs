@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using CityBuilder.Dependencies;
-using CityBuilder.Reactive;
 using JetBrains.Annotations;
+using UniRx;
 
 namespace GameSystems.Common.ViewSystem.View
 {
@@ -43,8 +43,8 @@ namespace GameSystems.Common.ViewSystem.View
 
         protected void Subscribe<T>(ReactiveProperty<T> property, Action<T> handler, bool invokeOnSubscribe = true)
         {
-            property.Subscribe(handler);
-            _deinitActions.Add(() => property.Unsubscribe(handler));
+            var disposable = property.Subscribe(handler);
+            _deinitActions.Add(() => disposable.Dispose());
 
             if (invokeOnSubscribe)
             {
