@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Configs.Scriptable.Buildings;
 using Configs.Scriptable.Buildings.Functions;
+using GameSystems.Implementation.BuildingSystem.Domain;
+using UnityEngine;
 
 namespace GameSystems.Implementation.BuildingSystem.Extensions
 {
@@ -42,6 +44,14 @@ namespace GameSystems.Implementation.BuildingSystem.Extensions
 
             function = bc.BuildingFunctions.FirstOrDefault(value => value is T) as T;
             return function != default(T);
+        }
+
+        public static Vector3 GetBuildingCenterVisualPosition(this BuildingModel building)
+        {
+            var center = building.WorldPosition.Value;
+            var size = building.Config.Size;
+            center += new Vector3(size.X, (size.X + size.Y) * 0.5f, size.Y) * 0.5f;
+            return center;
         }
     }
 }

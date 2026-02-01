@@ -98,7 +98,8 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             var view = _viewFeature.GetBuildingView(buildingModel);
             if (view != null)
             {
-                await view.MergeTo(toBuilding.WorldPosition.Value);
+                var center = toBuilding.GetBuildingCenterVisualPosition();
+                await view.MergeTo(center);
                 await UniTask.Yield();
             }
             _buildingsModel.RemoveBuilding(buildingModel);
@@ -111,7 +112,7 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             
             if (toBuilding.IsMaxLevel == false || fromBuilding.IsMaxLevel == false)
             {
-                Debug.LogError("No max level reached");
+                //Debug.LogError("No max level reached");
                 return false;
             }
 

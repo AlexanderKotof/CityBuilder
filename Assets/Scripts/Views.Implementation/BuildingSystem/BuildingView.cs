@@ -87,7 +87,7 @@ namespace Views.Implementation.BuildingSystem
             var startScale = visualTransform.localScale;
 
             await UniTask.WhenAll(
-                LMotion.Create(startScale, Vector3.zero, MergeConfig.ScalingDuration)
+                LMotion.Create(startScale, Vector3.one * 0.3f, MergeConfig.ScalingDuration)
                     .WithDelay(MergeConfig.ScalingDelay)
                     .WithEase(MergeConfig.ScalingEase)
                     .BindToLocalScale(visualTransform)
