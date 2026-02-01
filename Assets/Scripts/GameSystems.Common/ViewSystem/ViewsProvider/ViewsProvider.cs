@@ -15,13 +15,14 @@ namespace GameSystems.Common.ViewSystem.ViewsProvider
         
         public void Dispose()
         {
-            foreach (var pool in _viewPools.Values)
-            {
-                while (pool.TryPool(out Object poolObject))
-                {
-                    AdressablesFacade.Release(poolObject);
-                }
-            }
+            //TODO: throws wrong object exceptions, need research
+            // foreach (var pool in _viewPools.Values)
+            // {
+            //     while (pool.TryPool(out Object poolObject))
+            //     {
+            //         AdressablesFacade.Release(poolObject);
+            //     }
+            // }
             
             _viewPools.Clear();
             _objectsIdsToPools.Clear();
