@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using CityBuilder.Content;
+using Configs.Implementation.Common;
 using JetBrains.Annotations;
 using UniRx;
 using UnityEngine;
@@ -44,6 +46,27 @@ namespace CityBuilder.Grid
         public void SetContent([CanBeNull] ICellContent building)
         {
             Content.Value = (building);
+        }
+    }
+
+    public static class CellModelExtensions
+    {
+        public static IEnumerable<CellModel> Expand(this CellModel cell, Size size)
+        {
+            var list = new List<CellModel>();
+            
+            var gridModel = cell.GridModel;
+            var position = cell.Position;
+            
+            for (int i = position.X; i < position.X + size.X; i++)
+            {
+                for (int j = position.Y; j < position.Y + size.Y; j++)
+                {
+                    list.Add(gridModel.GetCell(i, j));
+                }
+            }
+
+            return list;
         }
     }
 }

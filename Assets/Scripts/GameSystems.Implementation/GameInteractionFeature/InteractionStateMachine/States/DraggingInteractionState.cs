@@ -1,6 +1,7 @@
 using System;
 using CityBuilder.Grid;
 using UnityEngine;
+using Utilities.Extensions;
 using VContainer;
 
 namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
@@ -28,18 +29,11 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
             }
         }
 
-        public override void Update()
-        {
-            //TODO: pass content size
-            LightenCellUnderCursor(Vector2Int.one);
-        }
-
         protected override void OnExitState()
         {
             base.OnExitState();
             _draggingContentController.EndDragging();
             InteractionModel.DraggedCell.Set(null);
-            InteractionModel.SelectedCell.Notify();
         }
 
         protected override void ProcessDragging(Vector3 mousePosition)
@@ -76,7 +70,6 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
             }
             
             return _gameInteractionFeature.TryDropContent(fromCell, toCellModel);
-
         }
     }
 }

@@ -8,6 +8,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
     {
         public Color AcceptedStateColor = Color.white;
         public Color RejectedStateColor = Color.red;
+        public Color UpgradeStateColor = Color.red;
         public Color MergeStateColor = Color.red;
         
         public Renderer Renderer;
@@ -31,6 +32,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
             {
                 CursorStateEnum.Accepted => AcceptedStateColor,
                 CursorStateEnum.Merge => MergeStateColor,
+                CursorStateEnum.Upgrade => UpgradeStateColor,
                 CursorStateEnum.Rejected => RejectedStateColor,
                 _ => AcceptedStateColor,
             };

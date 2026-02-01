@@ -1,21 +1,13 @@
-using System.Linq;
-using CityBuilder.Dependencies;
 using CityBuilder.Grid;
 using GameSystems.Implementation.BuildingSystem;
 using PlayerInput;
 using StateMachine;
 using UnityEngine;
+using Utilities.Extensions;
 using VContainer;
 
 namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
-    public enum CursorStateEnum
-    {
-        Accepted,
-        Rejected,
-        Merge,
-    }
-    
     public abstract class InteractionState : StateBase, IUpdateState
     {
         [Inject]
@@ -26,10 +18,6 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         private readonly Raycaster _raycastController;
         [Inject]
         private readonly BuildingManager _buildingManager;
-        [Inject]
-        private readonly GridManager _gridManager;
-
-        private CellModel[] _lightenedCells;
 
         [Inject]
         protected InteractionModel InteractionModel { get; private set; }
@@ -38,29 +26,16 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         
         public virtual void Update()
         {
-            
-        }
-
-        protected void LightenCellUnderCursor(Vector2Int cursorSize)
-        {
-            bool showCursor = Raycaster.TryGetCursorPositionFromScreenPoint(Input.mousePosition, out Vector3? cursorPosition);
-            _cursorController.SetActive(showCursor);
-            if (showCursor)
+            if (Raycaster.TryGetCellFromScreenPoint(_playerInput.PointerPosition, out CellModel cell))
             {
-                _cursorController.SetPosition(cursorPosition.Value, cursorSize);
+                InteractionModel.HoveredCell.Set(cell);
+            }
+            else
+            {
+                InteractionModel.HoveredCell.Set(null);
             }
         }
         
-        protected void LightenCells(CellModel[] lightenCells, CursorStateEnum cursorState)
-        {
-            _cursorController.SetPositions(lightenCells, cursorState);
-        }
-
-        protected void ClearLightenCells()
-        {
-            _cursorController.Clear();
-        }
-
         protected override void OnEnterState()
         {
             _playerInput.OnMouseClick += OnMouseClick;

@@ -1,3 +1,4 @@
+using CityBuilder.Content;
 using GameSystems.Common.ViewSystem;
 using UniRx;
 using UnityEngine;
@@ -6,7 +7,7 @@ using ViewSystem;
 
 namespace GameSystems.Implementation.GameInteractionFeature
 {
-    public interface IDraggableViewModel : IViewModel
+    public interface IDraggableViewModel : IViewModel, ICellContent
     {
         ReactiveProperty<Vector3> WorldPosition { get; }
         

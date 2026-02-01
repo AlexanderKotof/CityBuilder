@@ -104,7 +104,7 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             _buildingsModel.RemoveBuilding(buildingModel);
         }
 
-        private bool CanRecipeMerge(BuildingModel toBuilding, BuildingModel fromBuilding, [CanBeNull] out MergeBuildingsRecipeSo recipeSo, [CanBeNull] out IEnumerable<BuildingModel> buildingsInvolved)
+        public bool CanRecipeMerge(BuildingModel toBuilding, BuildingModel fromBuilding, [CanBeNull] out MergeBuildingsRecipeSo recipeSo, [CanBeNull] out IEnumerable<BuildingModel> buildingsInvolved)
         {
             recipeSo = null;
             buildingsInvolved = null;
@@ -176,7 +176,7 @@ namespace GameSystems.Implementation.BuildingSystem.Features
             return null;
         }
 
-        private bool CanLevelUpMerge(BuildingModel toBuilding, BuildingModel fromBuilding, out IEnumerable<BuildingModel> buildingsInvolved)
+        public bool CanLevelUpMerge(BuildingModel toBuilding, BuildingModel fromBuilding, out IEnumerable<BuildingModel> buildingsInvolved)
         {
             buildingsInvolved = null;
             

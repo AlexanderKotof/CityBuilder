@@ -66,8 +66,6 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         
         public void Dispose()
         {
-            _interactionModel.SelectedCell.Unsubscribe(OnSelectedCellUpdated);
-            
             _windowsProvider.Recycle(_buildingWindowViewModel);
             
             _buildingViewsController.Dispose();
@@ -85,7 +83,7 @@ namespace GameSystems.Implementation.BuildingSystem.Features
                 new WindowCreationData("BuildingWindow", 0),
                 _container);
             
-            _interactionModel.SelectedCell.Subscribe(OnSelectedCellUpdated);
+            _interactionModel.SelectedCell.Subscribe(OnSelectedCellUpdated).AddTo(_subscriptions);
         }
         
         private void OnSelectedCellUpdated([CanBeNull] CellModel cellModel)

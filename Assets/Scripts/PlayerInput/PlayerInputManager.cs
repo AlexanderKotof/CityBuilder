@@ -17,7 +17,7 @@ namespace PlayerInput
         
         public event Action<Vector3> OnMouseRightClick;
 
-        public Vector3 MousePosition => Input.mousePosition;
+        public Vector3 PointerPosition => Input.mousePosition;
 
         private bool _isDragging = false;
 
@@ -43,7 +43,7 @@ namespace PlayerInput
         {
             if (Input.GetMouseButtonDown(1))
             {
-                OnMouseRightClick?.Invoke(MousePosition);
+                OnMouseRightClick?.Invoke(PointerPosition);
             }
         }
 
@@ -51,7 +51,7 @@ namespace PlayerInput
         {
             if (Input.GetMouseButtonDown(0))
             {
-                OnMouseClick?.Invoke(MousePosition);
+                OnMouseClick?.Invoke(PointerPosition);
                 _pressTime = Time.realtimeSinceStartup;
                 _pressPosition = Input.mousePosition;
             }
@@ -59,7 +59,7 @@ namespace PlayerInput
             if (Input.GetMouseButton(0) && (CheckDelay() || CheckPosition() || _isDragging))
             {
                 UpdateDragging(true);
-                OnMouseDragging?.Invoke(MousePosition);
+                OnMouseDragging?.Invoke(PointerPosition);
                 return;
             }
             
@@ -86,11 +86,11 @@ namespace PlayerInput
                 _isDragging = isDragging;
                 if (_isDragging)
                 {
-                    OnMouseDragStarted?.Invoke(MousePosition);
+                    OnMouseDragStarted?.Invoke(PointerPosition);
                 }
                 else
                 {
-                    OnMouseDragEnded?.Invoke(MousePosition);
+                    OnMouseDragEnded?.Invoke(PointerPosition);
                 }
             }
         }

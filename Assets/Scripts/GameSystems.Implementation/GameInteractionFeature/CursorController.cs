@@ -1,28 +1,27 @@
 using System;
+using System.Collections.Generic;
 using CityBuilder.Grid;
 using Configs.Scriptable;
 using Cysharp.Threading.Tasks;
 using GameSystems.Common.ViewSystem;
 using GameSystems.Common.ViewSystem.ViewsProvider;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States;
-using UnityEditor.AddressableAssets.GUI;
 using UnityEngine;
 using VContainer.Unity;
-using ViewSystem;
 
 namespace GameSystems.Implementation.GameInteractionFeature
 {
-    public class CursorController : IInitializable, IDisposable
+    public class CursorController : IInitializable, IDisposable, ITickable
     {
         private readonly IViewsProvider _provider;
         private readonly CommonGameSettingsSo _settings;
         private CursorComponent _singleCursor;
         
-        private CellModel[] _lightenedCells;
-        
         private readonly ViewsCollectionController<CursorComponent> _cursorsController;
 
-        public CursorController(IViewsProvider provider, CommonGameSettingsSo settings)
+        public CursorController(
+            IViewsProvider provider, 
+            CommonGameSettingsSo settings)
         {
             _provider = provider;
             _settings = settings;
@@ -39,6 +38,11 @@ namespace GameSystems.Implementation.GameInteractionFeature
             _provider.ReturnView(_singleCursor);
             _cursorsController.Dispose();
         }
+    
+        public void Tick()
+        {
+            
+        }
         
         private async UniTask LoadCursorView()
         {
@@ -46,7 +50,7 @@ namespace GameSystems.Implementation.GameInteractionFeature
             SetActive(false);
         }
 
-        public void SetPosition(Vector3 position, Vector2Int selectionSize)
+        public void SetSelection(Vector3 position, Vector2Int selectionSize)
         {
             if (_singleCursor == null)
             {
@@ -56,26 +60,23 @@ namespace GameSystems.Implementation.GameInteractionFeature
             _singleCursor.SetCursor(position, new Vector3(selectionSize.x, 1, selectionSize.y));
         }
         
-        public void SetPositions(CellModel[] lightenCells, CursorStateEnum cursorState)
+        public void SetPositions(IEnumerable<CellModel> lightenCells, CursorStateEnum cursorState)
         {
-            if (_lightenedCells != null)
+            foreach (var cell in lightenCells)
             {
-                _cursorsController.Dispose();
+                AddView(cell, cursorState).Forget();
             }
-            
-            _lightenedCells = lightenCells;
-            
-            foreach (var cell in _lightenedCells)
-            {
-                AddView(cell).Forget();
-            }
-            return;
-
-            async UniTaskVoid AddView(CellModel cellModel)
-            {
-                var view = await _cursorsController.AddView(cellModel);
-                view.Setup(cellModel, cursorState);
-            }
+        }
+        
+        public void SetPosition(CellModel lightenCell, CursorStateEnum cursorState)
+        {
+            AddView(lightenCell, cursorState).Forget();
+        }
+        
+        async UniTaskVoid AddView(CellModel cellModel, CursorStateEnum cursorState)
+        {
+            var view = await _cursorsController.AddView(cellModel);
+            view.Setup(cellModel, cursorState);
         }
 
         public void SetActive(bool active)
@@ -91,7 +92,6 @@ namespace GameSystems.Implementation.GameInteractionFeature
         public void Clear()
         {
             _cursorsController.Dispose();
-            _lightenedCells = null;
         }
     }
 }

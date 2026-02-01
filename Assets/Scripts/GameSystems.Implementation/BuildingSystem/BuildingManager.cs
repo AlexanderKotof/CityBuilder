@@ -93,7 +93,7 @@ namespace GameSystems.Implementation.BuildingSystem
             _model.AddBuilding(building, cellModel);
         }
 
-        private bool CanPlaceBuilding(CellModel location, BuildingModel newBuilding)
+        public bool CanPlaceBuilding(CellModel location, BuildingModel newBuilding)
         {
             var cells = newBuilding.GetBuildingCellsSet(location);
             foreach (var cell in cells)

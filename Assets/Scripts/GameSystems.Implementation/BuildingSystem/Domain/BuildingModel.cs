@@ -15,7 +15,7 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
         IReadOnlyCollection<CellModel> OccupiedCells { get; }
     }
     
-    public class BuildingModel : ICellContent, ICellOccupier, IViewModel, IDraggableViewModel, IDisposable
+    public class BuildingModel : ICellOccupier, IViewModel, IDraggableViewModel, IDisposable
     {
         public string BuildingName => Config.Name;
         public ReactiveProperty<int> Level { get; } = new();

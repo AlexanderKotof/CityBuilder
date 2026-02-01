@@ -22,4 +22,12 @@ namespace Utilities.Extensions
             return subscriptions;
         }
     }
+
+    public static class ReactivePropertyExtensions
+    {
+        public static void Set<T>(this ReactiveProperty<T> property, T value)
+        {
+            property.Value = value;
+        }
+    }
 }
