@@ -1,3 +1,4 @@
+using CityBuilder.GameSystems.Implementation;
 using CityBuilder.GameSystems.Implementation.HudWindow;
 using CityBuilder.Grid;
 using GameSystems.Common.ViewSystem.ViewsProvider;
@@ -102,6 +103,7 @@ namespace Installers
             builder.Register<CellSelectedInteractionState>(Lifetime.Singleton).As<InteractionState>();
             builder.Register<DraggingInteractionState>(Lifetime.Singleton).As<InteractionState>();
             builder.Register<PlayerInteractionStateMachine>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<PlayerActionsService>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             builder.Register<GameInteractionFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }

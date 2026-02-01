@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CityBuilder.GameSystems.Implementation;
 using CityBuilder.Grid;
 using Configs.Scriptable.Buildings;
 using Cysharp.Threading.Tasks;
 using GameSystems.Implementation.BuildingSystem.Domain;
+using GameSystems.Implementation.BuildingSystem.Extensions;
 using JetBrains.Annotations;
 using UnityEngine;
 using VContainer.Unity;
@@ -18,18 +20,26 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         private readonly MergeFeatureConfigurationSo _configuration;
         private readonly BuildingsViewFeature _viewFeature;
         private readonly BuildingFactory _buildingFactory;
+        private readonly PlayerActionsService _actionService;
 
         private IEnumerable<MergeBuildingsRecipeSo> MergeRecipes => _configuration.MergeRecipes;
 
         private bool _isInProcess;
 
-        public MergeBuildingsFeature(BuildingManager buildingsManager, BuildingsModel buildingsModel, MergeFeatureConfigurationSo configuration, BuildingsViewFeature viewFeature, BuildingFactory buildingFactory)
+        public MergeBuildingsFeature(
+            BuildingManager buildingsManager,
+            BuildingsModel buildingsModel,
+            MergeFeatureConfigurationSo configuration,
+            BuildingsViewFeature viewFeature,
+            BuildingFactory buildingFactory,
+            PlayerActionsService actionService)
         {
             _buildingsManager = buildingsManager;
             _buildingsModel = buildingsModel;
             _configuration = configuration;
             _viewFeature = viewFeature;
             _buildingFactory = buildingFactory;
+            _actionService = actionService;
         }
 
         public void Initialize()
@@ -42,44 +52,44 @@ namespace GameSystems.Implementation.BuildingSystem.Features
         
         public bool TryMergeBuildingsFromTo(BuildingModel fromBuilding, BuildingModel toBuilding)
         {
-            if (_isInProcess)
-                return false;
-            
             if (CanLevelUpMerge(toBuilding, fromBuilding, out var buildingModels))
             {
-                ProcessMergeUpgrade(toBuilding, buildingModels).Forget();
+                var action = new PlayerAction(() => ProcessMergeUpgrade(toBuilding, buildingModels), NameOf: nameof(ProcessMergeUpgrade));
+                var result = _actionService.QueueAction(action);
                 return true;
             }
 
             if (CanRecipeMerge(toBuilding, fromBuilding, out var recipe, out var involvedBuildings))
             {           
-                ProcessMergeWithRecipe(toBuilding, involvedBuildings, recipe).Forget();
+                var action = new PlayerAction(() => ProcessMergeWithRecipe(toBuilding, involvedBuildings, recipe), NameOf: nameof(ProcessMergeWithRecipe));
+                var result = _actionService.QueueAction(action);
                 return true;
             }
 
             return false;
         }
 
-        private async UniTaskVoid ProcessMergeUpgrade(BuildingModel toBuilding, IEnumerable<BuildingModel> buildingModels)
+        private async UniTask<IResult> ProcessMergeUpgrade(BuildingModel toBuilding, IEnumerable<BuildingModel> buildingModels)
         {
-            _isInProcess = true;
-            
             var array = buildingModels.Select(building => MergeBuildingsTo(building, toBuilding));
             await UniTask.WhenAll(array);
                 
             _buildingsManager.IncreaseBuildingLevel(toBuilding);
-
-            _isInProcess = false;
                 
             Debug.Log($"Building level upgraded to {toBuilding.Level}");
+
+            return new Success(RevertMerge);
+
+            void RevertMerge()
+            {
+                
+            }
         }
         
-        private async UniTaskVoid ProcessMergeWithRecipe(BuildingModel toBuilding,
+        private async UniTask<IResult> ProcessMergeWithRecipe(BuildingModel toBuilding,
             IEnumerable<BuildingModel> buildingModels,
             MergeBuildingsRecipeSo recipe)
         {
-            _isInProcess = true;
-            
             var array = buildingModels.Select(building => MergeBuildingsTo(building, toBuilding));
             await UniTask.WhenAll(array);
             
@@ -88,9 +98,15 @@ namespace GameSystems.Implementation.BuildingSystem.Features
 
             var newBuilding = _buildingFactory.Create(recipe, position);
             _buildingsModel.AddBuilding(newBuilding, position);
-
-            _isInProcess = false;
+            
             Debug.LogError("Buildings merge with recipe", recipe);
+            
+            return new Success(RevertMerge);
+
+            void RevertMerge()
+            {
+                
+            }
         }
 
         private async UniTask MergeBuildingsTo(BuildingModel buildingModel, BuildingModel toBuilding)
