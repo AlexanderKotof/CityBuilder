@@ -17,17 +17,14 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         protected override void OnEnterState()
         {
             base.OnEnterState();
-            
-            //ToDo: content manager
-            // or just check cell content for a drag
-            //if (BuildingManager.TryGetBuilding(InteractionModel.DraggedCell.Value, out var building))
-            if (InteractionModel.DraggedCell.Value.Content.Value is IDraggableViewModel draggableViewModel)
+
+            var content = InteractionModel.DraggedCell.Value?.Content?.Value;
+            if (content is IDraggableViewModel draggableViewModel)
             {
                 _draggingContentController.StartDraggingContent(draggableViewModel);
             }
             else
             {
-                Debug.LogError("InteractionModel.DraggedCell.Value?.Content is NOT IDraggableViewModel!");
                 ChangeState<EmptyInteractionState>();
             }
         }

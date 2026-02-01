@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using CityBuilder.Grid;
-using Configs.Implementation.Common;
-using Cysharp.Threading.Tasks;
 using GameSystems.Implementation.BuildingSystem;
 using GameSystems.Implementation.BuildingSystem.Features;
 using GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States;
@@ -86,12 +83,9 @@ namespace GameSystems.Implementation.GameInteractionFeature
             
             if (_buildingManager.TryGetBuilding(cellModel, out var building))
             {
+                _cursorController.Clear();
                 _cursorController.SetPositions(building.OccupiedCells, CursorStateEnum.Selection); 
             }
-            // else
-            // {
-            //     _cursorController.SetActive(false);
-            // }
         }
         
         private void OnDraggingCell(CellModel cellModel)

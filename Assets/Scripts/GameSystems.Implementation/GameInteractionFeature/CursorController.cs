@@ -64,18 +64,21 @@ namespace GameSystems.Implementation.GameInteractionFeature
         {
             foreach (var cell in lightenCells)
             {
-                AddView(cell, cursorState).Forget();
+                GetOrAddView(cell, cursorState).Forget();
             }
         }
         
         public void SetPosition(CellModel lightenCell, CursorStateEnum cursorState)
         {
-            AddView(lightenCell, cursorState).Forget();
+            GetOrAddView(lightenCell, cursorState).Forget();
         }
         
-        async UniTaskVoid AddView(CellModel cellModel, CursorStateEnum cursorState)
+        async UniTaskVoid GetOrAddView(CellModel cellModel, CursorStateEnum cursorState)
         {
-            var view = await _cursorsController.AddView(cellModel);
+            if (_cursorsController.TryGetView(cellModel, out var view) == false)
+            {
+                view = await _cursorsController.AddView(cellModel);
+            }
             view.Setup(cellModel, cursorState);
         }
 

@@ -44,12 +44,15 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
             int fromY;
             int toX;
             int toY;
+            var maxX = gridModel.Size.x - 1;
+            var maxY = gridModel.Size.y - 1;
+            
             if (buildingCells.Count == 1)
             {
-                fromX = Mathf.Clamp(position.X - 1, 0, gridModel.Size.x);
-                fromY = Mathf.Clamp(position.Y - 1, 0, gridModel.Size.y);
-                toX = Mathf.Clamp(position.X + 1, 0, gridModel.Size.x);
-                toY = Mathf.Clamp(position.Y + 1, 0, gridModel.Size.y);
+                fromX = Mathf.Clamp(position.X - 1, 0, maxX);
+                fromY = Mathf.Clamp(position.Y - 1, 0, maxY);
+                toX = Mathf.Clamp(position.X + 1, 0, maxX);
+                toY = Mathf.Clamp(position.Y + 1, 0, maxY);
                 
                 for (int i = fromX; i <= toX; i++)
                 {
@@ -67,10 +70,10 @@ namespace GameSystems.Implementation.BuildingSystem.Domain
             var xPositions = buildingCells.Select(c => c.Position.X).ToArray();
             var yPositions = buildingCells.Select(c => c.Position.Y).ToArray();
 
-            fromX = Mathf.Clamp(Mathf.Min(xPositions), 0, gridModel.Size.x); 
-            fromY = Mathf.Clamp(Mathf.Min(yPositions), 0, gridModel.Size.y); 
-            toX = Mathf.Clamp(Mathf.Max(xPositions), 0, gridModel.Size.x); 
-            toY = Mathf.Clamp(Mathf.Max(yPositions), 0, gridModel.Size.y); 
+            fromX = Mathf.Clamp(Mathf.Min(xPositions), 0, maxX); 
+            fromY = Mathf.Clamp(Mathf.Min(yPositions), 0, maxY); 
+            toX = Mathf.Clamp(Mathf.Max(xPositions), 0, maxX); 
+            toY = Mathf.Clamp(Mathf.Max(yPositions), 0, maxY); 
                 
             for (int i = fromX; i <= toX; i++)
             {
