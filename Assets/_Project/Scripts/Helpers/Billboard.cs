@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CityBuilder.Helpers
+namespace Helpers
 {
     //TODO: injecting to random components on views
     public class Billboard : MonoBehaviour

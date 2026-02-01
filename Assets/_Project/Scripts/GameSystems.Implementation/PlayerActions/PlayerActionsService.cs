@@ -1,34 +1,13 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CityBuilder.GameSystems.Implementation
 {
-    public interface IResult
-    {
-        
-    }
-
-    public record Success(Action RewindHandle = null) : IResult
-    {
-        public Action RewindHandle { get; } = RewindHandle;
-    }
-
-    public record Fail : IResult;
-
-    public record PlayerAction(Func<UniTask<IResult>> Action, Func<bool> ValidateAction = null, string NameOf = null)
-    {
-        public string NameOf { get; } = NameOf;
-        public Func<UniTask<IResult>> Action { get; } = Action;
-        public Func<bool> ValidateAction { get; } = ValidateAction;
-    }
-    
-    public record PlayerActionHandle()
-    {
-        public UniTask<IResult> Task { get; }
-    }
-    
+    /// <summary>
+    /// All player gameplay actions should go through this system 
+    /// TODO: This system also can send requests to backend in future 
+    /// </summary>
     public class PlayerActionsService
     {
         private readonly Queue<PlayerAction> _playerActions = new Queue<PlayerAction>();
@@ -36,6 +15,7 @@ namespace CityBuilder.GameSystems.Implementation
         private PlayerAction _currentPlayerAction;
         private bool _isInProcess;
 
+        //TODO: provide better algorithm
         public async UniTask<IResult> QueueAction(PlayerAction action)
         {
             if (_currentPlayerAction != null)
