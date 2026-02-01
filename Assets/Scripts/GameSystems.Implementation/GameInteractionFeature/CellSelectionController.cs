@@ -78,13 +78,18 @@ namespace GameSystems.Implementation.GameInteractionFeature
         
         private void OnCellSelected(CellModel cellModel)
         {
+            _cursorController.Clear();
+
             if (cellModel == null)
                 return;
             
             if (_buildingManager.TryGetBuilding(cellModel, out var building))
             {
-                _cursorController.Clear();
                 _cursorController.SetPositions(building.OccupiedCells, CursorStateEnum.Selection); 
+            }
+            else
+            {
+                _cursorController.SetPosition(cellModel, CursorStateEnum.Selection); 
             }
         }
         

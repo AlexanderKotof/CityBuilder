@@ -1,5 +1,4 @@
 using CityBuilder.Grid;
-using GameSystems.Implementation.BuildingSystem;
 using PlayerInput;
 using StateMachine;
 using UnityEngine;
@@ -16,23 +15,20 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         private readonly CursorController _cursorController;
         [Inject]
         private readonly Raycaster _raycastController;
-        [Inject]
-        private readonly BuildingManager _buildingManager;
 
         [Inject]
         protected InteractionModel InteractionModel { get; private set; }
         protected Raycaster Raycaster => _raycastController;
-        protected BuildingManager BuildingManager => _buildingManager;
         
         public virtual void Update()
         {
             if (Raycaster.TryGetCellFromScreenPoint(_playerInput.PointerPosition, out CellModel cell))
             {
-                InteractionModel.HoveredCell.Set(cell);
+                InteractionModel.SetHovered(cell);
             }
             else
             {
-                InteractionModel.HoveredCell.Set(null);
+                InteractionModel.ClearHover();
             }
         }
         
@@ -90,12 +86,10 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
 
         private void OnMouseDragEnded(Vector3 vector)
         {
-            if (!_raycastController.TryGetCellFromScreenPoint(vector, out CellModel? cell))
-            {
+            if (InteractionModel.LastHoveredCell == null) 
                 return;
-            }
-
-            ProcessDragEnded(cell);
+            
+            ProcessDragEnded(InteractionModel.LastHoveredCell);
         }
 
         private void OnMouseDragging(Vector3 vector)
@@ -138,7 +132,6 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
         protected void SelectCell(CellModel cellModel)
         {
             InteractionModel.SelectedCell.Set(cellModel);
-            
             OnCellSelected();
         }
         
@@ -150,7 +143,9 @@ namespace GameSystems.Implementation.GameInteractionFeature.InteractionStateMach
             }
             
             InteractionModel.SelectedCell.Set(null);
-            _cursorController.SetActive(false);
+            
+            _cursorController.Clear();
+            
             OnCellSelected();
         }
 
