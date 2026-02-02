@@ -63,7 +63,8 @@ namespace _Project.Scripts.Editor
                 Debug.LogError("❌ No scripts found! Check Assets folder structure.");
                 return;
             }
-            Debug.Log($"✅ Found {scriptGuidMap.Count} valid scripts");
+            Debug.Log($"✅ Found {scriptGuidMap.Count} valid scripts \n" +
+                      string.Join(",\n ", scriptGuidMap.Keys.ToArray()));
 
             // Шаг 2: Находим все ассеты для обработки
             string[] assetPaths = AssetDatabase.GetAllAssetPaths()
@@ -95,7 +96,7 @@ namespace _Project.Scripts.Editor
                 {
                     if (scriptGuidMatches.Any() == false)
                     {
-                        Debug.Log($"No more scripts matching '{match.Value}'");
+                        Debug.LogError($"No more scripts matching '{match.Value}'");
                         break;
                     }
 
@@ -109,40 +110,42 @@ namespace _Project.Scripts.Editor
                     }
                     scriptGuidMatches.Remove(associatedGuid);
                     
-                    Debug.Log($"Script name: {scriptName}, associated GUID: {associatedGuid}");
+                    //Debug.Log($"Script name: {scriptName}, associated GUID: {associatedGuid}");
                     
                     string line = associatedGuid.Value;
                     
                     // Находим правильный GUID по имени
-                    if (scriptGuidMap.TryGetValue(scriptName, out string correctGuid))
+                    if (scriptGuidMap.TryGetValue(scriptName.ToLowerInvariant(), out string correctGuid) == false)
                     {
-                        // Извлекаем текущий GUID
-                        var guidMatch = GuidExtractRegex.Match(line);
-                        if (guidMatch.Success)
-                        {
-                            string currentGuid = guidMatch.Groups[1].Value;
+                        Debug.LogError($"🔧 {scriptName} guid not found...");
+                        continue;
+                    }
+                    
+                    // Извлекаем текущий GUID
+                    var guidMatch = GuidExtractRegex.Match(line);
+                    if (guidMatch.Success)
+                    {
+                        string currentGuid = guidMatch.Groups[1].Value;
                             
-                            // Если GUID не совпадает — заменяем
-                            if (currentGuid != correctGuid)
-                            {
-                                string fixedLine = line.Replace(
-                                    $"guid: {currentGuid}",
-                                    $"guid: {correctGuid}"
-                                );
-                                
-                                content = content.Replace(line, fixedLine);
-                                wasModified = true;
-                                fixesInAsset++;
-                                totalFixed++;
-                                
-                                Debug.Log($"🔧 Fixed in {assetPath}: {scriptName} ({currentGuid} → {correctGuid})");
-                            }
-                        }
-                        else
+                        // Если GUID не совпадает — заменяем
+                        if (currentGuid != correctGuid)
                         {
-                            Debug.Log($"🔧 cannot replace guid...");
-
+                            string fixedLine = line.Replace(
+                                $"guid: {currentGuid}",
+                                $"guid: {correctGuid}"
+                            );
+                                
+                            content = content.Replace(line, fixedLine);
+                            wasModified = true;
+                            fixesInAsset++;
+                            totalFixed++;
+                                
+                            Debug.Log($"🔧 Fixed in {Path.GetFileNameWithoutExtension(fullPath)}: {scriptName} ({currentGuid} → {correctGuid})");
                         }
+                    }
+                    else
+                    {
+                        Debug.LogError($"🔧 cannot replace guid...");
                     }
                 }
 
@@ -191,7 +194,7 @@ namespace _Project.Scripts.Editor
                     string guid = guidMatch.Groups[1].Value;
                     string scriptName = Path.GetFileNameWithoutExtension(scriptPath);
                     
-                    if (map.TryAdd(scriptName, guid) == false)
+                    if (map.TryAdd(scriptName.ToLowerInvariant(), guid) == false)
                     {
                         Debug.LogError($"Script with name {scriptName} already exists!");
                     }
