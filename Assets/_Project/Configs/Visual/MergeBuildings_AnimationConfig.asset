@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MergeBuildings_AnimationConfig
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.ResourcesDefaultConfigurationSo
   <ScalingDelay>k__BackingField: 0.2
-  <ScalingDuration>k__BackingField: 0.6
+  <ScalingDuration>k__BackingField: 0.5
   <ScalingEase>k__BackingField: 29
   <MovingDelay>k__BackingField: 0.5
   <MovingDuration>k__BackingField: 0.6
