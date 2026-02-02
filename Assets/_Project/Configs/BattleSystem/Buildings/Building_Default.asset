@@ -17,8 +17,9 @@ MonoBehaviour:
   Health: 100
   Damage: 0
   AttackRange: 0
-  Defense: 5
+  Defense: 2
   MoveSpeed: 0
   AttackSpeed: 0
   AssetKey: 
   AttackPossibilityAndPriority: 0
+  <Id>k__BackingField: 1527dd02-1c58-459f-9272-fc975ce62f4c

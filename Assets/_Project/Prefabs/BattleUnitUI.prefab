@@ -297,7 +297,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2842695914346085495}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e364416c77c5b3e41bf3bdbf4b0fa913, type: 3}
+  m_Script: {fileID: 11500000, guid: dbd07726159cb56429080daeb0009c17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1936044791177379904
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2842695914346085495}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38db117c68624b9a9bcae3175c1e6e39, type: 3}
+  m_Script: {fileID: 11500000, guid: f80786c41bed09b43a9c3db711ce0a18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSystems.Implementation.BattleSystem.BattleUnitUIComponent
   canvas: {fileID: 4293385153634715637}
@@ -369,7 +369,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3433957468509240169}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80786c41bed09b43a9c3db711ce0a18, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
@@ -444,7 +444,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6240598352496879401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80786c41bed09b43a9c3db711ce0a18, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}

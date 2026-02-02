@@ -106,7 +106,8 @@ namespace _Project.Scripts.Editor
                     var associatedGuid = scriptGuidMatches.LastOrDefault(m => m.Index < thisIndex);
                     if (associatedGuid == null)
                     {
-                        associatedGuid = scriptGuidMatches.Last();
+                        Debug.LogError($"Not found script guid for {scriptName}");
+                        break;
                     }
                     scriptGuidMatches.Remove(associatedGuid);
                     

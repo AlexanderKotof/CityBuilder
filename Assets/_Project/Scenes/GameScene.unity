@@ -178,7 +178,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ab8e987dc930f0c4d8eb572aeecc9f3b, type: 2}
+  - {fileID: 2100000, guid: 05c32ba8f6bceb04c8bb9b57da8f589a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -513,7 +513,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1818661159}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb7e34dda88564a8c4cc31302ceee9, type: 3}
+  m_Script: {fileID: 11500000, guid: af948ef44b473ac47854f7a43e2058dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _gridSize: {x: 10, y: 10}
@@ -541,59 +541,67 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2069440236634569698, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2069440236634569698, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_Name
       value: AppStartup
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.34876
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.8364892
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalPosition.z
       value: 4.7384386
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2206526726153143495, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 2206526726153143495, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6393412800629263358, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+    - target: {fileID: 6393412800629263358, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
       propertyPath: RaycasterCamera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 6393412800629263358, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
+      propertyPath: parentReference.TypeName
+      value: CityBuilder.Installers.GameConfigsInstaller
+      objectReference: {fileID: 0}
+    - target: {fileID: 8011063816217366100, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
+      propertyPath: parentReference.TypeName
+      value: CityBuilder.Installers.CameraInstaller
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 17134f36b903b50448ed42247c1c320d, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 9bf3a7ef98d3d8b40a314a08c570f3de, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

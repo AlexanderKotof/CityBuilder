@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BattleUnitsConfigSO
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BattleUnitsConfigSO
   <PlayerUnitsConfigs>k__BackingField:
-  - {fileID: 11400000, guid: dec0d50ad29c5df449a8e7423674e647, type: 2}
+  - {fileID: 11400000, guid: 258e7cef91d8f874fb734ae99923565e, type: 2}
   <EnemiesConfigs>k__BackingField:
-  - {fileID: 11400000, guid: 1663e2e1065b8594085bf29fad030aa6, type: 2}
+  - {fileID: 11400000, guid: da27d829c20b8d541a07cddafc40bb80, type: 2}
   <BattleUiAssetKey>k__BackingField: BattleUnitUI
-  <DefaultBuildingUnit>k__BackingField: {fileID: 11400000, guid: 1ae460afac06e964d93e1fa303f5de0b, type: 2}
-  <MainBuildingUnit>k__BackingField: {fileID: 11400000, guid: b19308426bf2e414bb55e27232328c39, type: 2}
+  <DefaultBuildingUnit>k__BackingField: {fileID: 11400000, guid: 31abaf6c21d4d97409d2d4de20efb9fb, type: 2}
+  <MainBuildingUnit>k__BackingField: {fileID: 11400000, guid: 6d29f0defb262af4e9d1240c98f617d2, type: 2}

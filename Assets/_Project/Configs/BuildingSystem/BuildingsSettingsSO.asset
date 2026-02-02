@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 416cd59a5edccb642b230fce913495c9, type: 3}
   m_Name: BuildingsSettingsSO
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingsSettingsSO
-  <MainBuildingConfig>k__BackingField: {fileID: 11400000, guid: 7067f92bf42ec804384585acea04763d, type: 2}
+  <MainBuildingConfig>k__BackingField: {fileID: 11400000, guid: 03559b72e198b5042884f03ba27e5d99, type: 2}
   <BuildingConfigs>k__BackingField:
-  - {fileID: 11400000, guid: 9f3c60dff20fc04478d129f5221877a8, type: 2}
-  - {fileID: 11400000, guid: 7488b9ac3fae1404d912a84e2c909f6a, type: 2}
-  - {fileID: 11400000, guid: 212f69f258339204fa2f794659211194, type: 2}
-  - {fileID: 11400000, guid: 4176c8717f7d8134d9f11c38f9a65c3b, type: 2}
-  <AllBuildingFunctions>k__BackingField: []
+  - {fileID: 11400000, guid: b285c921d4f6f134f947387780194241, type: 2}
+  - {fileID: 11400000, guid: c0953d48b123890468920ad1f132bbe7, type: 2}
+  - {fileID: 11400000, guid: 7de3cb2783bd6414fbba23e51960e129, type: 2}
+  - {fileID: 11400000, guid: fc8c96a01c2663d4a8543d2594d3417f, type: 2}

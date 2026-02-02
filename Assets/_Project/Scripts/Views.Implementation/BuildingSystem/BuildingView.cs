@@ -3,7 +3,6 @@ using CityBuilder.GameSystems.Implementation.BuildingSystem.Domain;
 using Cysharp.Threading.Tasks;
 using LitMotion;
 using LitMotion.Extensions;
-using TMPro;
 using UniRx;
 using UnityEngine;
 
@@ -13,10 +12,7 @@ namespace CityBuilder.Views.Implementation.BuildingSystem
     {
         public GameObject[] _visualsByLevel;
         
-        public Canvas UICanvas;
-        
-        public TextMeshProUGUI LevelIndicator;
-        public TextMeshProUGUI NameText;
+        public BuildingWorldCanvas UICanvas;
        
         public MergeAnimationConfig MergeConfig;
 
@@ -32,9 +28,8 @@ namespace CityBuilder.Views.Implementation.BuildingSystem
             model.Level.Subscribe(OnLevelUpdated).AddTo(this);
             model.WorldPosition.Subscribe(SetWorldPosition).AddTo(this);
             model.IsDragging.Subscribe(OnIsDraggingChanged).AddTo(this);
-            
-            NameText.SetText(model.BuildingName);
 
+            UICanvas.SetName(model.BuildingName);
             SetUiActive(false);
         }
 
@@ -52,7 +47,7 @@ namespace CityBuilder.Views.Implementation.BuildingSystem
 
         private void OnLevelUpdated(int value)
         {
-            LevelIndicator.SetText($"Lvl {(value + 1).ToString()}");
+            UICanvas.SetLevel(value);
             
             if (_visualsByLevel == null || _visualsByLevel.Length == 0)
                 return;
@@ -72,7 +67,7 @@ namespace CityBuilder.Views.Implementation.BuildingSystem
 
         public void SetUiActive(bool value)
         {
-            UICanvas.enabled = value;
+            UICanvas.SetUiActive(value);
         }
 
         public async UniTask MergeTo(Vector3 toPosition)

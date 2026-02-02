@@ -44,7 +44,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2069440236634569698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 892093c0923ad2f43ad9af82a268fdfb, type: 3}
+  m_Script: {fileID: 11500000, guid: 06b172d56f22dc848976195cdefeabd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
@@ -61,19 +61,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2069440236634569698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22316bbbb7064c99816a286adcadc04f, type: 3}
+  m_Script: {fileID: 11500000, guid: c8c542f1cbeb8c74ba40412dd66d3250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Installers.GameConfigsInstaller
   parentReference:
-    TypeName: 
+    TypeName: CityBuilder.AppStartup
   autoRun: 1
   autoInjectGameObjects: []
-  CommonGameSettingsSO: {fileID: 11400000, guid: 3f512e873eb52db48856e62f16f06d54, type: 2}
-  InteractionSettingsSO: {fileID: 11400000, guid: cc52ad5f74f720e4f924a5c1100834f0, type: 2}
-  BuildingsSettingsSO: {fileID: 11400000, guid: 73d7472ac2ee55e4fa8d2c09fa6d80fe, type: 2}
-  ResourcesDefaultConfigurationSO: {fileID: 11400000, guid: 5f82f44c5f9c2554cba01e92aa63f58c, type: 2}
-  BattleUnitsConfigSO: {fileID: 11400000, guid: c1e01e5b52d8596458f0508694aedb5e, type: 2}
-  MergeFeatureConfigurationSO: {fileID: 11400000, guid: f41f3a9545980814e96b034a0a1a1359, type: 2}
+  CommonGameSettingsSO: {fileID: 11400000, guid: 5e6ace72865defe409c041462679cae9, type: 2}
+  InteractionSettingsSO: {fileID: 11400000, guid: 702a6de6b7f0fdd4b8fcded3494f40b1, type: 2}
+  BuildingsSettingsSO: {fileID: 11400000, guid: 6b07964770070474e9552a0e3e4ff533, type: 2}
+  ResourcesDefaultConfigurationSO: {fileID: 11400000, guid: 5f8013d8e3f41f14388f6bf94a2414e4, type: 2}
+  BattleUnitsConfigSO: {fileID: 11400000, guid: 8fe9fd6ebbe699446897ea06b36302a6, type: 2}
+  MergeFeatureConfigurationSO: {fileID: 11400000, guid: f44d3b58a7c873a46ac3b6a09c4f1eac, type: 2}
 --- !u!114 &6393412800629263358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,11 +83,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2069440236634569698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdc206dde854d40a719d7c83887d8e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 4cab9f53b2f768f458154b2822d41211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Installers.CameraInstaller
   parentReference:
-    TypeName: Installers.GameConfigsInstaller
+    TypeName: CityBuilder.AppStartup
   autoRun: 1
   autoInjectGameObjects: []
   RaycasterCamera: {fileID: 0}
@@ -100,10 +100,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2069440236634569698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 636a2fe29fea47bda37e2b25cd5d7dc8, type: 3}
+  m_Script: {fileID: 11500000, guid: a0e864dbc7193f64097f612ea6635173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Installers.GameSystemsInstaller
   parentReference:
-    TypeName: Installers.CameraInstaller
+    TypeName: CityBuilder.Installers.GameConfigsInstaller
   autoRun: 1
   autoInjectGameObjects: []
