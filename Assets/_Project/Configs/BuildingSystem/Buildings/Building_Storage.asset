@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46b067256d59406aa6dad87ec571281a, type: 3}
+  m_Script: {fileID: 11500000, guid: c93d56a43a8e89444b5352b8480dcdec, type: 3}
   m_Name: Building_Storage
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
   Name: Storage

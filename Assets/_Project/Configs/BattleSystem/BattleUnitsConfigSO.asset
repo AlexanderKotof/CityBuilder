@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbf4dcee8c73446d9d19c530a7183e0f, type: 3}
+  m_Script: {fileID: 11500000, guid: e53b981673ea6ff49b56afbec9068d65, type: 3}
   m_Name: BattleUnitsConfigSO
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BattleUnitsConfigSO
   <PlayerUnitsConfigs>k__BackingField:

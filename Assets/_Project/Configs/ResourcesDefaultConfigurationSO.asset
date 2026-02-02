@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30012ea2981b43dca00fa5822d1d2166, type: 3}
+  m_Script: {fileID: 11500000, guid: 13bd4a72b90efbe4a9cbc75210675636, type: 3}
   m_Name: ResourcesDefaultConfigurationSO
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.ResourcesDefaultConfigurationSO
   <StartResources>k__BackingField:

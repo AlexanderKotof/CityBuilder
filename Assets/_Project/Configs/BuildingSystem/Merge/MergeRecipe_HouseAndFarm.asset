@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5162a06d70fb40dbaa653928229fdf2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 172141177100dd249a4a266315a0ac82, type: 3}
   m_Name: MergeRecipe_HouseAndFarm
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
   <RequiredBuildings>k__BackingField:
-  - {fileID: 11400000, guid: 7488b9ac3fae1404d912a84e2c909f6a, type: 2}
-  - {fileID: 11400000, guid: 9f3c60dff20fc04478d129f5221877a8, type: 2}
+  - {fileID: 11400000, guid: b285c921d4f6f134f947387780194241, type: 2}
+  - {fileID: 11400000, guid: c0953d48b123890468920ad1f132bbe7, type: 2}
   <AdditionalCosts>k__BackingField: []
-  <Product>k__BackingField: {fileID: 11400000, guid: eeed12f763480c145bbad994ddd124e8, type: 2}
+  <Product>k__BackingField: {fileID: 11400000, guid: 4ee981d70b6fcaa4d95cdd5d4d983e33, type: 2}

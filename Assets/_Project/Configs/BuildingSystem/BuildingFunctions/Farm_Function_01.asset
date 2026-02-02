@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61c6150efcc34612bee15aeb582147be, type: 3}
+  m_Script: {fileID: 11500000, guid: 5004c30d7dc98e64e969bae2229ae8bf, type: 3}
   m_Name: Farm_Function_01
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.BuildingConfigSO
   Note: Farm food production

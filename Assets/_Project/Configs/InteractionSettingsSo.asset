@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 898603b64e444618b63bf77c794b7c15, type: 3}
+  m_Script: {fileID: 11500000, guid: 149ac7b6a4097ae40b70545e72c48b7d, type: 3}
   m_Name: InteractionSettingsSo
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.InteractionSettingsSo
   <InteractionRaycastLayerMask>k__BackingField:
