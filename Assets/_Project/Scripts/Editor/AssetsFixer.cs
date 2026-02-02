@@ -103,10 +103,10 @@ namespace _Project.Scripts.Editor
                     string scriptName = match.Groups[1].Value;
                     var thisIndex = match.Index;
                     
-                    var associatedGuid = scriptGuidMatches.FirstOrDefault(m => m.Index > thisIndex);
+                    var associatedGuid = scriptGuidMatches.LastOrDefault(m => m.Index < thisIndex);
                     if (associatedGuid == null)
                     {
-                        associatedGuid = scriptGuidMatches.First();
+                        associatedGuid = scriptGuidMatches.Last();
                     }
                     scriptGuidMatches.Remove(associatedGuid);
                     
