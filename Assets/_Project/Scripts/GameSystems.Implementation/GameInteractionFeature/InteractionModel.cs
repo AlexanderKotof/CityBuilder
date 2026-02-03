@@ -6,21 +6,25 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature
 {
     public class InteractionModel
     {
-        public readonly ReactiveProperty<CellModel> HoveredCell = new(null);
+        public IReadOnlyReactiveProperty<CellModel> HoveredCell => _hoveredCell;
+        private readonly ReactiveProperty<CellModel> _hoveredCell = new(null);
+
         public readonly ReactiveProperty<CellModel?> SelectedCell = new(null);
         public readonly ReactiveProperty<CellModel?> DraggedCell = new(null);
+        
+        public readonly ReactiveCommand<(CellModel from, CellModel to)> DragAndDropped = new();
         
         public CellModel LastHoveredCell { get; private set; }
 
         public void SetHovered(CellModel cell)
         {
-            HoveredCell.Set(cell);
+            _hoveredCell.Set(cell);
             LastHoveredCell = cell;
         }
 
         public void ClearHover()
         {
-            HoveredCell.Set(null);
+            _hoveredCell.Set(null);
         }
     }
 }

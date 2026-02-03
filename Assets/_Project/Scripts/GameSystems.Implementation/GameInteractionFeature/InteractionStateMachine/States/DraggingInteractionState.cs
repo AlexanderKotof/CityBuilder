@@ -46,29 +46,23 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
         protected override void ProcessDragEnded(CellModel cellModel)
         {
             base.ProcessDragEnded(cellModel);
-            
-            if (TryDropContent(InteractionModel.DraggedCell?.Value, cellModel))
-            {
-                SelectCell(cellModel);
-            }
-            else
-            {
-                _draggingContentController.CancelDrag();
-            }
-            
-            ChangeState<CellSelectedInteractionState>();
+
+            TryDropContent(InteractionModel.DraggedCell?.Value, cellModel);
+           
+            ChangeState<EmptyInteractionState>();
         }
 
-        private bool TryDropContent(CellModel fromCell, CellModel toCellModel)
+        private void TryDropContent(CellModel fromCell, CellModel toCellModel)
         {
             if (fromCell == null ||
                 toCellModel == null ||
                 Equals(fromCell, toCellModel))
             {
-                return false;
+                _draggingContentController.CancelDrag();
+                return;
             }
             
-            return _gameInteractionFeature.TryDropContent(fromCell, toCellModel);
+            InteractionModel.DragAndDropped.Execute((fromCell, toCellModel));
         }
     }
 }

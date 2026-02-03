@@ -20,7 +20,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
         protected InteractionModel InteractionModel { get; private set; }
         protected Raycaster Raycaster => _raycastController;
         
-        public virtual void Update()
+        public void Update()
         {
             if (Raycaster.TryGetCellFromScreenPoint(_playerInput.PointerPosition, out CellModel cell))
             {
