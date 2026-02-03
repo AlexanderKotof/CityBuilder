@@ -1,11 +1,10 @@
 using System;
 using System.Linq;
-using CityBuilder.GameSystems.Implementation.BuildingSystem;
-using CityBuilder.GameSystems.Implementation.BuildingSystem.Features;
+using CityBuilder.GameSystems.Implementation.BuildingSystem.Domain;
 using CityBuilder.GameSystems.Implementation.CellGridFeature.Grid;
 using CityBuilder.GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States;
-using JetBrains.Annotations;
 using UniRx;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature
@@ -14,23 +13,19 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature
     {
         private readonly CursorController _cursorController;
         private readonly InteractionModel _interactionModel;
-        private readonly BuildingManager _buildingManager;
-        private readonly MergeBuildingsFeature _mergeBuildingsFeature;
         private readonly CompositeDisposable _disposables = new();
 
-        public CellSelectionController(CursorController cursorController, InteractionModel interactionModel, BuildingManager buildingManager, MergeBuildingsFeature mergeBuildingsFeature)
+        public CellSelectionController(CursorController cursorController, InteractionModel interactionModel)
         {
             _cursorController = cursorController;
             _interactionModel = interactionModel;
-            _buildingManager = buildingManager;
-            _mergeBuildingsFeature = mergeBuildingsFeature;
         }
 
         public void Initialize()
         {
             _interactionModel.SelectedCell.Subscribe(OnCellSelected).AddTo(_disposables);
             _interactionModel.DraggedCell.Subscribe(OnDraggingCell).AddTo(_disposables);
-            _interactionModel.HoveredCell.Subscribe(OnHoveredCellChanged).AddTo(_disposables);
+            _interactionModel.SelectedAction.Subscribe(OnSelectedActionChanged).AddTo(_disposables);
         }
 
         public void Dispose()
@@ -38,42 +33,38 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature
             _disposables.Dispose();
         }
         
-        private void OnHoveredCellChanged([CanBeNull] CellModel cell)
+        private void OnSelectedActionChanged(IPlayerAction action)
         {
-            if (cell == null || _interactionModel.DraggedCell.Value == null)
+            switch (action)
             {
-                return;
+                case MoveBuildingAction moveBuildingAction:
+                    _cursorController.Clear();
+                    _cursorController.SetPositions(
+                        moveBuildingAction.ToCell.Expand(moveBuildingAction.Building.Config.Size), 
+                        CursorStateEnum.Accepted);
+                    break;
+                case MergeLevelUoBuildingsAction mergeLevelUoBuildingsAction:
+                    _cursorController.Clear();
+                    var buildings = mergeLevelUoBuildingsAction.InvolvedBuildings;
+                    _cursorController.SetPositions(
+                        buildings.SelectMany(building => building.OccupiedCells).Distinct(),
+                        CursorStateEnum.Upgrade);
+                    break;
+                case MergeWithRecipeBuildingsAction mergeWithRecipeBuildingsAction:
+                    _cursorController.Clear();
+                    buildings = mergeWithRecipeBuildingsAction.InvolvedBuildings;
+                    _cursorController.SetPositions(buildings.SelectMany(building => building.OccupiedCells).Distinct(), CursorStateEnum.Merge);
+                    break;
+                
+                case RejectedAction rejectedAction:
+                    _cursorController.Clear();
+                    _cursorController.SetPosition(rejectedAction.ToCell, CursorStateEnum.Rejected);
+                    break;
+                
+                default:
+                   Debug.LogError("Not supported action");
+                    break;
             }
-            
-            if (!_buildingManager.TryGetBuilding(_interactionModel.DraggedCell.Value, out var fromBuilding))
-                return;
-
-            if (_buildingManager.CanPlaceBuilding(cell, fromBuilding))
-            {
-                _cursorController.Clear();
-                _cursorController.SetPositions(cell.Expand(fromBuilding.Config.Size), CursorStateEnum.Accepted);
-                return;
-            }
-            
-            if (!_buildingManager.TryGetBuilding(cell, out var toBuilding))
-                return;
-
-            if (_mergeBuildingsFeature.CanLevelUpMerge(toBuilding, fromBuilding, out var buildings))
-            {
-                _cursorController.Clear();
-                _cursorController.SetPositions(buildings.Append(fromBuilding).Append(toBuilding).SelectMany(building => building.OccupiedCells).Distinct(), CursorStateEnum.Upgrade);
-                return;
-            }
-            
-            if (_mergeBuildingsFeature.CanRecipeMerge(toBuilding, fromBuilding, out _, out buildings))
-            {
-                _cursorController.Clear();
-                _cursorController.SetPositions(buildings.Append(fromBuilding).Append(toBuilding).SelectMany(building => building.OccupiedCells).Distinct(), CursorStateEnum.Merge);
-                return;
-            }
-            
-            _cursorController.Clear();
-            _cursorController.SetPosition(cell, CursorStateEnum.Rejected);
         }
         
         private void OnCellSelected(CellModel cellModel)
@@ -82,10 +73,11 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature
 
             if (cellModel == null)
                 return;
-            
-            if (_buildingManager.TryGetBuilding(cellModel, out var building))
+
+            var content = cellModel.Content.Value;
+            if (content is ICellOccupier occupier)
             {
-                _cursorController.SetPositions(building.OccupiedCells, CursorStateEnum.Selection); 
+                _cursorController.SetPositions(occupier.OccupiedCells, CursorStateEnum.Selection); 
             }
             else
             {

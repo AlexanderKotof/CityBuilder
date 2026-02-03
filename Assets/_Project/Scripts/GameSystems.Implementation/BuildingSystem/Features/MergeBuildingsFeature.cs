@@ -49,27 +49,43 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
         {
         }
         
-        public bool TryMergeBuildingsFromTo(BuildingModel fromBuilding, BuildingModel toBuilding)
+        // public bool TryMergeBuildingsFromTo(BuildingModel fromBuilding, BuildingModel toBuilding)
+        // {
+        //     if (CanLevelUpMerge(toBuilding, fromBuilding, out var buildingModels))
+        //     {
+        //         var action = new PlayerAction(() => ProcessMergeUpgrade(toBuilding, buildingModels), NameOf: nameof(ProcessMergeUpgrade));
+        //         var result = _actionService.QueueAction(action);
+        //         return true;
+        //     }
+        //
+        //     if (CanRecipeMerge(toBuilding, fromBuilding, out var recipe, out var involvedBuildings))
+        //     {           
+        //         var action = new PlayerAction(() => ProcessMergeWithRecipe(toBuilding, involvedBuildings, recipe), NameOf: nameof(ProcessMergeWithRecipe));
+        //         var result = _actionService.QueueAction(action);
+        //         return true;
+        //     }
+        //
+        //     return false;
+        // }
+
+        public void MergeWithRecipe(BuildingModel fromBuilding, BuildingModel toBuilding, MergeBuildingsRecipeSo recipe, IReadOnlyCollection<BuildingModel> involvedBuildings)
         {
-            if (CanLevelUpMerge(toBuilding, fromBuilding, out var buildingModels))
-            {
-                var action = new PlayerAction(() => ProcessMergeUpgrade(toBuilding, buildingModels), NameOf: nameof(ProcessMergeUpgrade));
-                var result = _actionService.QueueAction(action);
-                return true;
-            }
-
-            if (CanRecipeMerge(toBuilding, fromBuilding, out var recipe, out var involvedBuildings))
-            {           
-                var action = new PlayerAction(() => ProcessMergeWithRecipe(toBuilding, involvedBuildings, recipe), NameOf: nameof(ProcessMergeWithRecipe));
-                var result = _actionService.QueueAction(action);
-                return true;
-            }
-
-            return false;
+            var action = new PlayerAction(() => ProcessMergeWithRecipe(fromBuilding, toBuilding, involvedBuildings, recipe), NameOf: nameof(ProcessMergeWithRecipe));
+            _actionService.QueueAction(action).Forget();
         }
 
-        private async UniTask<IResult> ProcessMergeUpgrade(BuildingModel toBuilding, IEnumerable<BuildingModel> buildingModels)
+        public void MergeUpgrade(BuildingModel fromBuilding, BuildingModel toBuilding,
+            IReadOnlyCollection<BuildingModel> involvedBuildings)
         {
+            var action = new PlayerAction(() => ProcessMergeUpgrade(fromBuilding, toBuilding, involvedBuildings), NameOf: nameof(ProcessMergeUpgrade));
+            _actionService.QueueAction(action).Forget();
+        }
+
+        private async UniTask<IResult> ProcessMergeUpgrade(BuildingModel fromBuilding, BuildingModel toBuilding,
+            IEnumerable<BuildingModel> buildingModels)
+        {
+            //TODO: validation of request
+            
             var array = buildingModels.Select(building => MergeBuildingsTo(building, toBuilding));
             await UniTask.WhenAll(array);
                 
@@ -85,10 +101,12 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
             }
         }
         
-        private async UniTask<IResult> ProcessMergeWithRecipe(BuildingModel toBuilding,
+        private async UniTask<IResult> ProcessMergeWithRecipe(BuildingModel fromBuilding, BuildingModel toBuilding,
             IEnumerable<BuildingModel> buildingModels,
             MergeBuildingsRecipeSo recipe)
         {
+            //TODO: validation of request
+            
             var array = buildingModels.Select(building => MergeBuildingsTo(building, toBuilding));
             await UniTask.WhenAll(array);
             

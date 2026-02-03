@@ -1,5 +1,7 @@
+using System;
 using CityBuilder.GameSystems.Implementation.CellGridFeature.Grid;
 using CityBuilder.Utilities.Extensions;
+using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -9,9 +11,8 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
     {
         [Inject]
         private readonly DraggingContentController _draggingContentController;
-
-        [Inject]
-        private readonly GameInteractionFeature _gameInteractionFeature;
+        
+        private IDisposable _subscription;
 
         protected override void OnEnterState()
         {
@@ -21,6 +22,8 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
             if (content is IDraggableViewModel draggableViewModel)
             {
                 _draggingContentController.StartDraggingContent(draggableViewModel);
+                _subscription?.Dispose();
+                _subscription = InteractionModel.CancelDrag.Subscribe(_ => CancelDrag());
             }
             else
             {
@@ -31,6 +34,9 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
         protected override void OnExitState()
         {
             base.OnExitState();
+            _subscription?.Dispose();
+            _subscription = null;
+            
             _draggingContentController.EndDragging();
             InteractionModel.DraggedCell.Set(null);
         }
@@ -52,13 +58,19 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
             ChangeState<EmptyInteractionState>();
         }
 
+        private void CancelDrag()
+        {
+            _draggingContentController.CancelDrag();
+            ChangeState<EmptyInteractionState>();
+        }
+
         private void TryDropContent(CellModel fromCell, CellModel toCellModel)
         {
             if (fromCell == null ||
                 toCellModel == null ||
                 Equals(fromCell, toCellModel))
             {
-                _draggingContentController.CancelDrag();
+                CancelDrag();
                 return;
             }
             

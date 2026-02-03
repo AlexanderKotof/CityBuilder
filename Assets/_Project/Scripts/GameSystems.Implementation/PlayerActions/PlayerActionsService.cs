@@ -10,7 +10,7 @@ namespace CityBuilder.GameSystems.Implementation
     /// </summary>
     public class PlayerActionsService
     {
-        private readonly Queue<PlayerAction> _playerActions = new Queue<PlayerAction>();
+        private readonly List<PlayerAction> _playerActions = new List<PlayerAction>();
         
         private PlayerAction _currentPlayerAction;
         private bool _isInProcess;
@@ -20,9 +20,12 @@ namespace CityBuilder.GameSystems.Implementation
         {
             if (_currentPlayerAction != null)
             {
+                Debug.Log($"[PlayerActionsService] Action queued {action.NameOf ?? "Empty"}...");
+                _playerActions.Add(action);
                 await UniTask.WaitWhile(_isInProcess, static value => value);
-                
-                return await ExecuteAction(action);
+                var result = await ExecuteAction(action);
+                _playerActions.Remove(action);
+                return result;
             }
             
             return await ExecuteAction(action);
@@ -30,13 +33,13 @@ namespace CityBuilder.GameSystems.Implementation
 
         private async UniTask<IResult> ExecuteAction(PlayerAction action)
         {
-            Debug.Log("Start executing action: " + (action.NameOf ?? "Empty"));
+            Debug.Log("[PlayerActionsService] Start executing action: " + (action.NameOf ?? "Empty"));
             _isInProcess = true;
             _currentPlayerAction = action;
             var result = await _currentPlayerAction.Action();
             _currentPlayerAction = null;
             _isInProcess = false;
-            Debug.Log("Complete executing action: " + (action.NameOf ?? "Empty"));
+            Debug.Log("[PlayerActionsService] Complete executing action: " + (action.NameOf ?? "Empty"));
             return result;
         }
     }

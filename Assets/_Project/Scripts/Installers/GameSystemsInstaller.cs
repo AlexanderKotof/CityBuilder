@@ -107,9 +107,14 @@ namespace CityBuilder.Installers
             builder.Register<CellSelectedInteractionState>(Lifetime.Singleton).As<InteractionState>();
             builder.Register<DraggingInteractionState>(Lifetime.Singleton).As<InteractionState>();
             builder.Register<PlayerInteractionStateMachine>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            // базовый выбор действия и его выполнение
+            builder.Register<InteractionsProcessor>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            // процессит цепочку текущих действий
             builder.Register<PlayerActionsService>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
-            builder.Register<GameInteractionFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            //builder.Register<GameInteractionFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
         }
     }
 }
