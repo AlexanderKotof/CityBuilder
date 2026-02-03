@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using CityBuilder.Configs.Scriptable.Buildings.Merge;
@@ -8,11 +7,10 @@ using CityBuilder.GameSystems.Implementation.CellGridFeature.Grid;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
-using VContainer.Unity;
 
 namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
 {
-    public class MergeBuildingsFeature : IInitializable, IDisposable
+    public class MergeBuildingsFeature
     {
         private readonly BuildingManager _buildingsManager;
         private readonly BuildingsModel _buildingsModel;
@@ -40,34 +38,7 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
             _buildingFactory = buildingFactory;
             _actionService = actionService;
         }
-
-        public void Initialize()
-        {
-        }
-
-        public void Dispose()
-        {
-        }
         
-        // public bool TryMergeBuildingsFromTo(BuildingModel fromBuilding, BuildingModel toBuilding)
-        // {
-        //     if (CanLevelUpMerge(toBuilding, fromBuilding, out var buildingModels))
-        //     {
-        //         var action = new PlayerAction(() => ProcessMergeUpgrade(toBuilding, buildingModels), NameOf: nameof(ProcessMergeUpgrade));
-        //         var result = _actionService.QueueAction(action);
-        //         return true;
-        //     }
-        //
-        //     if (CanRecipeMerge(toBuilding, fromBuilding, out var recipe, out var involvedBuildings))
-        //     {           
-        //         var action = new PlayerAction(() => ProcessMergeWithRecipe(toBuilding, involvedBuildings, recipe), NameOf: nameof(ProcessMergeWithRecipe));
-        //         var result = _actionService.QueueAction(action);
-        //         return true;
-        //     }
-        //
-        //     return false;
-        // }
-
         public void MergeWithRecipe(BuildingModel fromBuilding, BuildingModel toBuilding, MergeBuildingsRecipeSo recipe, IReadOnlyCollection<BuildingModel> involvedBuildings)
         {
             var action = new PlayerAction(() => ProcessMergeWithRecipe(fromBuilding, toBuilding, involvedBuildings, recipe), NameOf: nameof(ProcessMergeWithRecipe));
@@ -77,17 +48,30 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
         public void MergeUpgrade(BuildingModel fromBuilding, BuildingModel toBuilding,
             IReadOnlyCollection<BuildingModel> involvedBuildings)
         {
-            var action = new PlayerAction(() => ProcessMergeUpgrade(fromBuilding, toBuilding, involvedBuildings), NameOf: nameof(ProcessMergeUpgrade));
-            _actionService.QueueAction(action).Forget();
+            var counter = involvedBuildings.Count;
+            var mergedCount = counter / _configuration.MergeBuildingsCountForMultiLevelUp;
+
+            if (mergedCount > 0)
+            {
+                var action = new PlayerAction(() => ProcessMultiMergeUpgrade(fromBuilding, toBuilding, involvedBuildings),
+                    NameOf: nameof(ProcessMultiMergeUpgrade));
+                _actionService.QueueAction(action).Forget();
+            }
+            else
+            {
+                var action = new PlayerAction(() => ProcessSingleMergeUpgrade(fromBuilding, toBuilding, involvedBuildings),
+                    NameOf: nameof(ProcessSingleMergeUpgrade));
+                _actionService.QueueAction(action).Forget();
+            }
         }
 
-        private async UniTask<IResult> ProcessMergeUpgrade(BuildingModel fromBuilding, BuildingModel toBuilding,
-            IEnumerable<BuildingModel> buildingModels)
+        private async UniTask<IResult> ProcessSingleMergeUpgrade(BuildingModel fromBuilding, BuildingModel toBuilding,
+            IReadOnlyCollection<BuildingModel> buildingModels)
         {
             //TODO: validation of request
             
-            var array = buildingModels.Select(building => MergeBuildingsTo(building, toBuilding));
-            await UniTask.WhenAll(array);
+            var mergeTasks = buildingModels.Select(building => MergeBuildingsTo(building, toBuilding));
+            await UniTask.WhenAll(mergeTasks);
                 
             _buildingsManager.IncreaseBuildingLevel(toBuilding);
                 
@@ -100,9 +84,25 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
                 
             }
         }
-        
+
+        private async UniTask<IResult> ProcessMultiMergeUpgrade(BuildingModel fromBuilding, BuildingModel toBuilding,
+            IReadOnlyCollection<BuildingModel> buildingModels)
+        {
+            //TODO: validation of request
+            
+            var counter = buildingModels.Count;
+
+            var mergedCount = counter / _configuration.MergeBuildingsCountForMultiLevelUp;
+            var remainder = counter % _configuration.MergeBuildingsCountForMultiLevelUp;
+            return new Success(RevertMerge);
+            void RevertMerge()
+            {
+                
+            }
+        }
+
         private async UniTask<IResult> ProcessMergeWithRecipe(BuildingModel fromBuilding, BuildingModel toBuilding,
-            IEnumerable<BuildingModel> buildingModels,
+            IReadOnlyCollection<BuildingModel> buildingModels,
             MergeBuildingsRecipeSo recipe)
         {
             //TODO: validation of request
@@ -138,7 +138,8 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
             _buildingsModel.RemoveBuilding(buildingModel);
         }
 
-        public bool CanRecipeMerge(BuildingModel toBuilding, BuildingModel fromBuilding, [CanBeNull] out MergeBuildingsRecipeSo recipeSo, [CanBeNull] out IEnumerable<BuildingModel> buildingsInvolved)
+        // ПОка использует простой поиск ближайщих зданий
+        public bool CanRecipeMerge(BuildingModel toBuilding, BuildingModel fromBuilding, [CanBeNull] out MergeBuildingsRecipeSo recipeSo, [CanBeNull] out IReadOnlyCollection<BuildingModel> buildingsInvolved)
         {
             recipeSo = null;
             buildingsInvolved = null;
@@ -209,8 +210,15 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
 
             return null;
         }
-
-        public bool CanLevelUpMerge(BuildingModel toBuilding, BuildingModel fromBuilding, out IEnumerable<BuildingModel> buildingsInvolved)
+        
+        /// <summary>
+        /// Проверяет, можем ли смержить здания, и возвращает массив задействованных в мердже зданий в случае успеха
+        /// </summary>
+        /// <param name="toBuilding"></param>
+        /// <param name="fromBuilding"></param>
+        /// <param name="buildingsInvolved"></param>
+        /// <returns></returns>
+        public bool CanLevelUpMerge(BuildingModel toBuilding, BuildingModel fromBuilding, out IReadOnlyCollection<BuildingModel> buildingsInvolved)
         {
             buildingsInvolved = null;
             
@@ -219,23 +227,86 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
                 fromBuilding.IsMaxLevel)
                 return false;
             
+            if (!CollectBuildings(toBuilding, fromBuilding, ref buildingsInvolved)) 
+                return false;
+            
+            return buildingsInvolved.Count >= _configuration.MergeBuildingsCountForLevelUp;
+        }
+
+        private bool CollectBuildings(BuildingModel toBuilding, BuildingModel fromBuilding,
+            ref IReadOnlyCollection<BuildingModel> buildingsInvolved)
+        {
             var level = fromBuilding.Level.Value;
             var config = fromBuilding.Config;
-            
-            // Берем все клетки вокруг таргет здания
-            var nearCells = toBuilding.GetAllNearCellsExceptOwn();
-            // Собираем все аналогичные здания в округе
-            var allBuildingsNear = nearCells.Select(BuildingsSelector)
-                .Where(b => b != null && b.Level.Value == level && b.Config == config && b != fromBuilding).ToList();
+            var grid = toBuilding.OccupiedCells.First().GridModel;
+            var allBuildingsOfRequired = _buildingsModel.Buildings
+                .Where(b => b.Level.Value == level && b.Config == config)
+                .ToHashSet();
 
-            if (allBuildingsNear.Count == 0)
-            {
+            if (allBuildingsOfRequired.Count < _configuration.MergeBuildingsCountForLevelUp)
                 return false;
+
+            var allBuildingsCells = allBuildingsOfRequired
+                .SelectMany(b => b.OccupiedCells)
+                .Distinct()
+                .ToHashSet();
+
+            var visited = new bool[grid.Size.x, grid.Size.y];
+            var islands = new List<HashSet<BuildingModel>>();
+
+            // Основной цикл обхода матрицы
+            for (int i = 0; i < grid.Size.x; i++)
+            {
+                for (int j = 0; j < grid.Size.y; j++)
+                {
+                    var cell = grid.GetCell(j, i);
+                    if (visited[i, j])
+                        continue;
+
+                    if (cell.Content.Value == null)
+                        continue;
+
+                    if (allBuildingsCells.Contains(cell) == false)
+                        continue;
+
+                    var island = new HashSet<BuildingModel>();
+                    islands.Add(island);
+                    DFS(i, j, island);
+                }
             }
 
-            // TODO: count buildings and make multi merge ?
-            buildingsInvolved = allBuildingsNear.Take(1).Append(fromBuilding);
+            var selected = islands.First(island => island.Contains(toBuilding));
+            selected.Add(fromBuilding);
+            buildingsInvolved = selected;
             return true;
+            
+            // Поиск в глубину (рекурсивный)
+            void DFS(int i, int j, HashSet<BuildingModel> island)
+            {
+                if (i < 0 || i >= grid.Size.x ||
+                    j < 0 || j >= grid.Size.y)
+                    return;
+
+                if (visited[i, j])
+                    return;
+
+                visited[i, j] = true;
+
+                var cell = grid.GetCell(j, i);
+                if (cell.Content.Value == null)
+                    return;
+
+                if (allBuildingsCells.Contains(cell) == false)
+                    return;
+
+                island.Add(cell.Content.Value as BuildingModel);
+
+                // Рекурсивный обход 4 направлений
+                DFS(i + 1, j, island); // вниз
+                DFS(i - 1, j, island); // вверх
+                DFS(i, j + 1, island); // вправо
+                DFS(i, j - 1, island); // влево
+            }
         }
     }
 }

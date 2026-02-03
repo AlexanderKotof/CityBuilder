@@ -11,6 +11,9 @@ namespace CityBuilder.Configs.Scriptable.Buildings.Merge
         public int MergeBuildingsCountForLevelUp { get; private set; } = 3;
         
         [field: SerializeField]
+        public int MergeBuildingsCountForMultiLevelUp { get; private set; } = 5;
+        
+        [field: SerializeField]
         public MergeBuildingsRecipeSo[] MergeRecipes { get; private set; }
     }
 }
