@@ -1,16 +1,40 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CityBuilder.GameSystems.Implementation.CellGridFeature.Grid
 {
-    public class GridComponent : MonoBehaviour, IGridComponent
+    public class GridComponent : MonoBehaviour, IGridComponent, IEquatable<GridComponent>
     {
         [SerializeField]
         private Vector2Int _gridSize;
+        [SerializeField]
+        private Renderer _renderer;
+        [SerializeField]
+        private BoxCollider _collider;
+        
         public Transform Transform => transform;
     
         public Vector2Int Size => _gridSize;
-    
-        private bool Equals(GridComponent other)
+
+        private void Awake()
+        {
+            SetGridSize(Size);
+        }
+
+        public void ShowGrid(bool show)
+        {
+            //TODO: show hide grid
+        }
+
+        private void SetGridSize(Vector2Int gridSize)
+        {
+            var material = _renderer.material;
+            material.mainTextureScale = new Vector2(_gridSize.x, _gridSize.y);
+            
+            _collider.size = new Vector3(_gridSize.x, 0.2f, _gridSize.y);
+        }
+
+        public bool Equals(GridComponent other)
         {
             return Equals((IGridComponent)other);  
         }
