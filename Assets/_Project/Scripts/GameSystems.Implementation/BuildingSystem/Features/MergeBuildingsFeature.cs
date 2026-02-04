@@ -4,6 +4,7 @@ using CityBuilder.Configs.Scriptable.Buildings.Merge;
 using CityBuilder.GameSystems.Implementation.BuildingSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BuildingSystem.Extensions;
 using CityBuilder.GameSystems.Implementation.CellGridFeature.Grid;
+using CityBuilder.Utilities.Extensions;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -69,8 +70,9 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
             IReadOnlyCollection<BuildingModel> buildingModels)
         {
             //TODO: validation of request
-            
-            var mergeTasks = buildingModels.Select(building => MergeBuildingsTo(building, toBuilding));
+            var mergeTasks = buildingModels
+                .Take(_configuration.MergeBuildingsCountForLevelUp, b => b != toBuilding)
+                .Select(building => MergeBuildingsTo(building, toBuilding));
             await UniTask.WhenAll(mergeTasks);
                 
             _buildingsManager.IncreaseBuildingLevel(toBuilding);
@@ -92,8 +94,35 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
             
             var counter = buildingModels.Count;
 
-            var mergedCount = counter / _configuration.MergeBuildingsCountForMultiLevelUp;
+            // выдаем по 2 апгрейда для каждого мульти мерджа
+            var mergedCount = Mathf.FloorToInt((float)counter / _configuration.MergeBuildingsCountForMultiLevelUp) * 2;
             var remainder = counter % _configuration.MergeBuildingsCountForMultiLevelUp;
+            
+            // выдаем доп апгрейд если хватает еще на обычный мердж
+            if (remainder >= _configuration.MergeBuildingsCountForLevelUp)
+            {
+                mergedCount += 1;
+                remainder -= _configuration.MergeBuildingsCountForLevelUp;
+            }
+
+            var involved = buildingModels.ToHashSet();
+
+            if (remainder > 0)
+            {
+                involved.RemoveManyWhere(remainder, b => b != fromBuilding && b != toBuilding);
+            }
+            
+            var upgradedBuildings = involved.Take(mergedCount, b => b != fromBuilding).ToHashSet();
+            involved.RemoveMany(upgradedBuildings);
+            
+            var mergeBuildingsTasks = involved.Select(building => MergeBuildingsTo(building, toBuilding));
+            await UniTask.WhenAll(mergeBuildingsTasks);
+            
+            foreach (var building in upgradedBuildings)
+            {
+                _buildingsManager.IncreaseBuildingLevel(building);
+            }
+            
             return new Success(RevertMerge);
             void RevertMerge()
             {

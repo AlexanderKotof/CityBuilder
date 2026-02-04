@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace CityBuilder.Utilities.Extensions
 {
@@ -45,6 +46,50 @@ namespace CityBuilder.Utilities.Extensions
                 action(value);
             }
             return forEach;
+        }
+
+        public static ICollection<T> RemoveManyWhere<T>(this ICollection<T> collection, int amountToRemove,
+            Func<T, bool> predicate)
+        {
+            for (int i = 0; i < amountToRemove; i++)
+            {
+                var elementAt = collection.ElementAt(0);
+                if (predicate(elementAt))
+                    collection.Remove(elementAt);
+            }
+            
+            return collection;
+        }
+        
+        public static IEnumerable<T> Take<T>(this IReadOnlyCollection<T> collection, int amount,
+            Func<T, bool> predicate)
+        {
+            if (collection.Count <= amount)
+            {
+                Debug.LogError("Collection is smaller than the requested amount");
+                return collection;
+            }
+
+            return Iterate(collection, amount, predicate);
+            
+            static IEnumerable<T> Iterate<T>(IReadOnlyCollection<T> collection, int amount, Func<T, bool> predicate)
+            {
+                var taken = 0;
+                for (int i = 0; i < collection.Count; i++)
+                {
+                    var elementAt = collection.ElementAt(i);
+                    if (predicate(elementAt))
+                    {
+                        taken++;
+                        yield return elementAt;
+                    }
+
+                    if (taken >= amount)
+                    {
+                        break;
+                    }
+                }
+            }
         }
     }
 }
