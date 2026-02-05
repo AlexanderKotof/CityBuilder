@@ -1,5 +1,5 @@
-City Builder is a city-mangement simulator with merge mechanics.
+City Builder is a city-management simulator with merge mechanics.
 
 Still in development
 
-Used: VContainer, UniRx, LitMotion
+Used Frameworks: VContainer, UniRx, LitMotion
