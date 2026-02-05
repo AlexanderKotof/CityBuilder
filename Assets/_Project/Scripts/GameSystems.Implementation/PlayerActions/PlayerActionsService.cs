@@ -16,7 +16,7 @@ namespace CityBuilder.GameSystems.Implementation
         private bool _isInProcess;
 
         //TODO: provide better algorithm
-        public async UniTask<IResult> QueueAction(PlayerAction action)
+        public async UniTask<IResult> EnqueueAction(PlayerAction action)
         {
             if (_currentPlayerAction != null)
             {

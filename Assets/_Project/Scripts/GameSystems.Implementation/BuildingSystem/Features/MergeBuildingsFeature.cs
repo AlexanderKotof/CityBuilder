@@ -43,7 +43,7 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
         public void MergeWithRecipe(BuildingModel fromBuilding, BuildingModel toBuilding, MergeBuildingsRecipeSo recipe, IReadOnlyCollection<BuildingModel> involvedBuildings)
         {
             var action = new PlayerAction(() => ProcessMergeWithRecipe(fromBuilding, toBuilding, involvedBuildings, recipe), NameOf: nameof(ProcessMergeWithRecipe));
-            _actionService.QueueAction(action).Forget();
+            _actionService.EnqueueAction(action).Forget();
         }
 
         public void MergeUpgrade(BuildingModel fromBuilding, BuildingModel toBuilding,
@@ -56,13 +56,13 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
             {
                 var action = new PlayerAction(() => ProcessMultiMergeUpgrade(fromBuilding, toBuilding, involvedBuildings),
                     NameOf: nameof(ProcessMultiMergeUpgrade));
-                _actionService.QueueAction(action).Forget();
+                _actionService.EnqueueAction(action).Forget();
             }
             else
             {
                 var action = new PlayerAction(() => ProcessSingleMergeUpgrade(fromBuilding, toBuilding, involvedBuildings),
                     NameOf: nameof(ProcessSingleMergeUpgrade));
-                _actionService.QueueAction(action).Forget();
+                _actionService.EnqueueAction(action).Forget();
             }
         }
 
@@ -71,7 +71,8 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
         {
             //TODO: validation of request
             var mergeTasks = buildingModels
-                .Take(_configuration.MergeBuildingsCountForLevelUp - 1, b => b != toBuilding)
+                .Take(_configuration.MergeBuildingsCountForLevelUp - 2, b => b != toBuilding && b != fromBuilding)
+                .Append(fromBuilding)
                 .Select(building => MergeBuildingsTo(building, toBuilding));
             await UniTask.WhenAll(mergeTasks);
                 
@@ -193,7 +194,9 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
             var nearCells = toBuilding.GetAllNearCellsExceptOwn();
 
             // все найденные здания в клетках, соответствующие условиям
-            var allBuildingsNear = nearCells.Select(BuildingsSelector)
+            var allBuildingsNear = nearCells
+                .Where(cell => cell.Content.Value != null)
+                .Select(BuildingsSelector)
                 .Where(b => b != null && b.IsMaxLevel && b != fromBuilding)
                 .Append(fromBuilding)
                 .ToArray();
@@ -228,16 +231,16 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
             }
             
             return false;
-        }
-
-        private BuildingModel BuildingsSelector(CellModel cell)
-        {
-            if (cell.Content.Value != null && _buildingsManager.TryGetBuilding(cell, out var building))
+            
+            BuildingModel BuildingsSelector(CellModel cell)
             {
-                return building;
-            }
+                if (_buildingsManager.TryGetBuilding(cell, out var building))
+                {
+                    return building;
+                }
 
-            return null;
+                return null;
+            }
         }
         
         /// <summary>
