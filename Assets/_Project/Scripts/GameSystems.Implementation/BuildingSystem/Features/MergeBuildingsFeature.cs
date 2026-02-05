@@ -71,7 +71,7 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Features
         {
             //TODO: validation of request
             var mergeTasks = buildingModels
-                .Take(_configuration.MergeBuildingsCountForLevelUp, b => b != toBuilding)
+                .Take(_configuration.MergeBuildingsCountForLevelUp - 1, b => b != toBuilding)
                 .Select(building => MergeBuildingsTo(building, toBuilding));
             await UniTask.WhenAll(mergeTasks);
                 

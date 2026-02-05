@@ -25,7 +25,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature
         {
             _interactionModel.SelectedCell.Subscribe(OnCellSelected).AddTo(_disposables);
             _interactionModel.DraggedCell.Subscribe(OnDraggingCell).AddTo(_disposables);
-            _interactionModel.SelectedAction.Subscribe(OnSelectedActionChanged).AddTo(_disposables);
+            _interactionModel.SelectedAction.Skip(1).Subscribe(OnSelectedActionChanged).AddTo(_disposables);
         }
 
         public void Dispose()

@@ -64,12 +64,6 @@ namespace CityBuilder.Utilities.Extensions
         public static IEnumerable<T> Take<T>(this IReadOnlyCollection<T> collection, int amount,
             Func<T, bool> predicate)
         {
-            if (collection.Count <= amount)
-            {
-                Debug.LogError("Collection is smaller than the requested amount");
-                return collection;
-            }
-
             return Iterate(collection, amount, predicate);
             
             static IEnumerable<T> Iterate<T>(IReadOnlyCollection<T> collection, int amount, Func<T, bool> predicate)
@@ -86,7 +80,7 @@ namespace CityBuilder.Utilities.Extensions
 
                     if (taken >= amount)
                     {
-                        break;
+                        yield break;
                     }
                 }
             }
