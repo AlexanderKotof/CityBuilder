@@ -343,6 +343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5382623553587911408}
   - component: {fileID: 1825324026846055360}
+  - component: {fileID: 8874069055083264574}
   m_Layer: 0
   m_Name: Cityhall
   m_TagString: Untagged
@@ -383,6 +384,22 @@ MonoBehaviour:
   - {fileID: 5670039611476277826}
   UICanvas: {fileID: 5463737169158787803}
   MergeConfig: {fileID: 11400000, guid: 8551b2da08473e341b13da6eb6bbcd04, type: 2}
+--- !u!208 &8874069055083264574
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4666062724587789524}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.485}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.67, y: 0, z: 0.71}
+  m_TimeToStationary: 0.5
 --- !u!1 &5518979367643710532
 GameObject:
   m_ObjectHideFlags: 0

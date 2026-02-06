@@ -52,7 +52,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _installer: {fileID: 0}
+  _installer: {fileID: 8011063816217366100}
 --- !u!114 &1337525072047742173
 MonoBehaviour:
   m_ObjectHideFlags: 0

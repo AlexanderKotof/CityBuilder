@@ -1,3 +1,4 @@
+using CityBuilder.Configs.Implementation.Common;
 using CityBuilder.Configs.Scriptable.Battle;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units;
 using CityBuilder.GameSystems.Implementation.BuildingSystem.Domain;
@@ -53,7 +54,12 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem
         
         private BattleUnitBase CreateBattleUnitFromBuilding(BuildingModel building, BattleUnitConfigSO config)
         {
-            return new BattleUnitBase(config, building.Level.Value, building.WorldPosition.Value, building.ThisTransform);
+            return new BattleUnitBase(
+                config,
+                building.Level.Value,
+                building.WorldPosition.Value,
+                building.ThisTransform,
+                new Vector3((float)building.Config.Size.X/2, 0, (float)building.Config.Size.Y/2));
         }
     }
 }

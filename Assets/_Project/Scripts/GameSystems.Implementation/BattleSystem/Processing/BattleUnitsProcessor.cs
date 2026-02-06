@@ -6,13 +6,14 @@ using CityBuilder.GameSystems.Implementation.BattleSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
 {
     public class BattleUnitsProcessor
     {
         private readonly BattleSystemModel _battleSystemModel;
-        private const float MovementThreshold = 0.1f;
+        private const float MovementThreshold = 0.05f;
 
         public BattleUnitsProcessor(BattleSystemModel battleSystemModel)
         {
@@ -55,8 +56,9 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
             if (unit.CanMove)
             {
                 var desiredPosition = unit.StartPosition.Value;
-                unit.DesiredPosition.Value = (desiredPosition);
+                unit.DesiredPosition.Value = desiredPosition;
                 
+                TryUpdatePath(unit, true);
                 ProcessMove(unit);
             }
         }
@@ -70,7 +72,8 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
 
             if (unit.CanMove)
             {
-                UpdateDesiredPosition(unit, unit.AttackModel!);
+                bool force = UpdateDesiredPosition(unit, unit.AttackModel!);
+                TryUpdatePath(unit, force);
                 ProcessMove(unit);
             }
 
@@ -128,6 +131,23 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
             return Vector3.SqrMagnitude(unit.CurrentPosition - attackModel.Target.Value.CurrentPosition);
         }
 
+        private void TryUpdatePath(BattleUnitBase unit, bool forceUpdatePath = false)
+        {
+            if (unit.ThisTransform.Value == null ||
+                Vector3.SqrMagnitude(unit.CurrentPosition - unit.DesiredPosition.Value) < MovementThreshold * MovementThreshold)
+            {
+                unit.Path.Value = null;
+                return;
+            }
+            
+            if (unit.HasPath && forceUpdatePath == false)
+                return;
+            
+            var path = new NavMeshPath();
+            NavMesh.CalculatePath(unit.CurrentPosition, unit.DesiredPosition.Value, NavMesh.AllAreas, path);
+            unit.Path.Value = path;
+        }
+
         private void ProcessMove(BattleUnitBase unit)
         {
             if (unit.ThisTransform.Value == null ||
@@ -136,10 +156,18 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
                 return;
             }
             
-            var deltaTime = Time.deltaTime;
-            var impulse = unit.DesiredPosition.Value - unit.CurrentPosition;
-            var delta = deltaTime * unit.GetRealMoveSpeed() * impulse.normalized;
-            unit.ThisTransform.Value.Translate(delta);
+            // if (unit.HasPath && forceUpdatePath == false)
+            //     return;
+            //
+            //
+            // var path = new NavMeshPath();
+            // NavMesh.CalculatePath(unit.CurrentPosition, unit.DesiredPosition.Value, NavMesh.AllAreas, path);
+            // path.
+            
+            // var deltaTime = Time.deltaTime;
+            // var impulse = unit.DesiredPosition.Value - unit.CurrentPosition;
+            // var delta = deltaTime * unit.GetRealMoveSpeed() * impulse.normalized;
+            // unit.ThisTransform.Value.Translate(delta);
         }
         
         private void SelectTarget(IBattleUnit unit, UnitAttackModel attackModel, bool isPlayer)
@@ -227,7 +255,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
             };
         }
 
-        private static void UpdateDesiredPosition(BattleUnitBase unit, UnitAttackModel attackModel)
+        private static bool UpdateDesiredPosition(BattleUnitBase unit, UnitAttackModel attackModel)
         {
             Vector3 desiredPosition;
             if (attackModel.Target.Value != null)
@@ -235,7 +263,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
                 var direction = attackModel.Target.Value.CurrentPosition - unit.CurrentPosition;
                 if (direction.sqrMagnitude < unit.GetAttackRangeSqr())
                 {
-                    return;
+                    return false;
                 }
                 
                 desiredPosition = unit.CurrentPosition + direction * (1 - 0.9f / unit.GetAttackRange());
@@ -245,6 +273,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
                 desiredPosition = unit.StartPosition.Value;
             }
             unit.DesiredPosition.Value = (desiredPosition);
+            return true;
         }
         
         [CanBeNull]

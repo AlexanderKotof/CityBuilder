@@ -1489,6 +1489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3604897031703193326}
   - component: {fileID: 3353623787016366092}
+  - component: {fileID: 3758673990074390738}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -1531,6 +1532,22 @@ MonoBehaviour:
   - {fileID: 6406615163901046480}
   UICanvas: {fileID: 3221642249558092194}
   MergeConfig: {fileID: 11400000, guid: 8551b2da08473e341b13da6eb6bbcd04, type: 2}
+--- !u!208 &3758673990074390738
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4477781619933943997}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.285, y: 0.62, z: 0.245}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.51, y: 0, z: 0.47}
+  m_TimeToStationary: 0.5
 --- !u!1 &4524148547958056833
 GameObject:
   m_ObjectHideFlags: 0

@@ -66,8 +66,11 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem
 
         private Vector3 GetEncounterPosition()
         {
-            var position = Random.onUnitSphere * 5;
+            var position = Random.onUnitSphere * 15 + Vector3.one * 7.5f;
             position.y = 0;
+            position.x = Mathf.Clamp(position.x, -5, 15);
+            position.z = Mathf.Clamp(position.z, -5, 15);
+            
             return position;
         }
 

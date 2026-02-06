@@ -22,6 +22,7 @@ using CityBuilder.GameSystems.Implementation.ResourcesFeature.Core.Domain;
 using CityBuilder.GameSystems.Implementation.ResourcesFeature.ProducingFeature;
 using CityBuilder.GameSystems.Implementation.ResourcesFeature.ResourcesStorageFeature;
 using CityBuilder.PlayerInput;
+using Unity.AI.Navigation;
 using VContainer;
 using VContainer.Unity;
 
