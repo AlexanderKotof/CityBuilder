@@ -41,7 +41,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
             InteractionModel.DraggedCell.Set(null);
         }
 
-        protected override void ProcessDragging(Vector3 mousePosition)
+        protected override void ProcessDragging(Vector2 mousePosition)
         {
             if (Raycaster.TryGetFreePositionFromScreenPoint(mousePosition, out var cursorPosition))
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using CityBuilder.Configs.Scriptable;
+using UniRx;
 using UnityEngine;
 
 namespace CityBuilder.PlayerInput
@@ -7,17 +8,22 @@ namespace CityBuilder.PlayerInput
     //TODO: rework with new InputSystem
     public class PlayerInputManager
     {
-        public event Action<Vector3> OnMouseClick;
+        private readonly InteractionSettingsSo _settings;
+        public event Action<Vector2> OnMouseClick;
 
-        public event Action<Vector3> OnMouseDragStarted;
+        public event Action<Vector2> OnMouseDragStarted;
 
-        public event Action<Vector3> OnMouseDragging;
+        public event Action<Vector2> OnMouseDragging;
 
-        public event Action<Vector3> OnMouseDragEnded;
+        public event Action<Vector2> OnMouseDragEnded;
         
-        public event Action<Vector3> OnMouseRightClick;
+        public event Action<Vector2> OnMouseRightClick;
 
-        public Vector3 PointerPosition => Input.mousePosition;
+        public IObservable<Vector2> RightMouseDragAsObservable() => _rightMouseDragSubject;
+        private readonly Subject<Vector2> _rightMouseDragSubject = new();
+
+        public Vector2 PointerPosition => Input.mousePosition;
+        public Vector2 PointerDeltaPosition => PointerPosition - _previousPointerPosition;
 
         private bool _isDragging = false;
 
@@ -25,10 +31,12 @@ namespace CityBuilder.PlayerInput
         private readonly float _dragThresholdSqr;
         
         private float _pressTime;
-        private Vector3 _pressPosition;
+        private Vector2 _pressPosition;
+        private Vector2 _previousPointerPosition;
 
         public PlayerInputManager(InteractionSettingsSo settings)
         {
+            _settings = settings;
             _startDragDelay = settings.StartDragDelay;
             _dragThresholdSqr = settings.StartDragThreshold * settings.StartDragThreshold;
         }
@@ -37,6 +45,8 @@ namespace CityBuilder.PlayerInput
         {
             UpdateLeftMouseInput();
             UpdateRightMouseInput();
+            
+            _previousPointerPosition = PointerPosition;
         }
 
         private void UpdateRightMouseInput()
@@ -44,6 +54,12 @@ namespace CityBuilder.PlayerInput
             if (Input.GetMouseButtonDown(1))
             {
                 OnMouseRightClick?.Invoke(PointerPosition);
+            }
+
+            if (Input.GetMouseButton(1) && 
+                PointerDeltaPosition.sqrMagnitude > _settings.CameraDragThreshold * _settings.CameraDragThreshold)
+            {
+                _rightMouseDragSubject.OnNext(PointerDeltaPosition);
             }
         }
 
@@ -76,7 +92,7 @@ namespace CityBuilder.PlayerInput
         
         private bool CheckPosition()
         {
-            return (Input.mousePosition - _pressPosition).sqrMagnitude > _dragThresholdSqr;
+            return ((Vector2)Input.mousePosition - _pressPosition).sqrMagnitude > _dragThresholdSqr;
         }
 
         private void UpdateDragging(bool isDragging)

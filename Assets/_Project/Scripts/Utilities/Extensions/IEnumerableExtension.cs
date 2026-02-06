@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace CityBuilder.Utilities.Extensions
 {
@@ -64,24 +63,19 @@ namespace CityBuilder.Utilities.Extensions
         public static IEnumerable<T> Take<T>(this IReadOnlyCollection<T> collection, int amount,
             Func<T, bool> predicate)
         {
-            return Iterate(collection, amount, predicate);
-            
-            static IEnumerable<T> Iterate<T>(IReadOnlyCollection<T> collection, int amount, Func<T, bool> predicate)
+            var taken = 0;
+            for (int i = 0; i < collection.Count; i++)
             {
-                var taken = 0;
-                for (int i = 0; i < collection.Count; i++)
+                var elementAt = collection.ElementAt(i);
+                if (predicate(elementAt))
                 {
-                    var elementAt = collection.ElementAt(i);
-                    if (predicate(elementAt))
-                    {
-                        taken++;
-                        yield return elementAt;
-                    }
+                    taken++;
+                    yield return elementAt;
+                }
 
-                    if (taken >= amount)
-                    {
-                        yield break;
-                    }
+                if (taken >= amount)
+                {
+                    yield break;
                 }
             }
         }

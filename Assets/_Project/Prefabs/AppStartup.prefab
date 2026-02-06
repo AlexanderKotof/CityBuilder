@@ -32,7 +32,8 @@ Transform:
   m_LocalPosition: {x: 4.34876, y: 0.8364892, z: 4.7384386}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7357689320746232966}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4513019149755466972
@@ -87,10 +88,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Installers.CameraInstaller
   parentReference:
-    TypeName: CityBuilder.AppStartup
+    TypeName: CityBuilder.Installers.GameConfigsInstaller
   autoRun: 1
   autoInjectGameObjects: []
-  RaycasterCamera: {fileID: 0}
+  CameraRoot: {fileID: 7357689320746232966}
+  Camera: {fileID: 2476258359002148235}
 --- !u!114 &8011063816217366100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,6 +106,73 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Installers.GameSystemsInstaller
   parentReference:
-    TypeName: CityBuilder.Installers.GameConfigsInstaller
+    TypeName: CityBuilder.Installers.CameraInstaller
   autoRun: 1
   autoInjectGameObjects: []
+--- !u!1001 &1244522516102943932
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2206526726153143495}
+    m_Modifications:
+    - target: {fileID: 7038530451198929424, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_Name
+      value: CameraRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+--- !u!20 &2476258359002148235 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 3681694318388623671, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+  m_PrefabInstance: {fileID: 1244522516102943932}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7357689320746232966 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
+  m_PrefabInstance: {fileID: 1244522516102943932}
+  m_PrefabAsset: {fileID: 0}

@@ -13,5 +13,8 @@ namespace CityBuilder.Configs.Scriptable
         
         [field: SerializeField]
         public float StartDragThreshold { get; private set; } = 10;
+        
+        [field: SerializeField]
+        public float CameraDragThreshold { get; private set; } = 1;
     }
 }

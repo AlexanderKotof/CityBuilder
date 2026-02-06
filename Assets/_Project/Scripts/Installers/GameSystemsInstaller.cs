@@ -41,6 +41,8 @@ namespace CityBuilder.Installers
             builder.Register<PlayerInputManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<PlayerInputSystem>(Lifetime.Singleton).AsImplementedInterfaces();
             
+            builder.Register<CameraSystem>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
             builder.RegisterInstance<DateModel>(new DateModel()).AsSelf();
             builder.Register<GameTimeSystem>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             

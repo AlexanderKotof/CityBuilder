@@ -7,14 +7,13 @@ namespace CityBuilder.Configs.Scriptable
     {
         [field: SerializeField]
         public string SelectorAssetReferenceKey { get; private set; } = "cursor";
-        
+
         [field: SerializeField]
-        public float StartGoldGS { get; private set; } = 10;
-        
+        public float CameraMovementSensitivity { get; private set; } = 0.1f;
+
         [field: SerializeField]
-        public float StartGoldGPS { get; private set; } = 101;
-        
+        public Vector3 MaxCameraPosition { get; private set; } = Vector3.one * 10f;
         [field: SerializeField]
-        public float EndGoldG { get; private set; } = 1011;
+        public Vector3 MinCameraPosition  { get; private set; } = Vector3.zero;
     }
 }

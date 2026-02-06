@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: CommonGameSettingsSO
   m_EditorClassIdentifier: Assembly-CSharp::Configs.Scriptable.CommonGameSettingsSO
   <SelectorAssetReferenceKey>k__BackingField: cursor
-  <StartGoldGS>k__BackingField: 10
-  <StartGoldGPS>k__BackingField: 101
-  <EndGoldG>k__BackingField: 1011
-  <InteractionRaycastLayerMask>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 32
+  <CameraMovementSensitivity>k__BackingField: 0.06
+  <MaxCameraPosition>k__BackingField: {x: 9, y: 0, z: 9}
+  <MinCameraPosition>k__BackingField: {x: -1, y: 0, z: -1}

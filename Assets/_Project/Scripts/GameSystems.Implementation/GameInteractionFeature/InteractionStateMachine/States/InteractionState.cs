@@ -50,7 +50,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
             _playerInput.OnMouseRightClick -= OnMouseRightClick;
         }
 
-        private void OnMouseClick(Vector3 vector)
+        private void OnMouseClick(Vector2 vector)
         {
             if (!_raycastController.TryGetCellFromScreenPoint(vector, out CellModel? cell))
             {
@@ -60,7 +60,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
             ProcessClick(cell);
         }
         
-        private void OnMouseRightClick(Vector3 position)
+        private void OnMouseRightClick(Vector2 position)
         {
             if (!_raycastController.TryGetCellFromScreenPoint(position, out CellModel? cell))
             {
@@ -71,7 +71,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
             ProcessRightClick(cell);
         }
         
-        private void OnMouseDragStarted(Vector3 vector)
+        private void OnMouseDragStarted(Vector2 vector)
         {
             if (!_raycastController.TryGetCellFromScreenPoint(vector, out CellModel? cell))
             {
@@ -84,7 +84,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
             }
         }
 
-        private void OnMouseDragEnded(Vector3 vector)
+        private void OnMouseDragEnded(Vector2 vector)
         {
             if (InteractionModel.LastHoveredCell == null) 
                 return;
@@ -92,7 +92,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
             ProcessDragEnded(InteractionModel.LastHoveredCell);
         }
 
-        private void OnMouseDragging(Vector3 vector)
+        private void OnMouseDragging(Vector2 vector)
         {
             ProcessDragging(vector);
         }
@@ -113,7 +113,7 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
         {
             Debug.Log($"Process drag ended on {cellModel.Position}");
         }
-        protected virtual void ProcessDragging(Vector3 mousePosition) { }
+        protected virtual void ProcessDragging(Vector2 mousePosition) { }
 
         protected void TrySelectCell(CellModel cellModel)
         {

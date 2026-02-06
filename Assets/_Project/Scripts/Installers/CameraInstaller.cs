@@ -6,11 +6,13 @@ namespace CityBuilder.Installers
 {
     public class CameraInstaller : LifetimeScope
     {
-        public Camera RaycasterCamera;
+        public Transform CameraRoot;
+        public Camera Camera;
 
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterInstance(RaycasterCamera).As<Camera>();
+            builder.RegisterInstance(CameraRoot).Keyed(nameof(CameraRoot)).AsSelf();
+            builder.RegisterInstance(Camera).As<Camera>();
         }
     }
 }
