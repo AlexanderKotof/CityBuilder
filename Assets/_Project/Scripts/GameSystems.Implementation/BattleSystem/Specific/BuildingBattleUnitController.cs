@@ -2,6 +2,7 @@ using CityBuilder.GameSystems.Common.ViewSystem;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units;
 using CityBuilder.GameSystems.Implementation.BuildingSystem.Domain;
+using CityBuilder.GameSystems.Implementation.BuildingSystem.Extensions;
 using CityBuilder.Views.Implementation.BattleSystem;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -10,7 +11,7 @@ using UnityEngine;
 namespace CityBuilder.GameSystems.Implementation.BattleSystem.Specific
 {
     /// <summary>
-    /// Контроллирует сущьность боевого юнита, приатаченного к зданию
+    /// Контроллирует сущность боевого юнита, приатаченного к зданию
     /// </summary>
     public class BuildingBattleUnitController
     {
@@ -66,7 +67,20 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Specific
 
         private void OnBuildingLevelUpdated(int _)
         {
-            _factory.TryLevelUpBuildingUnit(_building, _currentUnit);
+            TryLevelUpBuildingUnit(_building, _currentUnit);
+        }
+        
+        private static bool TryLevelUpBuildingUnit(BuildingModel building, BattleUnitBase unit)
+        {
+            if (building.Config.TryGetAttackFunction(out var function))
+            {
+                unit.ApplyConfig(function.BattleUnitPerLevel[Mathf.Min(function.BattleUnitPerLevel.Length - 1, building.Level.Value)]);
+                return true;
+            }
+
+            //TODO: common building level up
+            
+            return false;
         }
 
         private void OnBuildingUnitDestroyed(BattleUnitBase _)

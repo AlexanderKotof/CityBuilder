@@ -32,25 +32,6 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem
             var config = building.Config.UnitConfig != null ? building.Config.UnitConfig : _config.DefaultBuildingUnit;
             return CreateBattleUnitFromBuilding(building, config);
         }
-
-        public bool TryLevelUpBuildingUnit(BuildingModel building, BattleUnitBase unit)
-        {
-            if (building.IsMaxLevel)
-                return false;
-            
-            if (building.Config.TryGetAttackFunction(out var function))
-            {
-                unit.ApplyConfig(function.BattleUnitPerLevel[Mathf.Min(function.BattleUnitPerLevel.Length - 1, building.Level.Value)]);
-                return true;
-            }
-
-            if (true)
-            {
-                //TODO: common level up
-            }
-            
-            return false;
-        }
         
         private BattleUnitBase CreateBattleUnitFromBuilding(BuildingModel building, BattleUnitConfigSO config)
         {
