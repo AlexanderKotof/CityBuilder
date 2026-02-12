@@ -6,7 +6,7 @@ namespace CityBuilder.Network.SupabaseApi
     {
         public const string Url = "https://wjdtovuqkvglslwpfbxd.supabase.co";
         public const string AnonKey = "sb_publishable_N8k_S2ZcP1pG527mcnPDoQ_5DIFUU-6";
-        public const string GuestPrefix = "guest_";
+
     
         // Таблицы
         public const string PlayersTableKey = "players";

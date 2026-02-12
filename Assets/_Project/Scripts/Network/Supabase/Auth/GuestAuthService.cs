@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using com.example;
+using Postgrest;
 using Supabase;
 using UniRx;
 using UnityEngine;
 using VContainer.Unity;
+using Logger = com.example.Logger;
+using Random = UnityEngine.Random;
 
 namespace CityBuilder.Network.SupabaseApi
 {
@@ -13,10 +17,10 @@ namespace CityBuilder.Network.SupabaseApi
     {
         private readonly SupabaseManager _manager;
         private readonly INetworkClient _networkClient;
-        private readonly Supabase.Client _client;
         private readonly CompositeDisposable _disposables = new();
         private string _currentPlayerId;
 
+        private Supabase.Client Client => _manager.Supabase();
         public IObservable<string> OnAuthenticated => _onAuthenticated;
         public IObservable<Unit> OnError => _onError;
         
@@ -27,7 +31,6 @@ namespace CityBuilder.Network.SupabaseApi
         {
             _manager = manager;
             _networkClient = networkClient;
-            _client = manager.Supabase();
         }
         
         public void Tick()
@@ -37,7 +40,7 @@ namespace CityBuilder.Network.SupabaseApi
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                HelloWorldRequest();
+                LoginAsGuest();
             }
         }
 
@@ -52,20 +55,17 @@ namespace CityBuilder.Network.SupabaseApi
         {
             try
             {
-                // Генерируем уникальный ID для гостя
-                string guestId = $"{AuthConfig.GuestPrefix}{SystemInfo.deviceUniqueIdentifier}";
-            
                 // Проверяем, существует ли игрок
-                var player = await GetOrCreatePlayer(guestId);
+                var player = await GetOrCreatePlayer();
             
-                _currentPlayerId = player.Id;
+                _currentPlayerId = player?.id ?? string.Empty;
                 _onAuthenticated.OnNext(_currentPlayerId);
             
-                Debug.Log($"[Auth] Guest login successful: {_currentPlayerId}");
+                Logger.Log($"[Auth] Guest login successful: {_currentPlayerId}");
             }
             catch (Exception e)
             {
-                Debug.LogError($"[Auth] Guest login failed: {e.Message}");
+                Logger.LogException(e);
                 _onError.OnNext(Unit.Default);
             }
         }
@@ -90,43 +90,34 @@ namespace CityBuilder.Network.SupabaseApi
             throw new NotImplementedException();
         }
 
-        private async Task<PlayerData> GetOrCreatePlayer(string playerId)
+        private async Task<PlayerData> GetOrCreatePlayer()
         {
-            // var response = await _client
-            //     .From<PlayerData>(AuthConfig.PlayersTableKey)
-            //     .Select("*")
-            //     .Where(data => string.Equals(data.Id, playerId))
-            //     .Get();
-            //
-            // if (response.Models.Count == 0)
-            // {
-            //     // Создаём нового игрока
-            //     var newPlayer = new PlayerData
-            //     {
-            //         Id = playerId,
-            //         CreatedAt = DateTime.UtcNow,
-            //         DisplayName = $"Guest_{UnityEngine.Random.Range(1000, 9999)}",
-            //         Level = 1,
-            //         Score = 0
-            //     };
-            //
-            //     await _client
-            //         .From(AuthConfig.PlayersTableKey)
-            //         .Insert(newPlayer);
-            //     
-            //     return newPlayer;
-            // }
+            // Генерируем уникальный ID для гостя
+            string playerId = $"guest_{SystemInfo.deviceUniqueIdentifier}";
+            
+            var response = await Client
+                .From<PlayerData>()
+                .Select("*")
+                .Where(x => x.id == playerId)
+                .Get();
+
+            var playerData = response.Models.FirstOrDefault();
+            if (playerData == null)
+            {
+                var getOrCreateGuestUser =
+                    await _networkClient.InvokeFunction<Response<PlayerData>>("auth-guest", ("device_id", SystemInfo.deviceUniqueIdentifier), ("display_name", $"Guest_{UnityEngine.Random.Range(1000, 9999)}"));
+                return getOrCreateGuestUser.payload;
+            }
+            
+            // playerData.
             //
             // // Обновляем время последнего входа
-            // await _client
-            //     .From(AuthConfig.PlayersTableKey)
-            //     .Update(new { last_login = DateTime.UtcNow })
-            //     .Eq("id", playerId)
-            //     .Execute();
-            //
-            // return response.Models[0].ToObject<PlayerData>();
-            throw new NotImplementedException();
+            // await Client
+            //     .From<players>()
+            //     .Where(x => x.id == playerId)
+            //     .Update(new QueryOptions()):
 
+            return playerData;
         }
     
         public void Dispose()

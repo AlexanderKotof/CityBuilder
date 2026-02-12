@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CityBuilder.Network.SupabaseApi;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using Supabase;
 using Supabase.Gotrue;
 using UniRx;
@@ -15,15 +16,6 @@ using Client = Supabase.Client;
 
 namespace com.example
 {
-	public interface INetworkClient
-	{
-		public IReadOnlyReactiveProperty<bool> IsConnected { get; }
-		
-		public UniTask<string> InvokeFunction(string function, Dictionary<string, string> header = null, Dictionary<string, object> body = null);
-		
-		public UniTask<string> InvokeFunction(string function, params (string, object)[] body);
-	}
-	
 	public class SupabaseManager : MonoBehaviour, IDisposable, IAsyncStartable, INetworkClient
 	{
 		[Inject]
@@ -38,50 +30,6 @@ namespace com.example
 		public Client? Supabase() => _client;
 		
 		public IReadOnlyReactiveProperty<bool> IsConnected => _isConnected;
-		public async UniTask<string> InvokeFunction(string function, Dictionary<string, string> header = null, Dictionary<string, object> body = null)
-		{
-			if (_isConnected.Value == false)
-			{
-				Logger.LogError("Client is not connected");
-				return null;
-			}
-
-			var payload = header != null || body != null ? 
-				new Supabase.Functions.Client.InvokeFunctionOptions
-				{
-					Headers = header ?? new Dictionary<string, string>(),
-					Body = body ?? new Dictionary<string, object>(),
-				} 
-				: null;
-			var response = await _client!.Functions.Invoke(
-				function,
-				AuthConfig.AnonKey,
-				payload);
-			Logger.Log(response);
-			return response;
-		}
-
-		public async UniTask<string> InvokeFunction(string function, params (string, object)[] body)
-		{
-			if (_isConnected.Value == false)
-			{
-				Logger.LogError("Client is not connected");
-				return null;
-			}
-
-			var payload = body != null ? 
-				new Supabase.Functions.Client.InvokeFunctionOptions
-				{
-					Body = body.ToDictionary(p => p.Item1, p => p.Item2),
-				} 
-				: null;
-			var response = await _client!.Functions.Invoke(
-				function,
-				AuthConfig.AnonJwtKey,
-				payload);
-			Logger.Log(response);
-			return response;
-		}
 
 		private readonly ReactiveProperty<bool> _isConnected = new();
 
@@ -204,6 +152,57 @@ namespace com.example
 				_client = null;
 			}
 			_isConnected.Dispose();
+		}
+		
+		public async UniTask<string> InvokeFunction(string function, Dictionary<string, string> header = null, Dictionary<string, object> body = null)
+		{
+			if (_isConnected.Value == false)
+			{
+				Logger.LogError("Client is not connected");
+				return null;
+			}
+
+			var payload = header != null || body != null ? 
+				new Supabase.Functions.Client.InvokeFunctionOptions
+				{
+					Headers = header ?? new Dictionary<string, string>(),
+					Body = body ?? new Dictionary<string, object>(),
+				} 
+				: null;
+			var response = await _client!.Functions.Invoke(
+				function,
+				AuthConfig.AnonKey,
+				payload);
+			Logger.Log(response);
+			return response;
+		}
+
+		public async UniTask<string> InvokeFunction(string function, params (string, object)[] body)
+		{
+			if (_isConnected.Value == false)
+			{
+				Logger.LogError("Client is not connected");
+				return null;
+			}
+
+			var payload = body != null ? 
+				new Supabase.Functions.Client.InvokeFunctionOptions
+				{
+					Body = body.ToDictionary(p => p.Item1, p => p.Item2),
+				} 
+				: null;
+			var response = await _client!.Functions.Invoke(
+				function,
+				AuthConfig.AnonJwtKey,
+				payload);
+			Logger.Log(response);
+			return response;
+		}
+
+		public async UniTask<TResponse> InvokeFunction<TResponse>(string function, params (string, object)[] body) where TResponse : Response
+		{
+			var responce = await InvokeFunction(function, body);
+			return JsonConvert.DeserializeObject<TResponse>(responce);
 		}
 	}
 }

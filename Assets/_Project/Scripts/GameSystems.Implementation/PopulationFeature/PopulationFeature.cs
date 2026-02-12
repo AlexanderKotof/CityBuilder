@@ -79,7 +79,7 @@ namespace CityBuilder.GameSystems.Implementation.PopulationFeature
             _increaseHousesUnits.Remove(building);
             
             //TODO:
-            //building.Level.Unsubscribe(OnBuildingLevelUpdated);
+            //building.level.Unsubscribe(OnBuildingLevelUpdated);
 
             UpdateAvailableHouseholds();
         }

@@ -42,11 +42,11 @@ namespace com.example
 				string str = JsonConvert.SerializeObject(session);
 				using StreamWriter file = new(filePath);
 				file.Write(str);
+				Logger.Log("Session successfully saved to: " + filePath);
 			}
 			catch (Exception e)
 			{
-				Debug.Log(e.Message);
-				Debug.LogException(e);
+				Logger.LogException(e);
 				throw;
 			}
 		}
@@ -63,7 +63,7 @@ namespace com.example
 		public Session? LoadSession()
 		{
 			string filePath = FilePath();
-			Debug.Log("Attempting to load session...");
+			Logger.Log("Attempting to load session...");
 
 			if (!File.Exists(filePath)) return null;
 
@@ -77,13 +77,12 @@ namespace com.example
 
 			try
 			{
-				Debug.Log("Successfully loaded session!");
+				Logger.Log("Successfully loaded session!");
 				return JsonConvert.DeserializeObject<Session>(sessionJson);
 			}
 			catch (Exception e)
 			{
-				Debug.Log(e.Message);
-				Debug.LogException(e);
+				Logger.LogException(e);
 				return null;
 			}
 		}
