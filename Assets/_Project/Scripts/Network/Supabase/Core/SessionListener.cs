@@ -1,8 +1,8 @@
 using Supabase.Gotrue;
 using Supabase.Gotrue.Interfaces;
-using TMPro;
 using UnityEngine;
-namespace com.example
+
+namespace Network.Supabase.Core
 {
 	public class SessionListener
 	{

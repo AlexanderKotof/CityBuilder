@@ -2,7 +2,7 @@ using CityBuilder.Network.SupabaseApi;
 using VContainer;
 using VContainer.Unity;
 
-namespace com.example
+namespace Network.Supabase.Core
 {
     public class SupabaseApiInstaller : LifetimeScope
     {

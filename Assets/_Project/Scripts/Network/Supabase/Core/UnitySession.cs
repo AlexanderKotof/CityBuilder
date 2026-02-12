@@ -5,7 +5,7 @@ using Supabase.Gotrue;
 using Supabase.Gotrue.Interfaces;
 using UnityEngine;
 
-namespace com.example
+namespace Network.Supabase.Core
 {
 	/// <summary>
 	/// This is a simple implementation of IGotrueSessionPersistence that uses Unity's

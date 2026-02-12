@@ -14,7 +14,7 @@ using VContainer;
 using VContainer.Unity;
 using Client = Supabase.Client;
 
-namespace com.example
+namespace Network.Supabase.Core
 {
 	public class SupabaseManager : MonoBehaviour, IDisposable, IAsyncStartable, INetworkClient
 	{
@@ -53,7 +53,7 @@ namespace com.example
 			client.Auth.AddDebugListener(DebugListener!);
 
 			// Next we set up the network status listener and tell it to turn the client online/offline
-			_networkStatus.Client = (Supabase.Gotrue.Client)client.Auth;
+			_networkStatus.Client = (global::Supabase.Gotrue.Client)client.Auth;
 
 			// Next we set up the session persistence - without this the client will forget the session
 			// each time the app is restarted
@@ -163,7 +163,7 @@ namespace com.example
 			}
 
 			var payload = header != null || body != null ? 
-				new Supabase.Functions.Client.InvokeFunctionOptions
+				new global::Supabase.Functions.Client.InvokeFunctionOptions
 				{
 					Headers = header ?? new Dictionary<string, string>(),
 					Body = body ?? new Dictionary<string, object>(),
@@ -177,29 +177,16 @@ namespace com.example
 			return response;
 		}
 
-		public async UniTask<string> InvokeFunction(string function, params (string, object)[] body)
+		public UniTask<string> InvokeFunction(string function, params (string, object)[] body)
 		{
-			if (_isConnected.Value == false)
-			{
-				Logger.LogError("Client is not connected");
-				return null;
-			}
-
-			var payload = body != null ? 
-				new Supabase.Functions.Client.InvokeFunctionOptions
-				{
-					Body = body.ToDictionary(p => p.Item1, p => p.Item2),
-				} 
-				: null;
-			var response = await _client!.Functions.Invoke(
+			return InvokeFunction(
 				function,
-				AuthConfig.AnonJwtKey,
-				payload);
-			Logger.Log(response);
-			return response;
+				new Dictionary<string, string>(),
+				body.ToDictionary(p => p.Item1, p => p.Item2));
 		}
 
-		public async UniTask<TResponse> InvokeFunction<TResponse>(string function, params (string, object)[] body) where TResponse : Response
+		public async UniTask<TResponse> InvokeFunction<TResponse>(string function, params (string, object)[] body)
+			where TResponse : Response
 		{
 			var responce = await InvokeFunction(function, body);
 			return JsonConvert.DeserializeObject<TResponse>(responce);

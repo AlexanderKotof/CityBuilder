@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using com.example;
+using Network.Supabase.Core;
 using Postgrest;
 using Supabase;
 using UniRx;
 using UnityEngine;
 using VContainer.Unity;
-using Logger = com.example.Logger;
+using Logger = Network.Supabase.Core.Logger;
 using Random = UnityEngine.Random;
 
 namespace CityBuilder.Network.SupabaseApi

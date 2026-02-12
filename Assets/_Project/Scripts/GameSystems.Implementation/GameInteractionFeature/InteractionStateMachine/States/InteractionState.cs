@@ -4,6 +4,7 @@ using CityBuilder.StateMachine;
 using CityBuilder.Utilities.Extensions;
 using UnityEngine;
 using VContainer;
+using Logger = Network.Supabase.Core.Logger;
 
 namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {
@@ -99,19 +100,19 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
         
         protected virtual void ProcessClick(CellModel cellModel)
         {
-            Debug.Log($"Process click on {cellModel.Position}");
+            Logger.Log($"Process click on {cellModel.Position}");
         }
         protected virtual void ProcessRightClick(CellModel cellModel)
         {
-            Debug.Log($"Process right click on {cellModel.Position}");
+            Logger.Log($"Process right click on {cellModel.Position}");
         }
         protected virtual void ProcessDragStarted(CellModel cellModel)
         {
-            Debug.Log($"Process drag started on {cellModel.Position}");
+            Logger.Log($"Process drag started on {cellModel.Position}");
         }
         protected virtual void ProcessDragEnded(CellModel cellModel)
         {
-            Debug.Log($"Process drag ended on {cellModel.Position}");
+            Logger.Log($"Process drag ended on {cellModel.Position}");
         }
         protected virtual void ProcessDragging(Vector2 mousePosition) { }
 

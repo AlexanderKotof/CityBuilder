@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UniRx;
 
-namespace com.example
+namespace Network.Supabase.Core
 {
     public interface INetworkClient
     {

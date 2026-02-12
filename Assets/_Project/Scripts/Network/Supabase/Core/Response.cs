@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace com.example
+namespace Network.Supabase.Core
 {
     [Serializable]
     public record Response

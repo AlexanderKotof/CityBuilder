@@ -1,5 +1,5 @@
 ﻿using System;
-using UnityEngine;
+using Network.Supabase.Core;
 
 namespace CityBuilder.StateMachine
 {
@@ -19,13 +19,13 @@ namespace CityBuilder.StateMachine
 
         public void EnterState()
         {
-            Debug.Log($"Entering state {GetType().Name}");
+            Logger.Log($"Entering state {GetType().Name}");
             OnEnterState();
         }
 
         public void ExitState()
         {
-            Debug.Log($"Exiting state {GetType().Name}");
+            Logger.Log($"Exiting state {GetType().Name}");
             OnExitState();
         }
 
