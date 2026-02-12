@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1337525072047742173}
   - component: {fileID: 6393412800629263358}
   - component: {fileID: 8011063816217366100}
+  - component: {fileID: 1123353320730879306}
   m_Layer: 0
   m_Name: AppStartup
   m_TagString: Untagged
@@ -107,6 +108,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Installers.GameSystemsInstaller
   parentReference:
     TypeName: CityBuilder.Installers.CameraInstaller
+  autoRun: 1
+  autoInjectGameObjects: []
+--- !u!114 &1123353320730879306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069440236634569698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51227bb2074b43dc85b7b89cdd1e7722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::com.example.SupabaseApiInstaller
+  parentReference:
+    TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!1001 &1244522516102943932
