@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Installers.GameConfigsInstaller
   parentReference:
-    TypeName: CityBuilder.AppStartup
+    TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
   CommonGameSettingsSO: {fileID: 11400000, guid: 5e6ace72865defe409c041462679cae9, type: 2}

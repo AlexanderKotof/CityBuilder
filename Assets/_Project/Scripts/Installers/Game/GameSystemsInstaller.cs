@@ -1,3 +1,4 @@
+using System.Linq;
 using CityBuilder.GameSystems.Common.ViewSystem.ViewsProvider;
 using CityBuilder.GameSystems.Common.WindowSystem;
 using CityBuilder.GameSystems.Implementation;
@@ -23,6 +24,7 @@ using CityBuilder.GameSystems.Implementation.ResourcesFeature.ProducingFeature;
 using CityBuilder.GameSystems.Implementation.ResourcesFeature.ResourcesStorageFeature;
 using CityBuilder.PlayerInput;
 using Unity.AI.Navigation;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 

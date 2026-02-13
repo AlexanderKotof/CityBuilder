@@ -1,13 +1,16 @@
+using System.Linq;
 using CityBuilder.Configs;
 using CityBuilder.Configs.Scriptable;
 using CityBuilder.Configs.Scriptable.Battle;
 using CityBuilder.Configs.Scriptable.Buildings;
 using CityBuilder.Configs.Scriptable.Buildings.Merge;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace CityBuilder.Installers
 {
+    
     public class GameConfigsInstaller : LifetimeScope
     {
         public CommonGameSettingsSo CommonGameSettingsSO;
@@ -16,7 +19,13 @@ namespace CityBuilder.Installers
         public ResourcesDefaultConfigurationSo ResourcesDefaultConfigurationSO;
         public BattleUnitsConfigSO BattleUnitsConfigSO;
         public MergeFeatureConfigurationSo MergeFeatureConfigurationSO;
-        
+
+        protected override LifetimeScope FindParent()
+        {
+            return FindObjectsByType<LifetimeScope>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)
+                .FirstOrDefault(scope => scope.name == AppStartup.MainScopeName);
+        }
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(CommonGameSettingsSO).AsSelf().As<IGameConfig>();

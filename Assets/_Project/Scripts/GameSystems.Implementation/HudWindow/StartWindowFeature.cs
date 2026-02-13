@@ -1,16 +1,11 @@
 using System;
-using System.Threading.Tasks;
 using CityBuilder.Dependencies;
 using CityBuilder.GameSystems.Common.WindowSystem;
-using CityBuilder.Installers;
 using CityBuilder.Network.SupabaseApi;
 using CityBuilder.Views.Implementation.Windows;
 using Cysharp.Threading.Tasks;
 using UniRx;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using VContainer.Unity;
-using Object = UnityEngine.Object;
 
 namespace CityBuilder.GameSystems.Implementation.HudWindow
 {
@@ -62,8 +57,14 @@ namespace CityBuilder.GameSystems.Implementation.HudWindow
             if (_model.IsActive.Value == false)
                 return;
 
-            _model.ShowRegistration.Value = _authService.IsAuthenticated() == false;
-            _model.ShowEnteringGame.Value = _authService.IsAuthenticated();
+            bool isAuthenticated = _authService.IsAuthenticated();
+            _model.ShowRegistration.Value = isAuthenticated == false;
+            _model.ShowEnteringGame.Value = isAuthenticated;
+
+            if (isAuthenticated)
+            {
+                _model.PlayerNickname.Value = _authService.GetPlayerData().display_name;
+            }
         }
         
         public void Dispose()
@@ -86,41 +87,6 @@ namespace CityBuilder.GameSystems.Implementation.HudWindow
         {
             _model.IsActive.Value = false;
             _sceneLoader.LoadGameScene().Forget();
-        }
-    }
-
-    public class GameSceneLoader
-    {
-        private const string GameSceneName = "GameScene";
-        private const string StartSceneName = "StartScene";
-
-        private readonly LifetimeScope _parentScope;
-
-        public GameSceneLoader(LifetimeScope parentScope)
-        {
-            _parentScope = parentScope;
-        }
-        
-        public UniTask LoadGameScene()
-        {
-            return LoadScene(GameSceneName);
-        }
-
-        public UniTask LoadStartGameScene()
-        {
-            return LoadScene(StartSceneName);
-        }
-
-        private static async UniTask LoadScene(string sceneName)
-        {
-            var currentScene = SceneManager.GetActiveScene();
-            if (string.Equals(currentScene.name, sceneName))
-            {
-                Debug.LogError($"{sceneName} already loaded");
-                return;
-            }
-            
-            await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single).ToUniTask();
         }
     }
 }

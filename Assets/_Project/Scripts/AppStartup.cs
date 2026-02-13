@@ -1,33 +1,29 @@
-﻿using CityBuilder.Installers;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using Network.Supabase.Core;
 using UnityEngine;
-using VContainer;
 using VContainer.Unity;
+using Logger = Network.Supabase.Core.Logger;
 
 namespace CityBuilder
 {
     /// <summary>
-    /// This is entry point of all application, but now it's only marker for main game installer (VContainer, see Scripts/Installers folder) 
+    /// This is entry point of all application, creates main scope
     /// </summary>
     public class AppStartup : MonoBehaviour
     {
+        public const string MainScopeName = "MainScope";
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void Initialize()
         {
-            Debug.LogWarning("Initializing AppStartup");
-        }
-        
-        //TODO: add app level systems, fsm
-        private void Start()
-        {
-            DontDestroyOnLoad(this.gameObject);
+            Logger.LogWarning("Initializing AppStartup");
             Startup().Forget();
         }
 
-        private UniTask Startup()
+        private static UniTask Startup()
         {
-            var mainScope = LifetimeScope.Create(new CommonAppSystemsInstaller(), name: "MainScope");
+            var mainScope = LifetimeScope.Create(new CommonAppSystemsInstaller(), name: MainScopeName);
+            DontDestroyOnLoad(mainScope.gameObject);
             return UniTask.CompletedTask;
         }
 

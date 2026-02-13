@@ -16,20 +16,13 @@ using Client = Supabase.Client;
 
 namespace Network.Supabase.Core
 {
-	public interface ISupabaseManager
-	{
-		Client Supabase();
-	}
-
 	public class SupabaseManager : IDisposable, IAsyncStartable, INetworkClient, ISupabaseManager
 	{
 		[Inject]
 		private readonly SessionListener _sessionListener;
-
-		// Public in case other components are interested in network status
+		
 		private readonly NetworkStatus _networkStatus = new();
-
-		// Internals
+		
 		private Client? _client;
 
 		public Client? Supabase() => _client;
@@ -89,7 +82,11 @@ namespace Network.Supabase.Core
 			{
 				// Some platforms don't support network status checks, so we just assume we are online
 				client.Auth.Online = true;
+				
+				//Note: it's default behavior in editor so don't log it
+#if !UNITY_EDITOR
 				Logger.LogException(notSupportedException);
+#endif
 			}
 			catch (Exception e)
 			{
@@ -147,6 +144,7 @@ namespace Network.Supabase.Core
 		{
 			if (_client != null)
 			{
+				Logger.Log("Shutting down client...");
 				_client.Auth.Shutdown();
 				_client.Auth.RemoveStateChangedListener(_sessionListener.UnityAuthListener);
 				_client = null;
