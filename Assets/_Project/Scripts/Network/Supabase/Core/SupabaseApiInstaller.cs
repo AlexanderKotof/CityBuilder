@@ -1,4 +1,4 @@
-using CityBuilder.Network.SupabaseApi;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -8,11 +8,12 @@ namespace Network.Supabase.Core
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterComponentOnNewGameObject<SupabaseManager>(Lifetime.Singleton, nameof(SupabaseManager))
-                .AsSelf().AsImplementedInterfaces();
-			
+            Debug.Log("Configure SupabaseApiInstaller");
+
+            builder.Register<SupabaseManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<SessionListener>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            builder.Register<GuestAuthService>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            
+            
         }
     }
 }

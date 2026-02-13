@@ -10,10 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2206526726153143495}
   - component: {fileID: 4513019149755466972}
-  - component: {fileID: 1337525072047742173}
-  - component: {fileID: 6393412800629263358}
-  - component: {fileID: 8011063816217366100}
-  - component: {fileID: 1123353320730879306}
   m_Layer: 0
   m_Name: AppStartup
   m_TagString: Untagged
@@ -34,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7357689320746232966}
+  - {fileID: 5729461963526547319}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4513019149755466972
@@ -49,147 +45,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b172d56f22dc848976195cdefeabd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: 
-  autoRun: 1
-  autoInjectGameObjects: []
-  _installer: {fileID: 8011063816217366100}
---- !u!114 &1337525072047742173
-MonoBehaviour:
+--- !u!1 &2094940891629022474
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2069440236634569698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8c542f1cbeb8c74ba40412dd66d3250, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Installers.GameConfigsInstaller
-  parentReference:
-    TypeName: CityBuilder.AppStartup
-  autoRun: 1
-  autoInjectGameObjects: []
-  CommonGameSettingsSO: {fileID: 11400000, guid: 5e6ace72865defe409c041462679cae9, type: 2}
-  InteractionSettingsSO: {fileID: 11400000, guid: 702a6de6b7f0fdd4b8fcded3494f40b1, type: 2}
-  BuildingsSettingsSO: {fileID: 11400000, guid: 6b07964770070474e9552a0e3e4ff533, type: 2}
-  ResourcesDefaultConfigurationSO: {fileID: 11400000, guid: 5f8013d8e3f41f14388f6bf94a2414e4, type: 2}
-  BattleUnitsConfigSO: {fileID: 11400000, guid: 8fe9fd6ebbe699446897ea06b36302a6, type: 2}
-  MergeFeatureConfigurationSO: {fileID: 11400000, guid: f44d3b58a7c873a46ac3b6a09c4f1eac, type: 2}
---- !u!114 &6393412800629263358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2069440236634569698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4cab9f53b2f768f458154b2822d41211, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Installers.CameraInstaller
-  parentReference:
-    TypeName: CityBuilder.Installers.GameConfigsInstaller
-  autoRun: 1
-  autoInjectGameObjects: []
-  CameraRoot: {fileID: 7357689320746232966}
-  Camera: {fileID: 2476258359002148235}
---- !u!114 &8011063816217366100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2069440236634569698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0e864dbc7193f64097f612ea6635173, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Installers.GameSystemsInstaller
-  parentReference:
-    TypeName: CityBuilder.Installers.CameraInstaller
-  autoRun: 1
-  autoInjectGameObjects: []
---- !u!114 &1123353320730879306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2069440236634569698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51227bb2074b43dc85b7b89cdd1e7722, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::com.example.SupabaseApiInstaller
-  parentReference:
-    TypeName: 
-  autoRun: 1
-  autoInjectGameObjects: []
---- !u!1001 &1244522516102943932
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 2206526726153143495}
-    m_Modifications:
-    - target: {fileID: 7038530451198929424, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_Name
-      value: CameraRoot
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.92387956
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.38268343
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
---- !u!20 &2476258359002148235 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3681694318388623671, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-  m_PrefabInstance: {fileID: 1244522516102943932}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7357689320746232966 stripped
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5729461963526547319}
+  - component: {fileID: 5353646401711430135}
+  - component: {fileID: 5602777664680177993}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5729461963526547319
 Transform:
-  m_CorrespondingSourceObject: {fileID: 8601503473722800186, guid: 05f7c26e4f20e3e4b965af02bbf08889, type: 3}
-  m_PrefabInstance: {fileID: 1244522516102943932}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094940891629022474}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2206526726153143495}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5353646401711430135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094940891629022474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!114 &5602777664680177993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094940891629022474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0

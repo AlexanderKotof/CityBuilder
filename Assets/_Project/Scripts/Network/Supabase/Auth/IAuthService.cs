@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UniRx;
 
 namespace CityBuilder.Network.SupabaseApi
@@ -7,8 +8,9 @@ namespace CityBuilder.Network.SupabaseApi
     {
         IObservable<string> OnAuthenticated { get; }
         IObservable<Unit> OnError { get; }
+        PlayerData GetPlayerData();
     
-        void LoginAsGuest();
+        UniTask CreateGuestPlayer(string nickname);
         void LoginWithEmail(string email, string password);
         void Logout();
         bool IsAuthenticated();

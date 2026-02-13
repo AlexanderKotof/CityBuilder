@@ -33,16 +33,10 @@ namespace CityBuilder.Installers
         protected override void Configure(IContainerBuilder builder)
         {
             // COMMON SYSTEMS
-            
-            builder.Register<ViewsProvider>(Lifetime.Singleton).AsImplementedInterfaces();
-            builder.Register<ViewWithModelProvider>(Lifetime.Singleton).AsImplementedInterfaces();
-            
-            builder.Register<WindowsProvider>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
-            
             builder.Register<PlayerInputManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<PlayerInputSystem>(Lifetime.Singleton).AsImplementedInterfaces();
             
-            builder.Register<CameraSystem>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<GameCameraSystem>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             builder.RegisterInstance<DateModel>(new DateModel()).AsSelf();
             builder.Register<GameTimeSystem>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();

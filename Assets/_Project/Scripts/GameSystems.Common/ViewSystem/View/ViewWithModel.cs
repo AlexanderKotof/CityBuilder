@@ -41,7 +41,7 @@ namespace CityBuilder.GameSystems.Common.ViewSystem.View
             _deinitActions.Add(view.Deinit);
         }
 
-        protected void Subscribe<T>(ReactiveProperty<T> property, Action<T> handler, bool invokeOnSubscribe = true)
+        protected void Subscribe<T>(IReactiveProperty<T> property, Action<T> handler, bool invokeOnSubscribe = true)
         {
             var disposable = property.Subscribe(handler);
             _deinitActions.Add(() => disposable.Dispose());
@@ -50,6 +50,18 @@ namespace CityBuilder.GameSystems.Common.ViewSystem.View
             {
                 handler.Invoke(property.Value);
             }
+        }
+        
+        protected void Subscribe<T>(IObservable<T> property, Action<T> handler)
+        {
+            var disposable = property.Subscribe(handler);
+            _deinitActions.Add(() => disposable.Dispose());
+        }
+        
+        protected void Subscribe<TState, T>(TState state, IObservable<T> property, Action<TState, T> handler)
+        {
+            var disposable = property.Subscribe(v => handler(state, v));
+            _deinitActions.Add(() => disposable.Dispose());
         }
     }
 }

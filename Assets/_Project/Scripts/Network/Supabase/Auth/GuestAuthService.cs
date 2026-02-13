@@ -1,24 +1,22 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Network.Supabase.Core;
-using Postgrest;
-using Supabase;
 using UniRx;
 using UnityEngine;
 using VContainer.Unity;
 using Logger = Network.Supabase.Core.Logger;
-using Random = UnityEngine.Random;
 
 namespace CityBuilder.Network.SupabaseApi
 {
-    public class GuestAuthService : IAuthService, ITickable, IDisposable
+    public class GuestAuthService : IAuthService, IInitializable, IDisposable
     {
-        private readonly SupabaseManager _manager;
+        private readonly ISupabaseManager _manager;
         private readonly INetworkClient _networkClient;
         private readonly CompositeDisposable _disposables = new();
-        private string _currentPlayerId;
+        private PlayerData _currentPlayerData;
+        private string CurrentPlayerId => _currentPlayerData?.id ?? string.Empty;
 
         private Supabase.Client Client => _manager.Supabase();
         public IObservable<string> OnAuthenticated => _onAuthenticated;
@@ -27,41 +25,84 @@ namespace CityBuilder.Network.SupabaseApi
         private Subject<string> _onAuthenticated = new();
         private Subject<Unit> _onError = new();
     
-        public GuestAuthService(SupabaseManager manager, INetworkClient networkClient)
+        public GuestAuthService(ISupabaseManager manager, INetworkClient networkClient)
         {
             _manager = manager;
             _networkClient = networkClient;
         }
-        
-        public void Tick()
-        {
-            if (_manager.IsConnected.Value == false)
-                return;
 
-            if (Input.GetKeyDown(KeyCode.Space))
+        public void Initialize() => InitializeInternal().Forget();
+
+        private async UniTask InitializeInternal()
+        {
+            await UniTask.WaitWhile(_networkClient, nc => nc.IsConnected.Value != true);
+            
+            string playerId = $"guest_{SystemInfo.deviceUniqueIdentifier}";
+            
+            var response = await Client
+                .From<PlayerData>()
+                .Select("*")
+                .Where(x => x.id == playerId)
+                .Get();
+
+            var existingPlayerData = response.Models.FirstOrDefault();
+            if (existingPlayerData != null)
             {
-                LoginAsGuest();
+                _currentPlayerData = existingPlayerData;
+                _onAuthenticated.OnNext(playerId);
+                return;
             }
+            
+            _onError.OnNext(Unit.Default);
         }
-
-        private async void HelloWorldRequest()
+        
+        public void Dispose()
         {
-            _ = await _networkClient.InvokeFunction(
-                "hello-world",
-                ("name", "UnityPlayer"));
+            _disposables.Dispose();
+            _onAuthenticated?.Dispose();
+            _onError?.Dispose();
         }
 
-        public async void LoginAsGuest()
+        // public void Tick()
+        // {
+        //     if (_networkClient.IsConnected.Value == false)
+        //         return;
+        //
+        //     if (Input.GetKeyDown(KeyCode.Space))
+        //     {
+        //         CreateGuestPlayer(TODO);
+        //     }
+        // }
+
+        // private async void HelloWorldRequest()
+        // {
+        //     _ = await _networkClient.InvokeFunction(
+        //         "hello-world",
+        //         ("name", "UnityPlayer"));
+        // }
+
+        public PlayerData GetPlayerData()
+        {
+            return _currentPlayerData;
+        }
+
+        public async UniTask CreateGuestPlayer(string nickname)
         {
             try
             {
-                // Проверяем, существует ли игрок
-                var player = await GetOrCreatePlayer();
-            
-                _currentPlayerId = player?.id ?? string.Empty;
-                _onAuthenticated.OnNext(_currentPlayerId);
-            
-                Logger.Log($"[Auth] Guest login successful: {_currentPlayerId}");
+                if (_currentPlayerData == null)
+                {
+                    // Проверяем, существует ли игрок
+                    var player = await CreatePlayer(nickname);
+                    _currentPlayerData = player;
+                    _onAuthenticated.OnNext(CurrentPlayerId);
+
+                    Logger.Log($"[Auth] Guest login successful: {CurrentPlayerId}");
+                }
+                else
+                {
+                    _onAuthenticated.OnNext(CurrentPlayerId);
+                }
             }
             catch (Exception e)
             {
@@ -82,49 +123,19 @@ namespace CityBuilder.Network.SupabaseApi
 
         public bool IsAuthenticated()
         {
-            throw new NotImplementedException();
+            return _currentPlayerData != null;
         }
 
         public string GetPlayerId()
         {
-            throw new NotImplementedException();
+            return CurrentPlayerId;
         }
 
-        private async Task<PlayerData> GetOrCreatePlayer()
+        private async UniTask<PlayerData> CreatePlayer(string nickname)
         {
-            // Генерируем уникальный ID для гостя
-            string playerId = $"guest_{SystemInfo.deviceUniqueIdentifier}";
-            
-            var response = await Client
-                .From<PlayerData>()
-                .Select("*")
-                .Where(x => x.id == playerId)
-                .Get();
-
-            var playerData = response.Models.FirstOrDefault();
-            if (playerData == null)
-            {
-                var getOrCreateGuestUser =
-                    await _networkClient.InvokeFunction<Response<PlayerData>>("auth-guest", ("device_id", SystemInfo.deviceUniqueIdentifier), ("display_name", $"Guest_{UnityEngine.Random.Range(1000, 9999)}"));
-                return getOrCreateGuestUser.payload;
-            }
-            
-            // playerData.
-            //
-            // // Обновляем время последнего входа
-            // await Client
-            //     .From<players>()
-            //     .Where(x => x.id == playerId)
-            //     .Update(new QueryOptions()):
-
-            return playerData;
-        }
-    
-        public void Dispose()
-        {
-            _disposables.Dispose();
-            _onAuthenticated?.Dispose();
-            _onError?.Dispose();
+            var createGuestUserResponse =
+                await _networkClient.InvokeFunction<Response<PlayerData>>("auth-guest", ("device_id", SystemInfo.deviceUniqueIdentifier), ("display_name", nickname));
+            return createGuestUserResponse.payload;
         }
     }
 }

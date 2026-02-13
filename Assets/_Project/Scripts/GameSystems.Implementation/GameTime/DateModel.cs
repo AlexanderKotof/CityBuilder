@@ -10,6 +10,8 @@ namespace CityBuilder.GameSystems.Implementation.GameTime
         public int Day { get; private set; }
         public int Week { get; private set; } = 0;
         public int DayCounter { get; private set; } = 0;
+        
+        public string MonthName() => MonthName(Month);
 
         public ReactiveProperty<float> DayProgress { get; } = new();
 
@@ -28,14 +30,14 @@ namespace CityBuilder.GameSystems.Implementation.GameTime
             Day = day;
         }
 
-        public float UpdateDayProgress(float progress) => DayProgress.Value = progress;
+        public void UpdateDayProgress(float progress) => DayProgress.Value = progress;
         
         public void IncrementDay()
         {
             DayCounter++;
             Day++;
 
-            if (Day > DaysInMonth())
+            if (Day > DaysInMonth(Month))
             {
                 Day = 1;
                 IncrementMonth();
@@ -72,7 +74,7 @@ namespace CityBuilder.GameSystems.Implementation.GameTime
             Year++;
         }
 
-        private int DaysInMonth() => Month switch
+        private static int DaysInMonth(int month) => month switch
         {
             1 => 31,
             2 => 28,
@@ -88,10 +90,10 @@ namespace CityBuilder.GameSystems.Implementation.GameTime
             12 => 31,
             _ => 0
         };
-
-        public string MonthName()
+        
+        private static string MonthName(int month)
         {
-            return Month switch
+            return month switch
             {
                 1 => "January",
                 2 => "February",

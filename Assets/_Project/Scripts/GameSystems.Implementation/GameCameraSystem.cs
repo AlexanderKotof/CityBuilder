@@ -9,7 +9,7 @@ using VContainer.Unity;
 
 namespace CityBuilder.Installers
 {
-    public class CameraSystem : IInitializable, IDisposable, ILateTickable
+    public class GameCameraSystem : IInitializable, IDisposable, ILateTickable
     {
         private readonly Camera _gameCamera;
         private readonly Transform _cameraRoot;
@@ -20,7 +20,7 @@ namespace CityBuilder.Installers
         private Vector3 _targetPosition;
         private readonly float _lerpSpeed = 0.5f;
 
-        public CameraSystem([Key("CameraRoot")] Transform root, Camera gameCamera, PlayerInputManager inputManager, CommonGameSettingsSo settings)
+        public GameCameraSystem([Key("CameraRoot")] Transform root, Camera gameCamera, PlayerInputManager inputManager, CommonGameSettingsSo settings)
         {
             _gameCamera = gameCamera;
             _inputManager = inputManager;

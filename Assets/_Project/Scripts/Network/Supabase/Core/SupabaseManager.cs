@@ -16,7 +16,12 @@ using Client = Supabase.Client;
 
 namespace Network.Supabase.Core
 {
-	public class SupabaseManager : MonoBehaviour, IDisposable, IAsyncStartable, INetworkClient
+	public interface ISupabaseManager
+	{
+		Client Supabase();
+	}
+
+	public class SupabaseManager : IDisposable, IAsyncStartable, INetworkClient, ISupabaseManager
 	{
 		[Inject]
 		private readonly SessionListener _sessionListener;
@@ -89,7 +94,7 @@ namespace Network.Supabase.Core
 			catch (Exception e)
 			{
 				// Something else went wrong, so we assume we are offline
-				Logger.LogException(e, gameObject);
+				Logger.LogException(e);
 				client.Auth.Online = false;
 			}
 			
@@ -129,20 +134,15 @@ namespace Network.Supabase.Core
 
 		private void DebugListener(string message, Exception e)
 		{
-			Logger.Log(message, gameObject);
+			Logger.Log(message);
 			
 			if (e != null)
-				Logger.LogException(e, gameObject);
+				Logger.LogException(e);
 		}
 
 		// This is called when Unity shuts down. You want to be sure to include this so that the
 		// background thread is terminated cleanly. Keep in mind that if you are running the app
 		// in the Unity Editor, if you don't call this method you will leak the background thread!
-		private void OnApplicationQuit()
-		{
-			Dispose();
-		}
-
 		public void Dispose()
 		{
 			if (_client != null)
