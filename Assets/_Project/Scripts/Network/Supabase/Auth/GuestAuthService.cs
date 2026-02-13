@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Network.Supabase.Core;
 using UniRx;
@@ -15,6 +14,7 @@ namespace CityBuilder.Network.SupabaseApi
         private readonly ISupabaseManager _manager;
         private readonly INetworkClient _networkClient;
         private readonly CompositeDisposable _disposables = new();
+        
         private PlayerData _currentPlayerData;
         private string CurrentPlayerId => _currentPlayerData?.id ?? string.Empty;
 
@@ -22,13 +22,16 @@ namespace CityBuilder.Network.SupabaseApi
         public IObservable<string> OnAuthenticated => _onAuthenticated;
         public IObservable<Unit> OnError => _onError;
         
-        private Subject<string> _onAuthenticated = new();
-        private Subject<Unit> _onError = new();
+        private readonly Subject<string> _onAuthenticated = new();
+        private readonly Subject<Unit> _onError = new();
     
         public GuestAuthService(ISupabaseManager manager, INetworkClient networkClient)
         {
             _manager = manager;
             _networkClient = networkClient;
+
+            _onAuthenticated.AddTo(_disposables);
+            _onError.AddTo(_disposables);
         }
 
         public void Initialize() => InitializeInternal().Forget();
@@ -50,36 +53,19 @@ namespace CityBuilder.Network.SupabaseApi
             {
                 _currentPlayerData = existingPlayerData;
                 _onAuthenticated.OnNext(playerId);
+
+                Logger.Log($"Successfully loaded player data: {CurrentPlayerId}");
                 return;
             }
             
+            Logger.Log($"User not founded, proceeding to initial user creation");
             _onError.OnNext(Unit.Default);
         }
         
         public void Dispose()
         {
             _disposables.Dispose();
-            _onAuthenticated?.Dispose();
-            _onError?.Dispose();
         }
-
-        // public void Tick()
-        // {
-        //     if (_networkClient.IsConnected.Value == false)
-        //         return;
-        //
-        //     if (Input.GetKeyDown(KeyCode.Space))
-        //     {
-        //         CreateGuestPlayer(TODO);
-        //     }
-        // }
-
-        // private async void HelloWorldRequest()
-        // {
-        //     _ = await _networkClient.InvokeFunction(
-        //         "hello-world",
-        //         ("name", "UnityPlayer"));
-        // }
 
         public PlayerData GetPlayerData()
         {
@@ -92,12 +78,11 @@ namespace CityBuilder.Network.SupabaseApi
             {
                 if (_currentPlayerData == null)
                 {
-                    // Проверяем, существует ли игрок
                     var player = await CreatePlayer(nickname);
                     _currentPlayerData = player;
                     _onAuthenticated.OnNext(CurrentPlayerId);
 
-                    Logger.Log($"[Auth] Guest login successful: {CurrentPlayerId}");
+                    Logger.Log($"Created player with id: {CurrentPlayerId}");
                 }
                 else
                 {

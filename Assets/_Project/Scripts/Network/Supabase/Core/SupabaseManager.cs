@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using Supabase;
 using Supabase.Gotrue;
 using UniRx;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Client = Supabase.Client;
@@ -120,13 +119,21 @@ namespace Network.Supabase.Core
 
 		public async UniTask TryReconnect()
 		{
-			if (_client != null)
-			{
-				_client?.Auth.Shutdown();
-				_client = null;
-			}
+			DisposeClient();
 			
 			await Connect();
+		}
+
+		private void DisposeClient()
+		{
+			if (_client != null)
+			{
+				Logger.Log("Shutting down client...");
+				_client.Auth.Shutdown();
+				_client.Auth.RemoveStateChangedListener(
+					_sessionListener.UnityAuthListener);
+				_client = null;
+			}
 		}
 
 		private void DebugListener(string message, Exception e)
@@ -142,13 +149,7 @@ namespace Network.Supabase.Core
 		// in the Unity Editor, if you don't call this method you will leak the background thread!
 		public void Dispose()
 		{
-			if (_client != null)
-			{
-				Logger.Log("Shutting down client...");
-				_client.Auth.Shutdown();
-				_client.Auth.RemoveStateChangedListener(_sessionListener.UnityAuthListener);
-				_client = null;
-			}
+			DisposeClient();
 			_isConnected.Dispose();
 		}
 		
@@ -169,7 +170,7 @@ namespace Network.Supabase.Core
 				: null;
 			var response = await _client!.Functions.Invoke(
 				function,
-				AuthConfig.AnonKey,
+				AuthConfig.AnonJwtKey,
 				payload);
 			Logger.Log(response);
 			return response;

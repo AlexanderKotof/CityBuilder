@@ -14,6 +14,9 @@ namespace Network.Supabase.Core
 		
         [JsonProperty("status")]
         public int status { get; set; } 
+        
+        [JsonProperty("error")]
+        public string error { get; set; } = string.Empty;
     }
 
     [Serializable]
