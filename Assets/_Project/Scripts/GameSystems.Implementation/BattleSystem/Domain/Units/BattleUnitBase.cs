@@ -14,8 +14,11 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units
         public BattleUnitConfigSO Config { get; private set; }
         
         public UnitHealthAttribute Health { get; }
-        public bool IsAlive => Health.CurrentValue > 0;
+        public bool IsAlive => Health.CurrentValue.Value > 0;
         public event Action<IBattleUnit>? OnUnitDied;
+
+        public IObservable<float> OnDamaged => _onDamaged;
+        private readonly Subject<float> _onDamaged = new();
 
         public IObservable<BattleUnitBase> OnDiedObservable => _onDie;
         private readonly Subject<BattleUnitBase> _onDie = new();
@@ -29,7 +32,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units
         // Position as observable?
         // public IObservable<Vector3> PositionObservable => ThisTransform.Value.O
 
-        public UnitAttackModel? AttackModel { get; }
+        public UnitAttackModel AttackModel { get; }
         
         public bool CanAttack => Config.Damage > 0 && Config.AttackSpeed > 0 && Config.AttackRange > 0;
         public bool CanMove => Config.MoveSpeed > 0;
@@ -65,9 +68,12 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units
             if (IsAlive == false)
                 return;
             
-            Health.CurrentValue.Value -= Mathf.Min(damage, Health.CurrentValue.Value);
+            damage = Mathf.Min(damage, Health.CurrentValue.Value);
+
+            Health.CurrentValue.Value -= damage;
+            _onDamaged.OnNext(damage);
             
-            Debug.Log($"[{nameof(BattleUnitBase)}] Unit {Config.Name} Received {damage.ToString()} damage");
+            Debug.Log($"[{nameof(BattleUnitBase)}] Unit {Config.Name} Received {damage:F1} damage");
 
             if (IsAlive == false)
             {

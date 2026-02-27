@@ -4,7 +4,7 @@ using CityBuilder.StateMachine;
 using CityBuilder.Utilities.Extensions;
 using UnityEngine;
 using VContainer;
-using Logger = Network.Supabase.Core.Logger;
+using Logger = Utilities.Logger;
 
 namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.InteractionStateMachine.States
 {

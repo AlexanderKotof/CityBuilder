@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Network.Supabase.Core
+namespace Utilities
 {
     public static class Logger
     {

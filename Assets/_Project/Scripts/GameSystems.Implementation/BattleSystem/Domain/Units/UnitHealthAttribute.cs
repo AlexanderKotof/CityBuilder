@@ -1,5 +1,7 @@
 using CityBuilder.GameSystems.Common.ViewSystem;
-using CityBuilder.Reactive;
+using CityBuilder.Utilities.Extensions;
+using UniRx;
+
 
 namespace CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units
 {

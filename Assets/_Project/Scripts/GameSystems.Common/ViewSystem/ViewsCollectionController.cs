@@ -18,6 +18,8 @@ namespace CityBuilder.GameSystems.Common.ViewSystem
         
         private readonly Dictionary<object, TView> _activeViews = new();
         private readonly Dictionary<object, CancellationTokenSource> _cancellationTokenSources = new();
+        
+        public IEnumerable<TView> ActiveViews => _activeViews.Values;
 
         public ViewsCollectionController(IViewsProvider viewsProvider, string defaultAssetKey = null, Transform defaultParent = null)
         {

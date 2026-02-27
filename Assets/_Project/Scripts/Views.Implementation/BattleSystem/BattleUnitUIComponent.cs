@@ -50,7 +50,7 @@ namespace CityBuilder.Views.Implementation.BattleSystem
                 return;
             }
 
-            var percent = _battleUnit.Health.CurrentValue / _battleUnit.Health.StartValue;
+            var percent = _battleUnit.Health.CurrentValue.Value / _battleUnit.Health.StartValue.Value;
             healthSlider.value = percent;
             canvas.enabled = true;
             healthText.text = _battleUnit.Health.CurrentValue + "/" + _battleUnit.Health.StartValue;

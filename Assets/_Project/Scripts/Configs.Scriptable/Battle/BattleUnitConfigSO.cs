@@ -1,6 +1,7 @@
 using System;
 using CityBuilder.Utilities;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CityBuilder.Configs.Scriptable.Battle
 {
@@ -16,7 +17,10 @@ namespace CityBuilder.Configs.Scriptable.Battle
         public float MoveSpeed = 1;
         public float AttackSpeed = 1;
         public string AssetKey = "Unit";
+        public Vector2 Size = Vector2.one * 0.3f;
         public AttackPossibilityAndPriority AttackPossibilityAndPriority = 0;
+        
+        public ProjectileConfigSo ProjectileConfig;
         
         [field: SerializeField, ReadOnly]
         public string Id { get; private set; }

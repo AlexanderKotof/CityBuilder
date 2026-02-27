@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Supabase.Gotrue;
 using Supabase.Gotrue.Interfaces;
 using UnityEngine;
+using Logger = Utilities.Logger;
 
 namespace Network.Supabase.Core
 {

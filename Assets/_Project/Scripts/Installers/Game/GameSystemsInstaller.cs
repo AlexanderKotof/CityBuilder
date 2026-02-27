@@ -79,6 +79,7 @@ namespace CityBuilder.Installers
             builder.Register<BattleSystemModel>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BattleManager>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             builder.Register<BattleUnitsProcessor>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<ProjectileService>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             builder.Register<BattleUnitsViewFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             

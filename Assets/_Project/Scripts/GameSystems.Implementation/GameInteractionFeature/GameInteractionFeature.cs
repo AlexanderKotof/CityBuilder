@@ -42,34 +42,6 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature
             //_interactionModel.DragAndDropped.Subscribe(e => TryDropContent(e.from, e.to)).AddTo(_subscriptions);
         }
 
-        // private void TryDropContent(CellModel fromCell, CellModel toCellModel)
-        // {
-        //     if (!_buildingManager.TryGetBuilding(fromCell, out var fromBuilding))
-        //     {
-        //         _draggingContentController.CancelDrag();
-        //         return;
-        //     }
-        //
-        //     if (_buildingManager.TryMoveBuilding(toCellModel, fromBuilding))
-        //     {
-        //         _interactionModel.SelectedCell.Set(toCellModel);
-        //         return;
-        //     }
-        //     
-        //     if (!_buildingManager.TryGetBuilding(toCellModel, out var toBuilding))
-        //     {
-        //         _draggingContentController.CancelDrag();
-        //         return;
-        //     }
-        //
-        //     if (_mergeBuildingsFeature.TryMergeBuildingsFromTo(fromBuilding, toBuilding))
-        //     {
-        //         _interactionModel.SelectedCell.Set(toCellModel);
-        //     }
-        //     else
-        //     {
-        //         _draggingContentController.CancelDrag();
-        //     }
-        // }
+
     }
 }

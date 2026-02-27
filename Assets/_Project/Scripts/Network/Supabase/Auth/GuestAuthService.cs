@@ -5,7 +5,7 @@ using Network.Supabase.Core;
 using UniRx;
 using UnityEngine;
 using VContainer.Unity;
-using Logger = Network.Supabase.Core.Logger;
+using Logger = Utilities.Logger;
 
 namespace CityBuilder.Network.SupabaseApi
 {
@@ -42,13 +42,9 @@ namespace CityBuilder.Network.SupabaseApi
             
             string playerId = $"guest_{SystemInfo.deviceUniqueIdentifier}";
             
-            var response = await Client
-                .From<PlayerData>()
-                .Select("*")
-                .Where(x => x.id == playerId)
-                .Get();
+            var player = await GetPlayerData(playerId);
 
-            var existingPlayerData = response.Models.FirstOrDefault();
+            var existingPlayerData = player;
             if (existingPlayerData != null)
             {
                 _currentPlayerData = existingPlayerData;
@@ -114,6 +110,13 @@ namespace CityBuilder.Network.SupabaseApi
         public string GetPlayerId()
         {
             return CurrentPlayerId;
+        }
+
+        private async UniTask<PlayerData> GetPlayerData(string id)
+        {
+            var getPlayerDataResponse =
+                await _networkClient.InvokeFunction<Response<PlayerData>>("player-get", ("player_id", id));
+            return getPlayerDataResponse.payload;
         }
 
         private async UniTask<PlayerData> CreatePlayer(string nickname)

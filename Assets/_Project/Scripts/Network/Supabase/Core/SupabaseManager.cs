@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Supabase;
 using Supabase.Gotrue;
 using UniRx;
+using Utilities;
 using VContainer;
 using VContainer.Unity;
 using Client = Supabase.Client;

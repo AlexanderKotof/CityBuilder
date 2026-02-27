@@ -9,6 +9,8 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units
         bool IsAlive { get; }
 
         void TakeDamage(float damage);
+
+        IObservable<float> OnDamaged { get; }
         
         event Action<IBattleUnit> OnUnitDied;
     }

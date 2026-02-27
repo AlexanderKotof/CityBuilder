@@ -13,11 +13,13 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
     public class BattleUnitsProcessor
     {
         private readonly BattleSystemModel _battleSystemModel;
+        private readonly ProjectileService _projectileService;
         private const float MovementThreshold = 0.05f;
 
-        public BattleUnitsProcessor(BattleSystemModel battleSystemModel)
+        public BattleUnitsProcessor(BattleSystemModel battleSystemModel, ProjectileService projectileService)
         {
             _battleSystemModel = battleSystemModel;
+            _projectileService = projectileService;
         }
         
         public void Update()
@@ -62,24 +64,25 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
                 ProcessMove(unit);
             }
         }
+        
         private void UpdateUnit(BattleUnitBase unit, bool isPlayer)
         {
             bool canAttack = unit.CanAttack;
             if (canAttack)
             {
-                SelectTarget(unit, unit.AttackModel!, isPlayer);
+                SelectTarget(unit, unit.AttackModel, isPlayer);
             }
 
             if (unit.CanMove)
             {
-                bool force = UpdateDesiredPosition(unit, unit.AttackModel!);
+                bool force = UpdateDesiredPosition(unit, unit.AttackModel);
                 TryUpdatePath(unit, force);
                 ProcessMove(unit);
             }
 
             if (canAttack)
             {
-                ProcessAttack(unit, unit.AttackModel!);
+                ProcessAttack(unit, unit.AttackModel);
             }
         }
         
@@ -96,29 +99,39 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
             
             if (distanceCheck && timingCheck)
             {
-                //TODO: begin attack check timing and successfulness of
-                
                 attackModel.LastAttackTime.Value = Time.timeSinceLevelLoad;
 
                 var target = attackModel.Target.Value;
-                var damage = unit.Config.Damage;
                 
                 Debug.Log($"[{nameof(BattleUnitsProcessor)}] Unit {unit.Config.Name} attacks {target.Config.Name}");
                 
-                target.TakeDamage(damage);
-                
-                //TODO: On damage dealed
-                if (target == _battleSystemModel.MainBuilding.Value)
+                if (unit.Config.ProjectileConfig != null)
                 {
-                    OnMainBuildingDamaged(damage, unit);
+                    _projectileService.ShootProjectile(unit, target, () => TryDealDamage(unit, target)).Forget();
+                    return;
                 }
+
+                TryDealDamage(unit, target);
             }
         }
 
-        private void OnMainBuildingDamaged(float damage, IBattleUnit by)
+        private void TryDealDamage(IBattleUnit unit, IBattleUnit target)
         {
-            Debug.LogError("Main building damaged!");
-            _battleSystemModel.OnMainBuildingDamaged(damage, by);
+            var damage = unit.Config.Damage;
+            target.TakeDamage(damage);
+                
+            //TODO: On damage dealed
+            if (target == _battleSystemModel.MainBuilding.Value)
+            {
+                OnMainBuildingDamaged(damage, unit);
+            }
+            return;
+            
+            void OnMainBuildingDamaged(float damage, IBattleUnit by)
+            {
+                Debug.LogError("Main building damaged!");
+                _battleSystemModel.OnMainBuildingDamaged(damage, by);
+            }
         }
 
         private float GetSqrDistanceToTarget(IBattleUnit unit, UnitAttackModel attackModel)
@@ -194,54 +207,23 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
 
         private Func<IBattleUnit> GetTargetSelectionStrategy(IBattleUnit unit)
         {
-            IBattleUnit UnitsOnly()
-            {
-                //Debug.LogWarning(nameof(UnitsOnly));
-                return SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits);
-            }
+            IBattleUnit UnitsOnly() 
+                => SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits);
 
-            IBattleUnit BuildingsOnly()
-            {
-                //Debug.LogWarning(nameof(BuildingsOnly));
-                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildingsUnits);
-            }
+            IBattleUnit BuildingsOnly() 
+                => SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildingsUnits);
 
-            IBattleUnit DefensiveBuildingsOnly()
-            {                
-                //Debug.LogWarning(nameof(DefensiveBuildingsOnly));
-                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildingsUnits.Where(building => building.CanAttack));
-            }
+            IBattleUnit DefensiveBuildingsOnly() 
+                => SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildingsUnits.Where(building => building.CanAttack));
 
-            IBattleUnit MainBuildingOnly()
-            {
-                //Debug.LogWarning(nameof(MainBuildingOnly));
+            IBattleUnit MainBuildingOnly() 
+                => _battleSystemModel.MainBuilding.Value;
 
-                return _battleSystemModel.MainBuilding.Value;
-            }
+            IBattleUnit UnitsThenBuildings() 
+                => SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits.Count > 0 ? _battleSystemModel.PlayerUnits : _battleSystemModel.PlayerBuildingsUnits);
 
-            IBattleUnit UnitsThenBuildings()
-            {
-                //Debug.LogWarning(nameof(UnitsThenBuildings));
-
-                if (_battleSystemModel.PlayerUnits.Count > 0)
-                {
-                    return SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits);
-                }
-
-                return SelectNearUnitOf(unit, _battleSystemModel.PlayerBuildingsUnits);
-            }
-
-            IBattleUnit UnitsThenMainBuildings()
-            {
-                //Debug.LogWarning(nameof(UnitsThenMainBuildings));
-
-                if (_battleSystemModel.PlayerUnits.Count > 0)
-                {
-                    return SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits);
-                }
-
-                return _battleSystemModel.MainBuilding.Value;
-            }
+            IBattleUnit UnitsThenMainBuildings() 
+                => _battleSystemModel.PlayerUnits.Count > 0 ? SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits) : _battleSystemModel.MainBuilding.Value;
 
             return unit.Config.AttackPossibilityAndPriority switch
             {
@@ -294,6 +276,5 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
 
             return target;
         }
-
     }
 }
