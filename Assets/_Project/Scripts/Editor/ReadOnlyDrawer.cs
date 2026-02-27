@@ -2,7 +2,7 @@ using CityBuilder.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace _Project.Scripts.Editor
+namespace CityBuilder.Editor
 {
     [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
     public class ReadOnlyDrawer : PropertyDrawer

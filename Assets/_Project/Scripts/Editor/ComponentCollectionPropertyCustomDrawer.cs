@@ -1,4 +1,4 @@
-namespace _Project.Scripts.Editor
+namespace CityBuilder.Editor
 {
     // [CustomPropertyDrawer(typeof(ComponentCollection))]
     // public class ComponentCollectionPropertyCustomDrawer : PropertyDrawer

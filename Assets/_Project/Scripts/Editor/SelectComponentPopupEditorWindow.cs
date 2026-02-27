@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace _Project.Scripts.Editor
+namespace CityBuilder.Editor
 {
     public class SelectComponentPopupEditorWindow : EditorWindow
     {

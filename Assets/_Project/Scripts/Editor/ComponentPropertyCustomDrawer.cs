@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace _Project.Scripts.Editor
+namespace CityBuilder.Editor
 {
     [CustomPropertyDrawer(typeof(Component))]
     public class ComponentPropertyCustomDrawer : PropertyDrawer
