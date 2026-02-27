@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CityBuilder.GameSystems.Common.ViewSystem;
 using CityBuilder.GameSystems.Common.ViewSystem.ViewsProvider;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units;
@@ -11,6 +12,8 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
     public class ProjectileService : IInitializable, IDisposable, ITickable
     {
         private readonly ViewsCollectionController<ProjectileComponent> _projectilesViews;
+        
+        private readonly List<ProjectileModel> _modelsToRemove = new();
 
         public ProjectileService(IViewsProvider viewsProvider)
         {
@@ -24,7 +27,8 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
 
         public void Dispose()
         {
-            
+            _projectilesViews.Dispose();
+            _modelsToRemove.Clear();
         }
         
         /// <summary>
@@ -41,7 +45,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
             view.Init(shooter, target, config);
             await view.Hit();
             hitCallback?.Invoke();
-            _projectilesViews.Return(model);
+            _modelsToRemove.Add(model);
         }
         
         /// <summary>
@@ -58,7 +62,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
             view.Init(shooter, position, config);
             await view.Hit();
             hitCallback?.Invoke();
-            _projectilesViews.Return(model);
+            _modelsToRemove.Add(model);
         }
 
         public void Tick()
@@ -68,6 +72,12 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
             {
                 view.Tick(dt);
             }
+
+            foreach (var model in _modelsToRemove)
+            {
+                _projectilesViews.Return(model);
+            }
+            _modelsToRemove.Clear();
         }
     }
 }

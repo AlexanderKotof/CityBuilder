@@ -16,6 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 258e7cef91d8f874fb734ae99923565e, type: 2}
   <EnemiesConfigs>k__BackingField:
   - {fileID: 11400000, guid: da27d829c20b8d541a07cddafc40bb80, type: 2}
+  - {fileID: 11400000, guid: 99f7cdcbd93596c4c8701b71ea32630a, type: 2}
   <BattleUiAssetKey>k__BackingField: BattleUnitUI
   <DefaultBuildingUnit>k__BackingField: {fileID: 11400000, guid: 31abaf6c21d4d97409d2d4de20efb9fb, type: 2}
   <MainBuildingUnit>k__BackingField: {fileID: 11400000, guid: 6d29f0defb262af4e9d1240c98f617d2, type: 2}

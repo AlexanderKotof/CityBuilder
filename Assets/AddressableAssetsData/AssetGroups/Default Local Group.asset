@@ -75,6 +75,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea5dd1ef730447244becb372f313f6cc
+    m_Address: Enemy_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ef809e95f41b6df4cbeb27c7b32cb045
     m_Address: Tower
     m_ReadOnly: 0

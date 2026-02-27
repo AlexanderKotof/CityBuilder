@@ -4,6 +4,7 @@ namespace CityBuilder.Configs.Scriptable.Battle
     {
         UnitsOnly = 0,
         BuildingsOnly = 1,
+        Any = 2,
         
         MainBuildingOnly = 10,
         DefensiveBuildingsOnly = 11,

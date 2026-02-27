@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 253953602910023560}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.22, z: 0}
-  m_LocalScale: {x: 0.2045, y: 0.2045, z: 0.2045}
+  m_LocalPosition: {x: 0, y: 0.341, z: 0}
+  m_LocalScale: {x: 0.4177935, y: 0.34471723, z: 0.4177935}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 363109016836309193}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 9017527323648162816}
   - component: {fileID: 862117027021896454}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,10 +188,10 @@ NavMeshAgent:
   m_GameObject: {fileID: 3339069156769468540}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.12
+  m_Radius: 0.21
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 99
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1

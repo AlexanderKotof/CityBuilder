@@ -4,6 +4,7 @@ using System.Linq;
 using CityBuilder.Configs.Scriptable.Battle;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units;
+using CityBuilder.Utilities.Extensions;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
@@ -224,9 +225,13 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
 
             IBattleUnit UnitsThenMainBuildings() 
                 => _battleSystemModel.PlayerUnits.Count > 0 ? SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits) : _battleSystemModel.MainBuilding.Value;
+            
+            IBattleUnit Any() 
+                => SelectNearUnitOf(unit, _battleSystemModel.PlayerUnits.AppendMany(_battleSystemModel.PlayerBuildingsUnits));
 
             return unit.Config.AttackPossibilityAndPriority switch
             {
+                AttackPossibilityAndPriority.Any => Any,
                 AttackPossibilityAndPriority.UnitsOnly => UnitsOnly,
                 AttackPossibilityAndPriority.BuildingsOnly => BuildingsOnly,
                 AttackPossibilityAndPriority.DefensiveBuildingsOnly => DefensiveBuildingsOnly,

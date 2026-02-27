@@ -63,18 +63,17 @@ namespace CityBuilder.GameSystems.Implementation.CheatsFeature
             //Encounters
             if (Input.GetKeyDown(KeyCode.E))
             {
-                _battleManager.InvasionBegins(new InvasionData()
+                var invaders = new List<(BattleUnitConfigSO, int)>(8);
+                foreach (var config in _battleUnitsConfigSo.EnemiesConfigs)
                 {
-                    Invaders = new()
-                    {
-                        (_defaultEnemyUnitGuid, 3),
-                    }
-                });
+                    invaders.Add((config, Random.Range(1, 10)));
+                }
+                _battleManager.InvasionBegins(new InvasionData { Invaders = invaders });
             }
             
             if (Input.GetKeyDown(KeyCode.A))
             {
-                _battleManager.PlayerUnitCreate(new List<BattleUnitConfigSO>() { _defaultPlayerUnitGuid });
+                _ = _battleManager.PlayerUnitCreate(new List<BattleUnitConfigSO>{ _defaultPlayerUnitGuid });
             }
         }
     }
