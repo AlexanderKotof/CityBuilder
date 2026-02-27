@@ -100,19 +100,19 @@ namespace CityBuilder.GameSystems.Implementation.GameInteractionFeature.Interact
         
         protected virtual void ProcessClick(CellModel cellModel)
         {
-            Logger.Log($"Process click on {cellModel.Position}");
+            //Logger.Log($"Process click on {cellModel.Position}");
         }
         protected virtual void ProcessRightClick(CellModel cellModel)
         {
-            Logger.Log($"Process right click on {cellModel.Position}");
+            //Logger.Log($"Process right click on {cellModel.Position}");
         }
         protected virtual void ProcessDragStarted(CellModel cellModel)
         {
-            Logger.Log($"Process drag started on {cellModel.Position}");
+            //Logger.Log($"Process drag started on {cellModel.Position}");
         }
         protected virtual void ProcessDragEnded(CellModel cellModel)
         {
-            Logger.Log($"Process drag ended on {cellModel.Position}");
+            //Logger.Log($"Process drag ended on {cellModel.Position}");
         }
         protected virtual void ProcessDragging(Vector2 mousePosition) { }
 

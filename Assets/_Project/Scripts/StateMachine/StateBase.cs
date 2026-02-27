@@ -20,13 +20,13 @@ namespace CityBuilder.StateMachine
 
         public void EnterState()
         {
-            Logger.Log($"Entering state {GetType().Name}");
+            //Logger.Log($"Entering state {GetType().Name}");
             OnEnterState();
         }
 
         public void ExitState()
         {
-            Logger.Log($"Exiting state {GetType().Name}");
+            //Logger.Log($"Exiting state {GetType().Name}");
             OnExitState();
         }
 
