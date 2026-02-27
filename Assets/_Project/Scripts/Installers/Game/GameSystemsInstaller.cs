@@ -5,7 +5,7 @@ using CityBuilder.GameSystems.Implementation;
 using CityBuilder.GameSystems.Implementation.BattleSystem;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Features;
-using CityBuilder.GameSystems.Implementation.BattleSystem.Processing;
+using CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles;
 using CityBuilder.GameSystems.Implementation.BuildingSystem;
 using CityBuilder.GameSystems.Implementation.BuildingSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BuildingSystem.Features;

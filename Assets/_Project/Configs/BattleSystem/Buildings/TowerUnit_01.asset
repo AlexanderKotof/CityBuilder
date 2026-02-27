@@ -21,5 +21,7 @@ MonoBehaviour:
   MoveSpeed: 0
   AttackSpeed: 1
   AssetKey: Unit
+  Size: {x: 0.3, y: 0.3}
   AttackPossibilityAndPriority: 0
+  ProjectileConfig: {fileID: 11400000, guid: d3464ede1e03a584c99e59e7041dae02, type: 2}
   <Id>k__BackingField: e9ad7100-0b16-4c89-b618-d532ad98373c

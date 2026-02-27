@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
+namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
 {
     public class BattleUnitsProcessor
     {
@@ -88,7 +88,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
         
         private void ProcessAttack(IBattleUnit unit, UnitAttackModel attackModel)
         {
-            if (attackModel.Target.Value == null)
+            if (attackModel.MainTarget.Value == null)
             {
                 return;
             }
@@ -101,7 +101,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
             {
                 attackModel.LastAttackTime.Value = Time.timeSinceLevelLoad;
 
-                var target = attackModel.Target.Value;
+                var target = attackModel.MainTarget.Value;
                 
                 Debug.Log($"[{nameof(BattleUnitsProcessor)}] Unit {unit.Config.Name} attacks {target.Config.Name}");
                 
@@ -117,7 +117,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
 
         private void TryDealDamage(IBattleUnit unit, IBattleUnit target)
         {
-            var damage = unit.Config.Damage;
+            var damage = DamageCalculator.GetDamage(unit, target);
             target.TakeDamage(damage);
                 
             //TODO: On damage dealed
@@ -136,12 +136,12 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
 
         private float GetSqrDistanceToTarget(IBattleUnit unit, UnitAttackModel attackModel)
         {
-            if (attackModel.Target.Value == null)
+            if (attackModel.MainTarget.Value == null)
             {
                 return float.MaxValue;
             }
 
-            return Vector3.SqrMagnitude(unit.CurrentPosition - attackModel.Target.Value.CurrentPosition);
+            return Vector3.SqrMagnitude(unit.CurrentPosition - attackModel.MainTarget.Value.CurrentPosition);
         }
 
         private void TryUpdatePath(BattleUnitBase unit, bool forceUpdatePath = false)
@@ -163,11 +163,11 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
 
         private void ProcessMove(BattleUnitBase unit)
         {
-            if (unit.ThisTransform.Value == null ||
-                Vector3.SqrMagnitude(unit.CurrentPosition - unit.DesiredPosition.Value) < MovementThreshold * MovementThreshold)
-            {
-                return;
-            }
+            // if (unit.ThisTransform.Value == null ||
+            //     Vector3.SqrMagnitude(unit.CurrentPosition - unit.DesiredPosition.Value) < MovementThreshold * MovementThreshold)
+            // {
+            //     return;
+            // }
             
             // if (unit.HasPath && forceUpdatePath == false)
             //     return;
@@ -185,7 +185,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
         
         private void SelectTarget(IBattleUnit unit, UnitAttackModel attackModel, bool isPlayer)
         {
-            // if (attackModel.HasTarget)
+            // if (attackModel.HasMainTarget)
             // {
             //     return;
             // }
@@ -195,14 +195,14 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
             if (isPlayer)
             {
                 target = SelectNearUnitOf(unit, _battleSystemModel.Enemies);
-                attackModel.SetTarget(target);
+                attackModel.SetMainTarget(target);
                 return;
             }
 
             // Для энемисов используем стратегию на основе конфига
             var strategy = GetTargetSelectionStrategy(unit);
             target = strategy();
-            attackModel.SetTarget(target);
+            attackModel.SetMainTarget(target);
         }
 
         private Func<IBattleUnit> GetTargetSelectionStrategy(IBattleUnit unit)
@@ -240,9 +240,9 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
         private static bool UpdateDesiredPosition(BattleUnitBase unit, UnitAttackModel attackModel)
         {
             Vector3 desiredPosition;
-            if (attackModel.Target.Value != null)
+            if (attackModel.MainTarget.Value != null)
             {
-                var direction = attackModel.Target.Value.CurrentPosition - unit.CurrentPosition;
+                var direction = attackModel.MainTarget.Value.CurrentPosition - unit.CurrentPosition;
                 if (direction.sqrMagnitude < unit.GetAttackRangeSqr())
                 {
                     return false;
@@ -258,6 +258,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
             return true;
         }
         
+        //TODO: need return an enumerable for targets
         [CanBeNull]
         private static IBattleUnit SelectNearUnitOf(IBattleUnit unit, IEnumerable<IBattleUnit> otherUnits)
         {

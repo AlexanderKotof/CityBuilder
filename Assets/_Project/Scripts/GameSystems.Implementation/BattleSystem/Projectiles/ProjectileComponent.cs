@@ -5,13 +5,13 @@ using CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
+namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
 {
     public class ProjectileComponent : MonoBehaviour
     {
         private UniTaskCompletionSource _taskCompletionSource;
         private IBattleUnit _shooter;
-        private IBattleUnit _target;
+        private IBattleUnit? _target;
         private ProjectileConfigSo _config;
         private Vector3 _targetPosition;
 
@@ -20,7 +20,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
             _taskCompletionSource = new();
             _shooter = shooter;
             _target = target;
-            _targetPosition = Vector3.zero;
+            _targetPosition = target.CurrentPosition;
             _config = config;
 
             transform.position = shooter.CurrentPosition + new Vector3(0, shooter.Config.Size.y);
@@ -41,20 +41,32 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
 
         public void Tick(float dt)
         {
-            var direction = _target != null ?
-                _target.CurrentPosition - transform.position :
-                _targetPosition - transform.position;
-            if (direction.sqrMagnitude >
-                _config.DistanceThreshold * _config.DistanceThreshold)
+            TryUpdateTargetPosition();
+            
+            if (_target != null && _target.IsAlive == false)
+            {
+                _taskCompletionSource.TrySetResult();
+                return;
+            }
+
+            var direction = _targetPosition - transform.position;
+            if (direction.sqrMagnitude > _config.DistanceThreshold * _config.DistanceThreshold)
             {
                 //TODO: add ballistics, etc..
-                var velocity = dt * _config.ProjectileSpeed * direction;
-                transform.Translate(velocity);
+                var velocity = dt * _config.ProjectileSpeed * direction.normalized;
+                transform.position += velocity;
+                transform.rotation = Quaternion.LookRotation(velocity);
             }
             else
             {
                 _taskCompletionSource.TrySetResult();
             }
+        }
+
+        private void TryUpdateTargetPosition()
+        {
+            if (_target == null) return;
+            _targetPosition = _target.CurrentPosition + new Vector3(0, _target.Config.Size.y * 0.5f);
         }
 
         public UniTask Hit()

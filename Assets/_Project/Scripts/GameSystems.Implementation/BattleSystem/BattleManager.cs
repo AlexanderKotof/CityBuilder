@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using CityBuilder.Configs.Scriptable.Battle;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units;
-using CityBuilder.GameSystems.Implementation.BattleSystem.Processing;
+using CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles;
 using UnityEngine;
 using VContainer.Unity;
 using Random = UnityEngine.Random;

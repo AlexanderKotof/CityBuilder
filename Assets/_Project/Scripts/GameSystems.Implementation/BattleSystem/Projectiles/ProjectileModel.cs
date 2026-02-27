@@ -1,6 +1,6 @@
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units;
 
-namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
+namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
 {
     public class ProjectileModel
     {

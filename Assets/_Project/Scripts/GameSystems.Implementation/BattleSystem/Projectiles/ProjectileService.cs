@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
+namespace CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles
 {
     public class ProjectileService : IInitializable, IDisposable, ITickable
     {
@@ -37,7 +37,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
         {
             var config = shooter.Config.ProjectileConfig;
             var model = new ProjectileModel(shooter, target);
-            var view = await _projectilesViews.AddView(model);
+            var view = await _projectilesViews.AddView(config.ProjectileAssetKey, model);
             view.Init(shooter, target, config);
             await view.Hit();
             hitCallback?.Invoke();
@@ -54,7 +54,7 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Processing
         {
             var config = shooter.Config.ProjectileConfig;
             var model = new ProjectileModel(shooter, null);
-            var view = await _projectilesViews.AddView(model);
+            var view = await _projectilesViews.AddView(config.ProjectileAssetKey, model);
             view.Init(shooter, position, config);
             await view.Hit();
             hitCallback?.Invoke();

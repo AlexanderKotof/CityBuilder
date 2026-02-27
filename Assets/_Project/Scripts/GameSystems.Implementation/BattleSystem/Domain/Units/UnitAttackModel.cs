@@ -7,25 +7,43 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units
 {
     public class UnitAttackModel : IViewModel
     {
-        public readonly ReactiveProperty<Transform?> TargetTransform = new();
+        public readonly ReactiveProperty<Transform?> MainTargetTransform = new();
         
-        public readonly ReactiveProperty<IBattleUnit?> Target = new();
+        public readonly ReactiveProperty<IBattleUnit?> MainTarget = new();
         
-        public ReactiveProperty<float> LastAttackTime { get; } = new();
-        public bool HasTarget => Target.Value is { IsAlive: true };
+        //Used for multi targets attackers, not all of enemies on the map
+        public readonly ReactiveCollection<IBattleUnit> AllTargets = new();
 
-        public void SetTarget([CanBeNull] IBattleUnit unit)
+        public ReactiveProperty<float> LastAttackTime { get; } = new();
+        public bool HasMainTarget => MainTarget.Value is { IsAlive: true };
+
+        public void SetMainTarget([CanBeNull] IBattleUnit unit)
         {
             if (unit == null)
             {
-                Target.Value = null;
-                TargetTransform.Value = null;
+                MainTarget.Value = null;
+                MainTargetTransform.Value = null;
                 return;
             }
 
-            Target.Value = unit;
-            TargetTransform.Value = unit.ThisTransform.Value;
+            MainTarget.Value = unit;
+            MainTargetTransform.Value = unit.ThisTransform.Value;
+        }
+
+        public void AddTarget(IBattleUnit unit)
+        {
+            if (unit == null || AllTargets.Contains(unit))
+                return;
+            
+            AllTargets.Add(unit);
         }
         
+        public void RemoveTarget(IBattleUnit unit)
+        {
+            if (unit == null)
+                return;
+            
+            AllTargets.Remove(unit);
+        }
     }
 }

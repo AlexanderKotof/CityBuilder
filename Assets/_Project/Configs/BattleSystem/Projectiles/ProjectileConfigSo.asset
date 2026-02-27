@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ProjectileConfigSo
   m_EditorClassIdentifier: Assembly-CSharp:CityBuilder.Configs.Scriptable.Battle:ProjectileConfigSo
   ProjectileAssetKey: Projectile
-  ProjectileSpeed: 1
+  ProjectileSpeed: 5
   DistanceThreshold: 0.2

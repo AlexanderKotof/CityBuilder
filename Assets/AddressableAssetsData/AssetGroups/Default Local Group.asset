@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61b8a67dd985dec4ebb51275a3dfbe94
+    m_Address: Projectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 61d64fce19ed3dc4aa6f1d75735e22dd
     m_Address: BattleUnitUI
     m_ReadOnly: 0
