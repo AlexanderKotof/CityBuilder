@@ -28,8 +28,7 @@ namespace CityBuilder.GameSystems.Implementation.BuildingSystem.Domain
 
         //Трансформ вьюхи в игре
         public ReactiveProperty<Transform?> ThisTransform { get; } = new();
-
-        // 0-4 
+        
         public readonly Guid RuntimeId = Guid.NewGuid();
         
         public IReadOnlyCollection<CellModel> OccupiedCells { get; private set; }

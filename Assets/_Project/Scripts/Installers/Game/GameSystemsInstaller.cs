@@ -6,6 +6,7 @@ using CityBuilder.GameSystems.Implementation.BattleSystem;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Features;
 using CityBuilder.GameSystems.Implementation.BattleSystem.Projectiles;
+using CityBuilder.GameSystems.Implementation.BattleSystem.Specific;
 using CityBuilder.GameSystems.Implementation.BuildingSystem;
 using CityBuilder.GameSystems.Implementation.BuildingSystem.Domain;
 using CityBuilder.GameSystems.Implementation.BuildingSystem.Features;
@@ -84,6 +85,7 @@ namespace CityBuilder.Installers
             builder.Register<BattleUnitsViewFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             builder.Register<PlayerBuildingsUnitsFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
+            builder.Register<BarracksBuildingsFeature>(Lifetime.Singleton).AsSelf().AsImplementedInterfaces();
             
             // WINDOWS
             

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d57e9a677f506749a0e3bc76e8dfb2d, type: 3}
+  m_Name: Barracks_Function_01
+  m_EditorClassIdentifier: Assembly-CSharp::CityBuilder.Configs.Scriptable.Buildings.Functions.BarracksBuildingFunctionSo
+  Note: some note
+  <BarrackFunctionLevels>k__BackingField:
+  - <ProduceUnits>k__BackingField:
+    - {fileID: 11400000, guid: 258e7cef91d8f874fb734ae99923565e, type: 2}
+    <SpawnTime>k__BackingField: 5
+    <MaxUnits>k__BackingField: 2
+  - <ProduceUnits>k__BackingField:
+    - {fileID: 11400000, guid: 258e7cef91d8f874fb734ae99923565e, type: 2}
+    <SpawnTime>k__BackingField: 4.5
+    <MaxUnits>k__BackingField: 3
+  - <ProduceUnits>k__BackingField:
+    - {fileID: 11400000, guid: 258e7cef91d8f874fb734ae99923565e, type: 2}
+    <SpawnTime>k__BackingField: 4
+    <MaxUnits>k__BackingField: 4

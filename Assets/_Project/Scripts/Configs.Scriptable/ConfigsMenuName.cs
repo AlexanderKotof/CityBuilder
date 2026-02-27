@@ -6,5 +6,7 @@ namespace CityBuilder.Configs.Scriptable
         
         public const string BattleMenuName = "Configs/Battle/";
         public const string BuildingsMenuName = "Configs/Buildings/";
+        public const string BuildingFunctionsMenuName = "Configs/Building Functions/";
+
     }
 }

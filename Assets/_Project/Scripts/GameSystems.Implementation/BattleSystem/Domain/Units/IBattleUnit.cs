@@ -15,6 +15,8 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem.Domain.Units
         public Vector3 CurrentPosition { get; }
         
         public UnitAttackModel? AttackModel { get; }
+
+        public IObservable<BattleUnitBase> OnDiedObservable { get; }
         
         bool CanAttack { get; }
     }

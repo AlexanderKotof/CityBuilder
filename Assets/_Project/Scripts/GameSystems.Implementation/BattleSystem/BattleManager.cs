@@ -33,13 +33,24 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem
             }
         }
         
-        public void PlayerUnitCreate(IEnumerable<BattleUnitConfigSO> configs)
+        public IEnumerable<BattleUnitBase> PlayerUnitCreate(IEnumerable<BattleUnitConfigSO> configs)
         {
             foreach (var config in configs)
             {
                 Vector3 position = new Vector3(5, 0, 5);
                 var unit = SpawnUnit(config, position);
                 _battleSystemModel.AddPlayerUnit(unit);
+                yield return unit;
+            }
+        }
+        
+        public IEnumerable<BattleUnitBase> PlayerUnitCreate(IEnumerable<BattleUnitConfigSO> configs, Vector3 position)
+        {
+            foreach (var config in configs)
+            {
+                var unit = SpawnUnit(config, position);
+                _battleSystemModel.AddPlayerUnit(unit);
+                yield return unit;
             }
         }
 
@@ -60,7 +71,6 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem
         private BattleUnitBase SpawnUnit(BattleUnitConfigSO config, Vector3 position)
         {
             var unitModel = new BattleUnitBase(config, 1, position);
-            unitModel.OnUnitDied += OnUnitDied;
             return unitModel;
         }
 
@@ -70,14 +80,17 @@ namespace CityBuilder.GameSystems.Implementation.BattleSystem
             position.y = 0;
             position.x = Mathf.Clamp(position.x, -5, 15);
             position.z = Mathf.Clamp(position.z, -5, 15);
-            
             return position;
         }
 
         private void OnUnitDied(IBattleUnit unit)
         {
-            unit.OnUnitDied -= OnUnitDied;
             Debug.Log($"Unit {unit.Config.Name} ({unit.RuntimeId.ToString().Substring(0, 4)}..) died!");
+        }
+
+        public void Despawn(IBattleUnit unit)
+        {
+            _battleSystemModel.RemoveUnit(unit as BattleUnitBase);
         }
     }
 }
