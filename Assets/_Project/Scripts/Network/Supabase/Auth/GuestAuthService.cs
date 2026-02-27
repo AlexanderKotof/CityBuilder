@@ -42,9 +42,13 @@ namespace CityBuilder.Network.SupabaseApi
             
             string playerId = $"guest_{SystemInfo.deviceUniqueIdentifier}";
             
-            var player = await GetPlayerData(playerId);
+            var response = await Client
+                .From<PlayerData>()
+                .Select("*")
+                .Where(x => x.id == playerId)
+                .Get();
 
-            var existingPlayerData = player;
+            var existingPlayerData = response.Models.FirstOrDefault();
             if (existingPlayerData != null)
             {
                 _currentPlayerData = existingPlayerData;
@@ -112,6 +116,7 @@ namespace CityBuilder.Network.SupabaseApi
             return CurrentPlayerId;
         }
 
+        //TODO: check, response doesn't contains payload at all
         private async UniTask<PlayerData> GetPlayerData(string id)
         {
             var getPlayerDataResponse =
