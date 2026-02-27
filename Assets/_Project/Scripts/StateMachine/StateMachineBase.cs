@@ -41,7 +41,7 @@ namespace CityBuilder.StateMachine
 
         protected virtual void OnStarted() { }
 
-        protected virtual void OnStoped() { }
+        protected virtual void OnStopped() { }
 
         public void Stop()
         {
@@ -55,7 +55,7 @@ namespace CityBuilder.StateMachine
                 CurrentState.ExitState();
             }
 
-            OnStoped();
+            OnStopped();
 
             CurrentState = default;
         }
