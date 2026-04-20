@@ -1,6 +1,6 @@
 ⚔️ **Kingdom Merge TD Preview**
 
-    🎮 Playable Version: newbeedev.itch.io/kingdom-merge-td
+    🎮 Playable Version: [itch.io](https://newbeedev.itch.io/kingdom-merge-td)
 
 This repository contains an earlier development version of the project, showcasing my approach to:
 
